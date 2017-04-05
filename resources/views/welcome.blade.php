@@ -647,16 +647,32 @@
         },
         options: {
             scales: {
-                xAxes: [{
-                    afterTickToLabelConversion: function (data) {
-                        var xLabels = data.ticks;
-                        xLabels.forEach(function (labels, i) {
-                            if (i % 100 == 1) {
-                                xLabels[i] = '';
+                xAxes: [
+                    {
+                        display: true,
+                        ticks: {
+                            callback: function(dataLabel, index) {
+                                return index % 100 === 0 ? dataLabel : '';
                             }
-                        });
+                        }
                     }
-                }]
+
+
+
+//                    {
+//                    afterTickToLabelConversion: function (data) {
+//                        var xLabels = data.ticks;
+//                        xLabels.forEach(function (labels, i) {
+//                            if (xLabels[i] == xLabels[i - 1]) {
+//                                xLabels[i] = '';
+//                            }
+//                        });
+//                    }
+//                }
+
+
+                ]
+
             }
         }
     });
