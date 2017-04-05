@@ -564,19 +564,18 @@
             }
         }
     });
-
     var myChart = new Chart(ctxa, {
         type: 'line',
         data: {
             labels: [
-                @foreach($totalnodes as $value)
+                @foreach($totalnodeslist as $value)
                     "{!! date('m-d-y',strtotime($value['created_at'])) !!}",
                 @endforeach
             ],
             datasets: [{
                 label: 'activeNodes',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
                         y: {!! number_format($value['total'],'0','.','') !!}
@@ -593,7 +592,7 @@
             }, {
                 label: 'Daily (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
@@ -611,7 +610,7 @@
             }, {
                 label: 'Weekly (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
@@ -629,7 +628,7 @@
             }, {
                 label: 'Monthly (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
