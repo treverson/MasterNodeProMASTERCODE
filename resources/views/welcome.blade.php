@@ -113,6 +113,16 @@
         .mybar2 > .bardata > .bardatadata {
 
         }
+
+        footer {
+            position: fixed;
+            height: 50px;
+            bottom: 0;
+            width: 100%;
+        }
+        .modal {
+            color: #000000;
+        }
     </style>
 </head>
 <body>
@@ -156,13 +166,6 @@
                     <div class="bardatatitle">PRICE PER ION</div>
                     <div class="bardatadata">$<span>{!! number_format($price_usd,'2','.',',') !!}</span></div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" style="text-align: center;">
-            <div style="display: inline-block;">
-                Donate: iqnAhcDqzMuHTotvEUrCCoXBQWCuz7NZ8i
             </div>
         </div>
     </div>
@@ -241,32 +244,39 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-    <div>
-
-        <div class="col-md-6" style="overflow-y:scroll; height:500px; display:none">
-            <table id="myTable" class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>ION Address</th>
-                    <th>City</th>
-                    <th>Region</th>
-                    <th>Country</th>
-                    <th>Generated</th>
-                </tr>
-                </thead>
-                @if(count($mnl) == 0)
-                    @foreach($mnl as $key => $value)
-                        <tr onclick="clickMe({!! $key !!})">
-                            <td>{!! $value['addr'] !!}</td>
-                            <td>{!! $value['ipData']['city'] !!}</td>
-                            <td>{!! substr($value['ipData']['region_name'], 0, 15) !!}</td>
-                            <td>{!! $value['ipData']['country_name'] !!}</td>
-                            <td>{!! $value['total'] !!}</td>
-                        </tr>
-                    @endforeach
-                @endif
-            </table>
+    <footer class="navbar-fixed-bottom" style="text-align: center">
+        <div>
+            <div class="col-md-6 pull-right">
+                Help Make this software Better: <a href="https://github.com/JSponaugle/IONMasterNode">GitHub</a>
+            </div>
+            <div class="col-md-6">Donate: iqnAhcDqzMuHTotvEUrCCoXBQWCuz7NZ8i</div>
         </div>
+    </footer>
+    <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    </div>
+    <div class="col-md-6" style="overflow-y:scroll; height:500px; display:none">
+        <table id="myTable" class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>ION Address</th>
+                <th>City</th>
+                <th>Region</th>
+                <th>Country</th>
+                <th>Generated</th>
+            </tr>
+            </thead>
+            @if(count($mnl) == 0)
+                @foreach($mnl as $key => $value)
+                    <tr onclick="clickMe({!! $key !!})">
+                        <td>{!! $value['addr'] !!}</td>
+                        <td>{!! $value['ipData']['city'] !!}</td>
+                        <td>{!! substr($value['ipData']['region_name'], 0, 15) !!}</td>
+                        <td>{!! $value['ipData']['country_name'] !!}</td>
+                        <td>{!! $value['total'] !!}</td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
     </div>
 </div>
 <script>
@@ -785,8 +795,8 @@
         }
     }
     function clickMe(key) {
-        $('.keyall').hide();
-        $('#key-' + key).show();
+        $('#mainModal').load('{!! route('nodedetails') !!}/?key='+key);
+        $('#mainModal').modal('show')
     }
 
 </script>

@@ -35,6 +35,14 @@ class MasterNodeList
 		return $ret;
 	}
 
+	public function nodeDetails()
+	{
+		$data['key']           = $_GET['key'];
+		$data['mnl']           = Mnl::where('id', $data['key'])->first();
+		$data['mnl']['ipData'] = json_decode($data['mnl']['data'], true);
+		return view('nodeDetails', $data);
+	}
+
 	public function masternodelist()
 	{
 		$agent = new Agent();
@@ -65,11 +73,11 @@ class MasterNodeList
 		$reward             = $this->reward($block['blockid']);
 		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
 		$bd                 = 1;
-		$bspec = 1350;
+		$bspec              = 1350;
 		while ($bd <= 6) {
-			$bds = $bd -1;
-			$count = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-'.$bd.' days')))->where('created_at', '<', date("Y-m-d H:m:s", strtotime('-'.$bds.' days')))->count();
-			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100),'0','.','');
+			$bds                                 = $bd - 1;
+			$count                               = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-' . $bd . ' days')))->where('created_at', '<', date("Y-m-d H:m:s", strtotime('-' . $bds . ' days')))->count();
+			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
 			$bd++;
 		}
 		$rewardb24total      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
