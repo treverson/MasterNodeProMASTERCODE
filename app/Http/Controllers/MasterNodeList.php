@@ -60,7 +60,8 @@ class MasterNodeList
 		foreach ($list as $value) {
 			$nclist[$value['ipData']['country_code']]['data'][] = $value;
 		}
-		$ret['totalnodes'] = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
+		$totalNodes =  Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get()->toArray();
+		$ret['totalnodes'] = $totalNodes;
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);
 			$sortlist[$nclist[$key]['count']]['country_name'] = $value['data'][0]['ipData']['country_name'];
@@ -92,6 +93,8 @@ class MasterNodeList
 		$blockleft           = $reward['height'] - $block['blockid'];
 		$sectilldrop         = $blockleft * $ret['avgblocktime'];
 		$ret['daytilldrop']  = "N/A";
+		krsort($totalNodes);
+		$ret['totalnodeslist'] = $totalNodes;
 		if ($sectilldrop > 0)
 			$ret['daytilldrop'] = $this->secondstodays($sectilldrop);
 		if ($agent->isMobile()) {

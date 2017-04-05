@@ -564,19 +564,18 @@
             }
         }
     });
-
     var myChart = new Chart(ctxa, {
         type: 'line',
         data: {
             labels: [
-                @foreach($totalnodes as $value)
+                @foreach($totalnodeslist as $value)
                     "{!! date('m-d-y',strtotime($value['created_at'])) !!}",
                 @endforeach
             ],
             datasets: [{
                 label: 'activeNodes',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
                         y: {!! number_format($value['total'],'0','.','') !!}
@@ -593,7 +592,7 @@
             }, {
                 label: 'Daily (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
@@ -611,7 +610,7 @@
             }, {
                 label: 'Weekly (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
@@ -629,7 +628,7 @@
             }, {
                 label: 'Monthly (usd)',
                 data: [
-                        @foreach($totalnodes as $value)
+                        @foreach($totalnodeslist as $value)
 						<?php $datapack = json_decode($value['data'], true); ?>
                     {
                         x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
@@ -648,16 +647,32 @@
         },
         options: {
             scales: {
-                xAxes: [{
-                    afterTickToLabelConversion: function (data) {
-                        var xLabels = data.ticks;
-                        xLabels.forEach(function (labels, i) {
-                            if (i % 100 == 1) {
-                                xLabels[i] = '';
+                xAxes: [
+                    {
+                        display: true,
+                        ticks: {
+                            callback: function(dataLabel, index) {
+                                return index % 100 === 0 ? dataLabel : '';
                             }
-                        });
+                        }
                     }
-                }]
+
+
+
+//                    {
+//                    afterTickToLabelConversion: function (data) {
+//                        var xLabels = data.ticks;
+//                        xLabels.forEach(function (labels, i) {
+//                            if (xLabels[i] == xLabels[i - 1]) {
+//                                xLabels[i] = '';
+//                            }
+//                        });
+//                    }
+//                }
+
+
+                ]
+
             }
         }
     });
