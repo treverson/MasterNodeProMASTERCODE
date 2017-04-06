@@ -37,8 +37,8 @@ class MasterNodeList
 
 	public function nodeDetails()
 	{
-		$data['key']           = $_GET['key'];
-		$data['mnl']           = Mnl::where('id', $data['key'])->first();
+		$data['key']           = $_GET['addr'];
+		$data['mnl']           = Mnl::where('addr', $data['key'])->first();
 		$data['mnl']['ipData'] = json_decode($data['mnl']['data'], true);
 		return view('nodeDetails', $data);
 	}

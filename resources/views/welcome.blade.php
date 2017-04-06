@@ -656,21 +656,6 @@
                             }
                         }
                     }
-
-
-
-//                    {
-//                    afterTickToLabelConversion: function (data) {
-//                        var xLabels = data.ticks;
-//                        xLabels.forEach(function (labels, i) {
-//                            if (xLabels[i] == xLabels[i - 1]) {
-//                                xLabels[i] = '';
-//                            }
-//                        });
-//                    }
-//                }
-
-
                 ]
 
             }
@@ -801,16 +786,16 @@
                 title: beach[0],
                 zIndex: beach[3]
             });
-            google.maps.event.addListener(marker, 'click', (function (marker, i, beaches) {
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
                     var key = i;
-                    clickMe(key);
+                    clickMe(beaches[key][0]);
                 }
             })(marker, i));
         }
     }
     function clickMe(key) {
-        $('#mainModal').load('{!! route('nodedetails') !!}/?key='+key);
+        $('#mainModal').load('{!! route('nodedetails') !!}/?addr='+key);
         $('#mainModal').modal('show')
     }
 
