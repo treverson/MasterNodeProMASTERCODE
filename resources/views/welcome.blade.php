@@ -652,7 +652,7 @@
                         display: true,
                         ticks: {
                             callback: function(dataLabel, index) {
-                                return index % 100 === 0 ? dataLabel : '';
+                                return index % 30 === 0 ? dataLabel : '';
                             }
                         }
                     }
