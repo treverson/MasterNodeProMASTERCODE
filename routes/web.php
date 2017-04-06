@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', array('as' => 'index', 'uses' => 'MasterNodeList@masternodelist'));
 Route::get('/nodedetails/', array('as' => 'nodedetails', 'uses' => 'MasterNodeList@nodeDetails'));
 Route::get('/blocks', array('uses' => 'MasterNodeList@blockprocess'));
