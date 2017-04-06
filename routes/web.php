@@ -11,6 +11,10 @@
 |
 */
 Route::get('/', array('as' => 'index', 'uses' => 'MasterNodeList@masternodelist'));
+Route::get('/advanced/stats', array('as' => 'advstats', 'uses' => 'MasterNodeList@moreStats'));
+Route::get('/advanced/map', array('as' => 'advmap', 'uses' => 'MasterNodeList@moreMap'));
+Route::get('/advanced/graph', array('as' => 'advgraph', 'uses' => 'MasterNodeList@moreLineGraphs'));
+Route::get('/advanced/graph/data/', array('as' => 'mlgdata', 'uses' => 'MasterNodeList@moreLineGraphsData'));
 Route::get('/nodedetails/', array('as' => 'nodedetails', 'uses' => 'MasterNodeList@nodeDetails'));
 Route::get('/blocks', array('uses' => 'MasterNodeList@blockprocess'));
 Route::get('/lastblock', array('uses' => 'MasterNodeList@lastblock'));

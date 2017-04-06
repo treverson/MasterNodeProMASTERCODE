@@ -1,0 +1,106 @@
+#map {
+    height: 300px;
+    overflow: hidden;
+    padding-bottom: 22.25%;
+    padding-top: 30px;
+    position: relative;
+}
+
+html {
+    overflow: hidden;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+body {
+    color: #FFFFFF;
+    background-color: #041019;
+    font-family: 'Roboto', sans-serif;
+}
+
+.vr {
+    width: 1px;
+    height: 90px;
+    background-color: #fff;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.vr2 {
+    width: 1px;
+    height: 200px;
+    background-color: #fff;
+}
+
+.mybar > div {
+    float: left;
+}
+.bardata {
+    margin-top: 25px;
+    padding-right:20px;
+    border-right: 1px solid #ffffff;
+}
+.bardataend {
+    margin-top: 25px;
+    padding-right:20px;
+}
+.bardatatitle {
+    color: #FFFFFF;
+    font-size: 10pt;
+    font-weight: 300;
+}
+
+.bardatadata {
+    color: #FFFFFF;
+    font-size: 22pt;
+    font-weight: 900;
+}
+
+.bardatadata > span {
+    color: #78FEAB;
+}
+
+.bar {
+    margin-top: 25px;
+}
+
+.middle {
+    margin-top: 25px;
+}
+
+.logo {
+    height: 90px;
+}
+
+.Labels {
+    font-weight: 300;
+    font-size: 22pt;
+}
+
+.blockdetails > div {
+    margin-top: 5px;
+}
+
+.blockdetails > div > span {
+    font-size: 10pt;
+    font-weight: 900;
+}
+
+.mybar2 > .bardata > .bardatatitle {
+
+}
+
+.mybar2 > .bardata > .bardatadata {
+
+}
+
+footer {
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+}
+
+.modal {
+    color: #000000;
+}

@@ -5,6 +5,7 @@
             <h4 class="modal-title" id="myModalLabel">MasterNode: {!! $mnl['addr'] !!}</h4>
         </div>
         <div class="modal-body">
+            Status: {!! $mnl['status'] !!}<Br>
             Addr: {!! $mnl['addr'] !!}<Br>
             City: {!! $mnl['ipData']['city'] !!}<br>
             Region: {!! $mnl['ipData']['region_name'] !!}<br>
