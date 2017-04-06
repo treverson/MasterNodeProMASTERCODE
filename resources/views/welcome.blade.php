@@ -22,108 +22,7 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js" integrity="sha256-jYMHiFJgIHHSIyPp1uwI5iv5dYgQZIxaQ4RwnpEeEDQ=" crossorigin="anonymous"></script>
     <!-- Styles -->
-    <style>
-        #map {
-            height: 100%;
-        }
-
-        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-            background-color: lightblue;
-            cursor: pointer;
-        }
-
-        body {
-            color: #FFFFFF;
-            background-color: #041019;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .vr {
-            width: 1px;
-            height: 90px;
-            background-color: #fff;
-            margin-left: 25px;
-            margin-right: 25px;
-        }
-
-        .vr2 {
-            width: 1px;
-            height: 200px;
-            background-color: #fff;
-        }
-
-        .mybar > div {
-            float: left;
-        }
-
-        .bardata {
-            margin-top: 25px;
-        }
-
-        .bardata {
-            margin-top: 25px;
-        }
-
-        .bardatatitle {
-            color: #FFFFFF;
-            font-size: 10pt;
-            font-weight: 300;
-        }
-
-        .bardatadata {
-            color: #FFFFFF;
-            font-size: 22pt;
-            font-weight: 900;
-        }
-
-        .bardatadata > span {
-            color: #78FEAB;
-        }
-
-        .bar {
-            margin-top: 50px;
-        }
-
-        .middle {
-            margin-top: 50px;
-        }
-
-        .logo {
-            height: 90px;
-        }
-
-        .Labels {
-            font-weight: 300;
-            font-size: 22pt;
-        }
-
-        .blockdetails > div {
-            margin-top: 5px;
-        }
-
-        .blockdetails > div > span {
-            font-size: 10pt;
-            font-weight: 900;
-        }
-
-        .mybar2 > .bardata > .bardatatitle {
-
-        }
-
-        .mybar2 > .bardata > .bardatadata {
-
-        }
-
-        footer {
-            position: fixed;
-            height: 50px;
-            bottom: 0;
-            width: 100%;
-        }
-        .modal {
-            color: #000000;
-        }
-    </style>
+    <link href="/css/custom.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container-fluid">
@@ -136,66 +35,55 @@
     </div>
     <div class="row bar">
         <div class="col-md-12" style="text-align: center;">
-            <div class="mybar" style="display: inline-block;">
-                <div class="bardata">
+            <div class="col-md-1"></div>
+            <div class="col-md-10" style="display: inline-block;">
+                <div class="col-md-2 bardata">
                     <div class="bardatatitle">TOTAL MASTERNODES</div>
                     <div class="bardatadata">{!! $totalnodes[0]['total'] !!}</div>
                 </div>
-                <div class="vr">&nbsp;</div>
-                <div class="bardata">
+                <div class="col-md-2 bardata">
                     <div class="bardatatitle">REWARDS DAILY</div>
                     <div class="bardatadata">{!! number_format($block24total,'8','.','') !!}</div>
                 </div>
-                <div class="vr">&nbsp;</div>
-                <div class="bardata">
+                <div class="col-md-2 bardata">
                     <div class="bardatatitle">24HR BLOCK COUNT</div>
                     <div class="bardatadata">{!! $block24hour !!}</div>
                 </div>
-                <div class="vr">&nbsp;</div>
-                <div class="bardata">
+                <div class="col-md-2 bardata">
                     <div class="bardatatitle">INCOME DAILY</div>
                     <div class="bardatadata">$<span>{!! number_format($incomedaily,'2','.',',') !!}</span></div>
                 </div>
-                <div class="vr">&nbsp;</div>
-                <div class="bardata">
+                <div class="col-md-2 bardata">
                     <div class="bardatatitle">INCOME PER MONTH</div>
                     <div class="bardatadata">$<span>{!! number_format($incomemonth,'2','.',',') !!}</span></div>
                 </div>
-                <div class="vr">&nbsp;</div>
-                <div class="bardata">
+                <div class="col-md-2 bardataend">
                     <div class="bardatatitle">PRICE PER ION</div>
                     <div class="bardatadata">$<span>{!! number_format($price_usd,'2','.',',') !!}</span></div>
                 </div>
             </div>
+            <div class="col-md-1"></div>
         </div>
     </div>
     <div class="row middle">
-        <div class="col-md-6">
-            <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="text-align: center;">
+            <div class="col-md-6">
                 <div class="col-md-12">
-                    <div style="height: 300px; width: 600px;" class="pull-right">
-                        <canvas id="lineChart" width="600" height="300"></canvas>
+                    <div class="col-md-12" class="pull-right">
+                        <a class="btn btn-success" href="{!! route('advgraph') !!}">Advanced</a><br>
+                        <canvas id="lineChart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-12" style="height: 300px; width: 600px;" class="pull-left">
-                    <div id="map" style="height: 300px; width: 600px;"></div>
+            <div class="col-md-6">
+                <div class="col-md-12" class="pull-left">
+                    <a class="btn btn-success" href="{!! route('advmap') !!}">Advanced</a><Br>
+                    <div id="map"></div>
                 </div>
-                @if(count($mnl) == 0)
-                    @foreach($mnl as $key => $value)
-                        <div class="col-md-12 keyall" id="key-{!! $key !!}" style="display: none; height: 75px;">
-                            Addr: {!! $value['addr'] !!}<Br>
-                            City: {!! $value['ipData']['city'] !!}<br>
-                            Region: {!! $value['ipData']['region_name'] !!}<br>
-                            Country: {!! $value['ipData']['country_name'] !!}<br>
-                        </div>
-                    @endforeach
-                @endif
             </div>
         </div>
+        <div class="col-md-1"></div>
     </div>
     <div class="row" style="margin-top: 50px;">
         <div class="col-md-1"></div>
@@ -246,37 +134,14 @@
     </div>
     <footer class="navbar-fixed-bottom" style="text-align: center">
         <div>
-            <div class="col-md-6 pull-right">
+            <div class="col-md-4">
                 Help Make this software Better: <a href="https://github.com/JSponaugle/IONMasterNode">GitHub</a>
             </div>
-            <div class="col-md-6">Donate: iqnAhcDqzMuHTotvEUrCCoXBQWCuz7NZ8i</div>
+            <div class="col-md-4">Create a Masternode: <a href="https://ionomy.com/masternodes" target="_blank">Ionomy.com</a></div>
+            <div class="col-md-4">Donate: iqnAhcDqzMuHTotvEUrCCoXBQWCuz7NZ8i</div>
         </div>
     </footer>
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    </div>
-    <div class="col-md-6" style="overflow-y:scroll; height:500px; display:none">
-        <table id="myTable" class="table table-striped table-hover">
-            <thead>
-            <tr>
-                <th>ION Address</th>
-                <th>City</th>
-                <th>Region</th>
-                <th>Country</th>
-                <th>Generated</th>
-            </tr>
-            </thead>
-            @if(count($mnl) == 0)
-                @foreach($mnl as $key => $value)
-                    <tr onclick="clickMe({!! $key !!})">
-                        <td>{!! $value['addr'] !!}</td>
-                        <td>{!! $value['ipData']['city'] !!}</td>
-                        <td>{!! substr($value['ipData']['region_name'], 0, 15) !!}</td>
-                        <td>{!! $value['ipData']['country_name'] !!}</td>
-                        <td>{!! $value['total'] !!}</td>
-                    </tr>
-                @endforeach
-            @endif
-        </table>
     </div>
 </div>
 <script>
@@ -573,6 +438,7 @@
                 @endforeach
             ],
             datasets: [{
+                radius: .25,
                 label: 'activeNodes',
                 data: [
                         @foreach($totalnodeslist as $value)
@@ -590,6 +456,7 @@
                 ],
                 borderWidth: 1
             }, {
+                radius: .25,
                 label: 'Daily (usd)',
                 data: [
                         @foreach($totalnodeslist as $value)
@@ -608,6 +475,7 @@
                 ],
                 borderWidth: 1
             }, {
+                radius: .25,
                 label: 'Weekly (usd)',
                 data: [
                         @foreach($totalnodeslist as $value)
@@ -626,6 +494,7 @@
                 ],
                 borderWidth: 1
             }, {
+                radius: .25,
                 label: 'Monthly (usd)',
                 data: [
                         @foreach($totalnodeslist as $value)
@@ -646,31 +515,17 @@
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 xAxes: [
                     {
                         display: true,
                         ticks: {
-                            callback: function(dataLabel, index) {
+                            callback: function (dataLabel, index) {
                                 return index % 30 === 0 ? dataLabel : '';
                             }
                         }
                     }
-
-
-
-//                    {
-//                    afterTickToLabelConversion: function (data) {
-//                        var xLabels = data.ticks;
-//                        xLabels.forEach(function (labels, i) {
-//                            if (xLabels[i] == xLabels[i - 1]) {
-//                                xLabels[i] = '';
-//                            }
-//                        });
-//                    }
-//                }
-
-
                 ]
 
             }
@@ -756,6 +611,7 @@
             zoom: 1,
             minZoom: 1,
             disableDefaultUI: true,
+            maxWidth: 500,
             styles: [{"featureType": "all", "elementType": "labels.text.fill", "stylers": [{"color": "#ffffff"}, {"weight": "0.20"}, {"lightness": "28"}, {"saturation": "23"}, {"visibility": "off"}]}, {
                 "featureType": "all",
                 "elementType": "labels.text.stroke",
@@ -779,7 +635,7 @@
 
     var beaches = [
             @foreach($mnl as $key => $value)
-        ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, {!! $key !!}],
+        ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "active") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
         @endforeach
     ];
 
@@ -788,29 +644,57 @@
             coords: [1, 1, 1, 20, 18, 20, 18, 1],
             type: 'poly'
         };
-        var markerimg = {
-            url: 'img/masternodepin.png',
+        var ACTIVE = {
+            url: '/img/masternodepinactive.png',
             scaledSize: new google.maps.Size(30, 40)
-        }
+        };
+        var NEW = {
+            url: '/img/masternodepinnew.png',
+            scaledSize: new google.maps.Size(30, 40)
+        };
+        var OFFLINE = {
+            url: '/img/masternodepinoffline.png',
+            scaledSize: new google.maps.Size(30, 40)
+        };
         for (var i = 0; i < beaches.length; i++) {
             var beach = beaches[i];
-            var marker = new google.maps.Marker({
-                position: {lat: beach[1], lng: beach[2]},
-                map: map,
-                icon: markerimg,
-                title: beach[0],
-                zIndex: beach[3]
-            });
-            google.maps.event.addListener(marker, 'click', (function (marker, i, beaches) {
+            if (beach[4] == "ACTIVE") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: ACTIVE,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
+            if (beach[4] == "NEW") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: NEW,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
+            if (beach[4] == "OFFLINE") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: OFFLINE,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
                     var key = i;
-                    clickMe(key);
+                    clickMe(beaches[key][0]);
                 }
             })(marker, i));
         }
     }
     function clickMe(key) {
-        $('#mainModal').load('{!! route('nodedetails') !!}/?key='+key);
+        $('#mainModal').load('{!! route('nodedetails') !!}/?addr=' + key);
         $('#mainModal').modal('show')
     }
 
@@ -818,10 +702,17 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARlZhGFPC7Wy9s7ywjNZII7JbqiPfGH-E&callback=initMap"
         async defer></script>
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-74038061-2', 'auto');
     ga('send', 'pageview');

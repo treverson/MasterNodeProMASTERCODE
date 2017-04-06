@@ -37,14 +37,74 @@ class MasterNodeList
 
 	public function nodeDetails()
 	{
-		$data['key']           = $_GET['key'];
-		$data['mnl']           = Mnl::where('id', $data['key'])->first();
+		$data['key']           = $_GET['addr'];
+		$data['mnl']           = Mnl::where('addr', $data['key'])->first();
 		$data['mnl']['ipData'] = json_decode($data['mnl']['data'], true);
 		return view('nodeDetails', $data);
 	}
 
-	public function masternodelist()
+	public function moreMap() {
+		$ret = $this->Core();
+		return view('map', $ret);
+	}
+	public function moreLineGraphsData()
 	{
+		$type = $_GET['data'];
+		if ($type == '90day') {
+			$stt = '-90 days';
+		} elseif ($type == '30day') {
+			$stt = '-30 days';
+		} elseif ($type == '1day') {
+			$stt = '-1 day';
+		} elseif ($type == '1hour') {
+			$stt = '-1 hour';
+		} elseif ($type == 'trendline') {
+			$stt = '-30 days';
+		}
+		$totalNodes = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime($stt)))->get();
+		$tnl        = $totalNodes->toArray();
+		krsort($tnl);
+		$tnlc = collect($tnl);
+		if ($type == '90day') {
+			if (count($tnlc) > 7200) {
+				$ret['totalnodeslist'] = $tnlc->nth(1440);
+			} else {
+				$ret['totalnodeslist'] = $tnlc->nth(60);
+			}
+		} elseif ($type == '30day') {
+			if (count($tnlc) > 7200) {
+				$ret['totalnodeslist'] = $tnlc->nth(1440);
+			} else {
+				$ret['totalnodeslist'] = $tnlc->nth(60);
+			}
+		} elseif ($type == '1day') {
+			if (count($tnlc) > 7200) {
+				$ret['totalnodeslist'] = $tnlc->nth(1440);
+			} else {
+				$ret['totalnodeslist'] = $tnlc->nth(60);
+			}
+		} elseif ($type == '1hour') {
+			$ret['totalnodeslist'] = $tnlc;
+		} elseif ($type == 'trendline') {
+			if (count($tnlc) > 51840) {
+				$ret['totalnodeslist'] = $tnlc->nth(8640);
+			} else if (count($tnlc) > 7200) {
+				$ret['totalnodeslist'] = $tnlc->nth(1440);
+			} else {
+				$ret['totalnodeslist'] = $tnlc->nth(60);
+			}
+		}
+		$ret['type'] = $type;
+		return view('mlgData', $ret);
+	}
+
+	public function moreLineGraphs()
+	{
+		$ret = $this->Core();
+		return view('mlg', $ret);
+	}
+
+	public function Core() {
 		$agent = new Agent();
 		$list  = [];
 		$mnl   = Mnl::orderBy('id', 'desc')->get();
@@ -60,12 +120,12 @@ class MasterNodeList
 		foreach ($list as $value) {
 			$nclist[$value['ipData']['country_code']]['data'][] = $value;
 		}
-		$totalNodes =  Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get()->toArray();
+		$totalNodes        = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
 		$ret['totalnodes'] = $totalNodes;
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);
 			$sortlist[$nclist[$key]['count']]['country_name'] = $value['data'][0]['ipData']['country_name'];
-			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / $ret['totalnodes'][0]['total']) * 100), '0', '.', '');
+			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / count($list)) * 100), '0', '.', '');
 			$sortlist[$nclist[$key]['count']]['countb']       = 100 - $sortlist[$nclist[$key]['count']]['count'];
 		}
 		krsort($sortlist);
@@ -93,17 +153,23 @@ class MasterNodeList
 		$blockleft           = $reward['height'] - $block['blockid'];
 		$sectilldrop         = $blockleft * $ret['avgblocktime'];
 		$ret['daytilldrop']  = "N/A";
-		krsort($totalNodes);
-		$ret['totalnodeslist'] = $totalNodes;
+		$tnl                 = $totalNodes->toArray();
+		krsort($tnl);
+		$tnlc = collect($tnl);
+		if (count($tnlc) > 7200) {
+			$ret['totalnodeslist'] = $tnlc->nth(1440);
+		} else {
+			$ret['totalnodeslist'] = $tnlc->nth(60);
+		}
 		if ($sectilldrop > 0)
 			$ret['daytilldrop'] = $this->secondstodays($sectilldrop);
-		if ($agent->isMobile()) {
-			return view('mobile', $ret);
-		} elseif ($agent->isTablet()) {
-			return view('tablet', $ret);
-		} else {
-			return view('welcome', $ret);
-		}
+		return $ret;
+	}
+
+	public function masternodelist()
+	{
+		$ret = $this->Core();
+		return view('welcome', $ret);
 	}
 
 	private function secondstodays($seconds)
@@ -135,6 +201,7 @@ class MasterNodeList
 		$contentCMC = $resCMC->getBody();
 		$cmc        = json_decode($contentCMC, true);
 		$data       = $list = [];
+		Mnl::where('status','ENABLED')->update(['status' => 'OFFLINE']);
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$split          = explode(" ", trim($value));
@@ -150,13 +217,17 @@ class MasterNodeList
 					);
 					$geoipcontent = $freegeoip->getBody();
 					$mnl          = new Mnl();
-					$mnl->status  = $data['status'];
+					$mnl->status  = 'NEW';
 					$mnl->addr    = $data['addr'];
 					$mnl->ip      = $data['ip'];
 					$mnl->port    = $data['port'];
 					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$mnl->data    = $geoipcontent;
 				} else {
+					$mnl->status  = 'ACTIVE';
+					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
+						$mnl->status  = 'NEW';
+					}
 					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$geoipcontent = $mnl->data;
 				}
