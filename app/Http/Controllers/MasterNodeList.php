@@ -125,7 +125,7 @@ class MasterNodeList
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);
 			$sortlist[$nclist[$key]['count']]['country_name'] = $value['data'][0]['ipData']['country_name'];
-			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / $ret['totalnodes'][0]['total']) * 100), '0', '.', '');
+			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / count($list)) * 100), '0', '.', '');
 			$sortlist[$nclist[$key]['count']]['countb']       = 100 - $sortlist[$nclist[$key]['count']]['count'];
 		}
 		krsort($sortlist);

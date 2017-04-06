@@ -635,7 +635,7 @@
 
     var beaches = [
             @foreach($mnl as $key => $value)
-        ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, {!! $key !!}],
+        ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "active") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
         @endforeach
     ];
 
@@ -644,19 +644,47 @@
             coords: [1, 1, 1, 20, 18, 20, 18, 1],
             type: 'poly'
         };
-        var markerimg = {
-            url: 'img/masternodepin.png',
+        var ACTIVE = {
+            url: '/img/masternodepinactive.png',
             scaledSize: new google.maps.Size(30, 40)
-        }
+        };
+        var NEW = {
+            url: '/img/masternodepinnew.png',
+            scaledSize: new google.maps.Size(30, 40)
+        };
+        var OFFLINE = {
+            url: '/img/masternodepinoffline.png',
+            scaledSize: new google.maps.Size(30, 40)
+        };
         for (var i = 0; i < beaches.length; i++) {
             var beach = beaches[i];
-            var marker = new google.maps.Marker({
-                position: {lat: beach[1], lng: beach[2]},
-                map: map,
-                icon: markerimg,
-                title: beach[0],
-                zIndex: beach[3]
-            });
+            if (beach[4] == "ACTIVE") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: ACTIVE,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
+            if (beach[4] == "NEW") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: NEW,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
+            if (beach[4] == "OFFLINE") {
+                var marker = new google.maps.Marker({
+                    position: {lat: beach[1], lng: beach[2]},
+                    map: map,
+                    icon: OFFLINE,
+                    title: beach[0],
+                    zIndex: beach[3]
+                });
+            }
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
                     var key = i;
