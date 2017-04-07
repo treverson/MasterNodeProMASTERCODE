@@ -22,7 +22,8 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js" integrity="sha256-jYMHiFJgIHHSIyPp1uwI5iv5dYgQZIxaQ4RwnpEeEDQ=" crossorigin="anonymous"></script>
     <!-- Styles -->
-    <link href="/css/custom.css" rel="stylesheet" type="text/css">
+    <link href="/css/custom.css?ts={!! strtotime('-1 hour') !!}" rel="stylesheet" type="text/css">
+    <link href="/css/li.css?ts={!! strtotime('-1 hour') !!}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container-fluid">
@@ -101,9 +102,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
-                            <div style="height: 200px; width: 200px;">
-                                <canvas id="barChart" height="200" width="300"></canvas>
-                            </div>
+                                <canvas id="barChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -461,6 +460,7 @@
             ]
         },
         options: {
+            responsive: true,
             hover: {
                 animationDuration: 0
             },
@@ -495,7 +495,11 @@
                     categoryPercentage: 1.0,
                     barPercentage: 1.0
                 }], yAxes: [{
-                    display: false
+                    display: false,
+                    ticks: {
+                        beginAtZero:true,
+                        max:150
+                    }
                 }]
             }
         }

@@ -1,6 +1,5 @@
 <script>
     function runit() {
-        console.log('{!! json_encode($totalnodeslist) !!}');
         var ctxa = $("#lineChart");
         var myChart = new Chart(ctxa, {
             type: 'line',

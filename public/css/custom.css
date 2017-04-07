@@ -73,8 +73,9 @@ body {
 }
 
 .Labels {
-    font-weight: 300;
-    font-size: 22pt;
+    font-weight: 900;
+    font-size: 20pt;
+    padding-bottom: 20px;
 }
 
 .blockdetails > div {
