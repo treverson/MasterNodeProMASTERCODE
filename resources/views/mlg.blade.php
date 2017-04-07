@@ -191,7 +191,7 @@
                 <li id="30day" role="presentation" class="glist active"><a href="#" onclick="loadit('30day')">30 days</a></li>
                 <li id="1day" role="presentation" class="glist"><a href="#" onclick="loadit('1day')">1 day</a></li>
                 <li id="1hour" role="presentation" class="glist"><a href="#" onclick="loadit('1hour')">1 Hour</a></li>
-                <li id="trendline" role="presentation" class="glist"><a href="#" onclick="loadit('trendline')">TendLine</a></li>
+                <li id="trendline" role="presentation" class="glist"><a href="#" onclick="loadit('trendline')">TrendLine</a></li>
             </ul>
         </div>
         <div class="col-md-3"></div>
