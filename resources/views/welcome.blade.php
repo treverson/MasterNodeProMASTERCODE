@@ -1,85 +1,21 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>ION MasterNodes</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
-    <script
-            src="https://code.jquery.com/jquery-3.2.1.js"
-            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js" integrity="sha256-jYMHiFJgIHHSIyPp1uwI5iv5dYgQZIxaQ4RwnpEeEDQ=" crossorigin="anonymous"></script>
-    <!-- Styles -->
-    <link href="/css/custom.css?ts={!! strtotime('-1 hour') !!}" rel="stylesheet" type="text/css">
-    <link href="/css/li.css?ts={!! strtotime('-1 hour') !!}" rel="stylesheet" type="text/css">
-</head>
+@include('layout.header')
 <body>
+@include('layout.sidebar')
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12" style="text-align: center;">
-            <div style="display: inline-block;">
-                <img src="/img/ionmasternodes.png" class="logo">
-            </div>
-        </div>
-    </div>
-    <div class="row bar">
-        <div class="col-md-12" style="text-align: center;">
-            <div class="col-md-1"></div>
-            <div class="col-md-10" style="display: inline-block;">
-                <div class="col-md-2 bardata">
-                    <div class="bardatatitle">TOTAL MASTERNODES</div>
-                    <div class="bardatadata">{!! $totalnodes[0]['total'] !!}</div>
-                </div>
-                <div class="col-md-2 bardata">
-                    <div class="bardatatitle">REWARDS DAILY</div>
-                    <div class="bardatadata">{!! number_format($block24total,'8','.','') !!}</div>
-                </div>
-                <div class="col-md-2 bardata">
-                    <div class="bardatatitle">24HR BLOCK COUNT</div>
-                    <div class="bardatadata">{!! $block24hour !!}</div>
-                </div>
-                <div class="col-md-2 bardata">
-                    <div class="bardatatitle">INCOME DAILY</div>
-                    <div class="bardatadata">$<span>{!! number_format($incomedaily,'2','.',',') !!}</span></div>
-                </div>
-                <div class="col-md-2 bardata">
-                    <div class="bardatatitle">INCOME PER MONTH</div>
-                    <div class="bardatadata">$<span>{!! number_format($incomemonth,'2','.',',') !!}</span></div>
-                </div>
-                <div class="col-md-2 bardataend">
-                    <div class="bardatatitle">PRICE PER ION</div>
-                    <div class="bardatadata">$<span>{!! number_format($price_usd,'2','.',',') !!}</span></div>
-                </div>
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-    </div>
+    @include('layout.logo')
+    @include('layout.statsbar')
     <div class="row middle">
         <div class="col-md-1"></div>
         <div class="col-md-10" style="text-align: center;">
             <div class="col-md-6">
                 <div class="col-md-12">
                     <div class="col-md-12" class="pull-right">
-                        <a class="btn btn-success" href="{!! route('advgraph') !!}">Advanced</a><br>
                         <canvas id="lineChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="col-md-12" class="pull-left">
-                    <a class="btn btn-success" href="{!! route('advmap') !!}">Advanced</a><Br>
                     <div id="map"></div>
                 </div>
             </div>
@@ -102,7 +38,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
-                                <canvas id="barChart"></canvas>
+                            <canvas id="barChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -131,15 +67,7 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-    <footer class="navbar-fixed-bottom" style="text-align: center">
-        <div>
-            <div class="col-md-4">
-                Help Make this software Better: <a href="https://github.com/JSponaugle/IONMasterNode">GitHub</a>
-            </div>
-            <div class="col-md-4">Create a Masternode: <a href="https://ionomy.com/masternodes" target="_blank">Ionomy.com</a></div>
-            <div class="col-md-4">Donate: iqnAhcDqzMuHTotvEUrCCoXBQWCuz7NZ8i</div>
-        </div>
-    </footer>
+    @include('layout.footer')
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     </div>
 </div>
@@ -497,8 +425,8 @@
                 }], yAxes: [{
                     display: false,
                     ticks: {
-                        beginAtZero:true,
-                        max:150
+                        beginAtZero: true,
+                        max: 150
                     }
                 }]
             }
@@ -603,22 +531,6 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARlZhGFPC7Wy9s7ywjNZII7JbqiPfGH-E&callback=initMap"
         async defer></script>
-<script>
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-    ga('create', 'UA-74038061-2', 'auto');
-    ga('send', 'pageview');
-
-</script>
+@include('layout.analytics')
 </body>
 </html>
