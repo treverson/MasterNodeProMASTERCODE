@@ -144,13 +144,13 @@
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     </div>
 </div>
+@include('mlgData',['type' => '30day'])
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
             "order": [[4, "desc"]]
         });
     });
-    var ctxa = $("#lineChart");
     var ctxb = $("#barChart");
     var ctxd1 = $("#do1Chart");
     var ctxd2 = $("#do2Chart");
@@ -426,108 +426,6 @@
                 }], yAxes: [{
                     display: false
                 }]
-            }
-        }
-    });
-    var myChart = new Chart(ctxa, {
-        type: 'line',
-        data: {
-            labels: [
-                @foreach($totalnodeslist as $value)
-                    "{!! date('m-d-y',strtotime($value['created_at'])) !!}",
-                @endforeach
-            ],
-            datasets: [{
-                radius: .25,
-                label: 'activeNodes',
-                data: [
-                        @foreach($totalnodeslist as $value)
-                    {
-                        x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
-                        y: {!! number_format($value['total'],'0','.','') !!}
-                    },
-                    @endforeach
-                ],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)'
-                ],
-                borderWidth: 1
-            }, {
-                radius: .25,
-                label: 'Daily (usd)',
-                data: [
-                        @foreach($totalnodeslist as $value)
-						<?php $datapack = json_decode($value['data'], true); ?>
-                    {
-                        x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
-                        y: {!! number_format($datapack['incomedaily'],'2','.','') !!}
-                    },
-                    @endforeach
-                ],
-                backgroundColor: [
-                    'rgba(54, 162, 235, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(54, 162, 235, 1)'
-                ],
-                borderWidth: 1
-            }, {
-                radius: .25,
-                label: 'Weekly (usd)',
-                data: [
-                        @foreach($totalnodeslist as $value)
-						<?php $datapack = json_decode($value['data'], true); ?>
-                    {
-                        x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
-                        y: {!! number_format($datapack['incomeweekly'],'2','.','') !!}
-                    },
-                    @endforeach
-                ],
-                backgroundColor: [
-                    'rgba(255, 206, 86, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 206, 86, 1)'
-                ],
-                borderWidth: 1
-            }, {
-                radius: .25,
-                label: 'Monthly (usd)',
-                data: [
-                        @foreach($totalnodeslist as $value)
-						<?php $datapack = json_decode($value['data'], true); ?>
-                    {
-                        x: '{!! date('m-d-y',strtotime($value['created_at'])) !!}',
-                        y: {!! number_format($datapack['incomemonth'],'2','.','') !!}
-                    },
-                    @endforeach
-                ],
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                xAxes: [
-                    {
-                        display: true,
-                        ticks: {
-                            callback: function (dataLabel, index) {
-                                return index % 30 === 0 ? dataLabel : '';
-                            }
-                        }
-                    }
-                ]
-
             }
         }
     });
