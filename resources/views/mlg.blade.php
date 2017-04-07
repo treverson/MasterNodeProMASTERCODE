@@ -1,6 +1,7 @@
 @include('layout.header')
 </head>
 <body>
+@include('layout.sidebar')
 <div class="container-fluid">
     @include('layout.logo')
     @include('layout.statsbar')
@@ -22,6 +23,7 @@
                 <li id="1day" role="presentation" class="glist"><a href="#" onclick="loadit('1day')">1 day</a></li>
                 <li id="1hour" role="presentation" class="glist"><a href="#" onclick="loadit('1hour')">1 Hour</a></li>
                 <li id="trendline" role="presentation" class="glist"><a href="#" onclick="loadit('trendline')">TrendLine</a></li>
+                <li id="avgincome" role="presentation" class="glist"><a href="#" onclick="loadit('avgincome')">Average Income</a></li>
             </ul>
         </div>
         <div class="col-md-3"></div>

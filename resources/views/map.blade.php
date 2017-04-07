@@ -1,5 +1,6 @@
 @include('layout.header')
 <body>
+@include('layout.sidebar')
 <div class="container-fluid">
     @include('layout.logo')
     @include('layout.statsbar')

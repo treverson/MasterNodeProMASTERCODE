@@ -7,7 +7,7 @@
                 <div class="bardatadata">{!! $totalnodes[0]['total'] !!}</div>
             </div>
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">REWARDS DAILY</div>
+                <div class="bardatatitle">ION INCOME DAILY</div>
                 <div class="bardatadata">{!! number_format($block24total,'8','.','') !!}</div>
             </div>
             <div class="col-md-2 bardata">

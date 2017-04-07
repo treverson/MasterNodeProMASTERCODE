@@ -1,5 +1,6 @@
 @include('layout.header')
 <body>
+@include('layout.sidebar')
 <div class="container-fluid">
     @include('layout.logo')
     @include('layout.statsbar')
@@ -9,14 +10,12 @@
             <div class="col-md-6">
                 <div class="col-md-12">
                     <div class="col-md-12" class="pull-right">
-                        <a class="btn btn-success" href="{!! route('advgraph') !!}">Advanced</a><br>
                         <canvas id="lineChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="col-md-12" class="pull-left">
-                    <a class="btn btn-success" href="{!! route('advmap') !!}">Advanced</a><Br>
                     <div id="map"></div>
                 </div>
             </div>
