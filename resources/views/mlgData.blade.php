@@ -5,8 +5,19 @@
             type: 'line',
             data: {
                 labels: [
-                    @foreach($totalnodeslist as $value)
-                        "@if ($type == "1hour" or $type == "1day") {!! date('h:i a',strtotime($value['created_at'])) !!} @else {!! date('m-d-y',strtotime($value['created_at'])) !!} @endif",
+					<?php $last = '';?>
+                            @foreach($totalnodeslist as $value)
+                            @if ($type == "1hour" or $type == "1day")
+                            @if (date('h:i a',strtotime($value['created_at'])) != $last)
+                        "{!! date('h:i a',strtotime($value['created_at'])) !!}",
+					<?php $last = date('h:i a', strtotime($value['created_at'])); ?>
+                            @endif
+                            @else
+                            @if (date('m-d-y',strtotime($value['created_at'])) != $last)
+                        "{!! date('m-d-y',strtotime($value['created_at'])) !!}",
+					<?php $last = date('m-d-y', strtotime($value['created_at'])); ?>
+                    @endif
+                    @endif
                     @endforeach
                 ],
                 @if ($type == "avgincome")
@@ -160,15 +171,19 @@
                         {
                             display: true,
                             ticks: {
-                                callback: function (dataLabel, index) {
-                                    @if ($type == "1day")
-                                        return index % 1 === 0 ? dataLabel : '';
-                                    @elseif ($type == "1hour")
-                                        return index % 1 === 0 ? dataLabel : '';
-                                    @else
-                                        return index % 30 === 0 ? dataLabel : '';
-                                    @endif
-                                }
+                                //callback: function (dataLabel, index) {
+                                //    @if ($type == "1day")
+                                //        return index % 1 === 0 ? dataLabel : '';
+                                //    @elseif ($type == "1hour")
+                                //        return index % 1 === 0 ? dataLabel : '';
+                                //    @elseif ($type == "30day")
+                                //        return index % 7 === 0 ? dataLabel : '';
+                                //    @elseif ($type == "90day")
+                                //         return index % 1 === 0 ? dataLabel : '';
+                                //     @else
+                                //         return index % 30 === 0 ? dataLabel : '';
+                                //    @endif
+                                //}
                             }
                         }
                     ]
