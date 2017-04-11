@@ -32,9 +32,11 @@
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
                             <div style="height: 200px; width: 200px;">
                                 <div class="col-md-12"><span>{!! $blockstoday !!}</span> Blocks Today</div>
-                                <div class="col-md-12"><span>{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block time</div>
-                                <div class="col-md-12"><span>{!! $blockreward / 2 !!}</span> MN Block Reward</div>
-                                <div class="col-md-12"><span>{!! $daytilldrop !!}</span> Days until Reward Split</div>
+                                <div class="col-md-12"><span style="teal">{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block time</div>
+                                <div class="col-md-12"><span style="color:#1D82AD">{!! $blockreward / 2 !!}</span> MN Block Reward</div>
+                                <div class="col-md-12"><span style="teal">{!! $daytilldrop !!}</span> Days until Reward Drop</div>
+                                <div class="col-md-12"><span style="color:#1D82AD">{!! $nextblockreward / 2 !!}</span> Next MN Block Reward</div>
+                                <div class="col-md-12"><span style="teal">{!! number_format($avgrewardfreq,'2','.',',') !!} hours</div>
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
