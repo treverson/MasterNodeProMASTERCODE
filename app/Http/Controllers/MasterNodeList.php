@@ -70,19 +70,19 @@ class MasterNodeList
 		krsort($tnl);
 		$tnlc = collect($tnl);
 		if ($type == '90day') {
-			if (count($tnlc) > 7200) {
+			if (count($tnlc) > 14400) {
 				$ret['totalnodeslist'] = $tnlc->nth(1440);
 			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(60);
 			}
 		} elseif ($type == '30day') {
-			if (count($tnlc) > 7200) {
+			if (count($tnlc) > 14400) {
 				$ret['totalnodeslist'] = $tnlc->nth(1440);
 			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(60);
 			}
 		} elseif ($type == '1day') {
-			if (count($tnlc) > 7200) {
+			if (count($tnlc) > 14400) {
 				$ret['totalnodeslist'] = $tnlc->nth(1440);
 			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(60);
@@ -92,7 +92,7 @@ class MasterNodeList
 		} elseif ($type == 'trendline') {
 			if (count($tnlc) > 51840) {
 				$ret['totalnodeslist'] = $tnlc->nth(8640);
-			} else if (count($tnlc) > 7200) {
+			} else if (count($tnlc) > 14400) {
 				$ret['totalnodeslist'] = $tnlc->nth(1440);
 			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(60);
@@ -100,7 +100,7 @@ class MasterNodeList
 		} elseif ($type == 'avgincome') {
 			if (count($tnlc) > 51840) {
 				$ret['totalnodeslist'] = $tnlc->nth(8640);
-			} else if (count($tnlc) > 7200) {
+			} else if (count($tnlc) > 14400) {
 				$ret['totalnodeslist'] = $tnlc->nth(1440);
 			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(5);
