@@ -72,7 +72,7 @@
     </div>
 </div>
 @include('mlgData',['type' => '30day'])
-@include('layout.doughnutchart');
+@include('layout.doughnutchart')
 @include('layout.barchart')
 <script>
     $(document).ready(function () {

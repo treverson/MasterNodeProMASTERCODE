@@ -42,7 +42,10 @@ class MasterNodeList
 		$data['mnl']['ipData'] = json_decode($data['mnl']['data'], true);
 		return view('nodeDetails', $data);
 	}
-
+	public function moreList() {
+		$ret = $this->Core();
+		return view('nodeList', $ret);
+	}
 	public function moreMap()
 	{
 		$ret = $this->Core();
@@ -82,11 +85,7 @@ class MasterNodeList
 				$ret['totalnodeslist'] = $tnlc->nth(60);
 			}
 		} elseif ($type == '1day') {
-			if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
 				$ret['totalnodeslist'] = $tnlc->nth(60);
-			}
 		} elseif ($type == '1hour') {
 			$ret['totalnodeslist'] = $tnlc;
 		} elseif ($type == 'trendline') {
