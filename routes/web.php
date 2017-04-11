@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', array('as' => 'index', 'uses' => 'MasterNodeList@masternodelist'));
+Route::get('/datapack', array('uses' => 'MasterNodeList@DataPack'));
 Route::get('/advanced/list', array('as' => 'advlist', 'uses' => 'MasterNodeList@moreList'));
 Route::get('/advanced/stats', array('as' => 'advstats', 'uses' => 'MasterNodeList@moreStats'));
 Route::get('/advanced/map', array('as' => 'advmap', 'uses' => 'MasterNodeList@moreMap'));
