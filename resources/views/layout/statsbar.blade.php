@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Daily ION Earned</div>
-                <div class="bardatadata">{!! number_format($iondaily,'2','.','') !!}</div>
+                <div class="bardatadata"><span style="color:#1D82AD">{!! number_format($iondaily,'2','.','') !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Daily Income</div>
