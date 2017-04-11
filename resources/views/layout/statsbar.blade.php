@@ -7,10 +7,6 @@
                 <div class="bardatadata">{!! $totalnodes[0]['total'] !!}</div>
             </div>
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">Avg. Block Rewards</div>
-                <div class="bardatadata">{!! number_format($avgblocks,'2','.',',') !!}</div>
-            </div>
-            <div class="col-md-2 bardata">
                 <div class="bardatatitle">Daily ION Earned</div>
                 <div class="bardatadata">{!! number_format($iondaily,'2','.','') !!}</div>
             </div>

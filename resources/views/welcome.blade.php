@@ -33,7 +33,7 @@
                             <div style="height: 200px; width: 200px;">
                                 <div class="col-md-12"><span>{!! $blockstoday !!}</span> Blocks Today</div>
                                 <div class="col-md-12"><span>{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block time</div>
-                                <div class="col-md-12"><span>{!! $mnreward / 2 !!}</span> MN Block Reward</div>
+                                <div class="col-md-12"><span>{!! $blockreward / 2 !!}</span> MN Block Reward</div>
                                 <div class="col-md-12"><span>{!! $daytilldrop !!}</span> Days until Reward Split</div>
                             </div>
                         </div>
