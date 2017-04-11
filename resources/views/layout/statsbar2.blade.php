@@ -2,6 +2,11 @@
     <div class="col-md-12" style="text-align: center;">
         <div class="col-md-1"></div>
         <div class="col-md-10" style="display: inline-block;">
+            <div class="col-md-1"></div>
+            <div class="col-md-2 bardata">
+                <div class="bardatatitle">Avg. Block Rewards</div>
+                <div class="bardatadata">{!! number_format($avgblocks,'2','.',',') !!}</div>
+            </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Avg. Reward Freqency</div>
                 <div class="bardatadata">{!! number_format($avgrewardfreq,'2','.',',') !!} hours</div>
@@ -25,7 +30,7 @@
     <div class="col-md-12" style="text-align: center;">
         <div class="col-md-1"></div>
         <div class="col-md-10" style="display: inline-block;">
-            <div class="col-md-3">
+            <div class="col-md-1">
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">24hr Block Count</div>
@@ -47,7 +52,7 @@
                 <div class="bardatatitle">Next MN Block Reward</div>
                 <div class="bardatadata">{!! $nextbreward / 2 !!}</div>
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-1"></div>
         </div>
         <div class="col-md-1"></div>
     </div>

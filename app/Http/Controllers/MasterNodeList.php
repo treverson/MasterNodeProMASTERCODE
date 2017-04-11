@@ -14,29 +14,29 @@ class MasterNodeList
 	private function reward($height)
 	{
 		if ($height <= 125146) {
-			$ret['height'] = 125146;
-			$ret['reward'] = 23;
-			$ret['nextreward'] = 17
+			$ret['height']     = 125146;
+			$ret['reward']     = 23;
+			$ret['nextreward'] = 17;
 		} elseif ($height <= 568622) {
-			$ret['height'] = 568622;
-			$ret['reward'] = 17;
-			$ret['nextreward'] = 11.5
+			$ret['height']     = 568622;
+			$ret['reward']     = 17;
+			$ret['nextreward'] = 11.5;
 		} elseif ($height <= 1012098) {
-			$ret['height'] = 1012098;
-			$ret['reward'] = 11.5;
-			$ret['nextreward'] = 5.75
+			$ret['height']     = 1012098;
+			$ret['reward']     = 11.5;
+			$ret['nextreward'] = 5.75;
 		} elseif ($height <= 1455574) {
-			$ret['height'] = 1455574;
-			$ret['reward'] = 5.75;
+			$ret['height']     = 1455574;
+			$ret['reward']     = 5.75;
 			$ret['nextreward'] = 1.85;
 		} elseif ($height <= 3675950) {
-			$ret['height'] = 3675950;
-			$ret['reward'] = 1.85;
+			$ret['height']     = 3675950;
+			$ret['reward']     = 1.85;
 			$ret['nextreward'] = 0.2;
 		} else {
-			$ret['height'] = 20000000;
-			$ret['reward'] = 0.2;
-			$ret['nextreward'] = N/A;
+			$ret['height']     = 20000000;
+			$ret['reward']     = 0.2;
+			$ret['nextreward'] = "N/A";
 		}
 		return $ret;
 	}
@@ -47,6 +47,12 @@ class MasterNodeList
 		$data['mnl']           = Mnl::where('addr', $data['key'])->first();
 		$data['mnl']['ipData'] = json_decode($data['mnl']['data'], true);
 		return view('nodeDetails', $data);
+	}
+
+	public function moreList()
+	{
+		$ret = $this->Core();
+		return view('nodeList', $ret);
 	}
 
 	public function moreMap()
@@ -88,11 +94,7 @@ class MasterNodeList
 				$ret['totalnodeslist'] = $tnlc->nth(60);
 			}
 		} elseif ($type == '1day') {
-			if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
-				$ret['totalnodeslist'] = $tnlc->nth(60);
-			}
+			$ret['totalnodeslist'] = $tnlc->nth(60);
 		} elseif ($type == '1hour') {
 			$ret['totalnodeslist'] = $tnlc;
 		} elseif ($type == 'trendline') {
@@ -126,6 +128,28 @@ class MasterNodeList
 	{
 		$ret = $this->Core();
 		return view('stats', $ret);
+	}
+
+	public function DataPack()
+	{
+		$totalNodes              = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-1 minute')))->get();
+		$ret['totalMasterNodes'] = $totalNodes[0]['total'];
+		$ret['price_usd']        = $totalNodes[0]['price'];
+		$ret['block24hour']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
+		$block                   = Blocks::orderBy('blockid', 'desc')->first();
+		$reward                  = $this->reward($block['blockid']);
+		$ret['block24total']     = number_format(($ret['block24hour'] / $ret['totalMasterNodes']) * ($reward['reward'] / 2), '8', '.', '');
+		$basedaily               = $ret['block24total'] * $ret['price_usd'];
+		$ret['incomedaily']      = number_format($basedaily, '2', '.', ',');
+		$ret['incomeweekly']     = number_format(($basedaily * 7), '2', '.', ',');
+		$ret['incomemonth']      = number_format(($basedaily * 30.42), '2', '.', ',');
+		$ret['avgblocktime']     = number_format((86400 / $ret['block24hour']), '1', '.', '');
+		$blockleft               = $reward['height'] - $block['blockid'];
+		$sectilldrop             = $blockleft * $ret['avgblocktime'];
+		$ret['daytilldrop']      = $this->secondstodays($sectilldrop);
+		$ret['mnreward']         = $reward['reward'] / 2;
+		$ret['blockstoday']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
+		return $ret;
 	}
 
 	public function Core()
@@ -181,6 +205,7 @@ class MasterNodeList
 		$blockleft             = $reward['height'] - $block['blockid'];
 		$sectilldrop           = $blockleft * $ret['avgblocktime'];
 		$ret['daytilldrop']    = "N/A";
+		$ret['blockstoday']    = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
 		$ret['dailyaverage']   = $tnjp['dailyaverage'];
 		$ret['weeklyaverage']  = $tnjp['weeklyaverage'];
 		$ret['monthlyaverage'] = $tnjp['monthlyaverage'];
