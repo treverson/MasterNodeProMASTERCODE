@@ -30,17 +30,34 @@
                     <div class="Labels col-md-12">BLOCK DETAILS</div>
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
-                            <div style="height: 200px; width: 200px;">
-                                <div class="col-md-12"><span>{!! $blockstoday !!}</span> Blocks Today</div>
-                                <div class="col-md-12"><span style="teal">{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block time</div>
-                                <div class="col-md-12"><span style="color:#1D82AD">{!! $blockreward / 2 !!}</span> MN Block Reward</div>
-                                <div class="col-md-12"><span style="teal">{!! $daytilldrop !!}</span> Days until Reward Drop</div>
-                                <div class="col-md-12"><span style="color:#1D82AD">{!! $nextblockreward / 2 !!}</span> Next MN Block Reward</div>
-                                <div class="col-md-12"><span style="teal">{!! number_format($avgrewardfreq,'2','.',',') !!} hours</div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockstoday !!}</div>
+                                <div class="col-md-10">Blocks Today</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocktime,'1','.','') !!}</div>
+                                <div class="col-md-10">Avg. Block time</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockreward / 2 !!}</div>
+                                <div class="col-md-10">MN Block Reward</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $daytilldrop !!}</div>
+                                <div class="col-md-10">Days until Reward Drop</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $nextbreward / 2 !!}</div>
+                                <div class="col-md-10">Next MN Block Reward</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
+                                <div class="col-md-10">hours</div>
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
-                            <canvas id="barChart"></canvas>
+                            <canvas id="barChart"></canvas><br>
+                            Block Hit Percentage Per Day last 6 Days
                         </div>
                     </div>
                 </div>
