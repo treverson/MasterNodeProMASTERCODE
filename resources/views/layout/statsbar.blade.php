@@ -4,7 +4,7 @@
         <div class="col-md-10" style="display: inline-block;">
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Total Masternodes</div>
-                <div class="bardatadata">{!! $totalnodes[0]['total'] !!}</div>
+                <div class="bardatadata"><span style="color:#FF8B41">{!! $totalnodes[0]['total'] !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Daily ION Earned</div>

@@ -31,12 +31,13 @@
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
                             <div style="height: 200px; width: 200px;">
-                                <div class="col-md-12"><span>{!! $blockstoday !!}</span> Blocks Today</div>
-                                <div class="col-md-12"><span style="teal">{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block time</div>
-                                <div class="col-md-12"><span style="color:#1D82AD">{!! $blockreward / 2 !!}</span> MN Block Reward</div>
-                                <div class="col-md-12"><span style="teal">{!! $daytilldrop !!}</span> Days until Reward Drop</div>
+                                <div class="col-md-12"><span style="color:#FF8B41">{!! $blockstoday !!}</span> Blocks Today</div>
+                                <div class="col-md-12"><span style="color:#008080">{!! number_format($avgblocktime,'1','.','') !!}</span> Avg. Block Time</div>
+                                <div class="col-md-12"><span style="color:#1D82AD">{!! $blockreward / 2 !!}</span> Block Reward</div>
+                                <div class="col-md-12"><span style="color:#008080">{!! $daytilldrop !!}</span> Days to Reward Drop</div>
                                 <div class="col-md-12"><span style="color:#1D82AD">{!! $nextblockreward / 2 !!}</span> Next MN Block Reward</div>
-                                <div class="col-md-12"><span style="teal">{!! number_format($avgrewardfreq,'2','.',',') !!} hours</div>
+                                <div class="col-md-12"><span style="color:#008080">{!! number_format($avgrewardfreq,'2','.',',') !!} Avg. Reward Frequency</span></div>
+                                <div class="col-md-12"><span style="color:#008080">{!! number_format($avgblocks,'2','.',',') !!}</span> Avg. Blocks Awarded</div>
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
