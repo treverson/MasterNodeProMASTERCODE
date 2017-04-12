@@ -58,28 +58,12 @@
     </div>
         <div class="col-md-12" style="text-align: center;">
         <div class="col-md-1"></div>
-        <div class="col-md-10" style="display: inline-block;">
+        <div class="col-md-10" style="display: flex; justify-content:center;">
             <div class="col-md-1">
             </div>
-            <div class="col-md-2 bardata">
+            <div class="col-md-2 bardata" style="border:none !important;">
                 <div class="bardatatitle">Masternode worth</div>
                 <div class="bardatadata">$<span>{!! $MasternodeWorth !!}</span></div>
-            </div>
-            <div class="col-md-2 bardata">
-                <div class="bardatatitle"></div>
-                <div class="bardatadata"><span></span></div>
-            </div>
-            <div class="col-md-2 bardata">
-                <div class="bardatatitle"></div>
-                <div class="bardatadata"><span></span></div>
-            </div>
-            <div class="col-md-2 bardata">
-                <div class="bardatatitle"></div>
-                <div class="bardatadata"><span></span></div>
-            </div>
-            <div class="col-md-2 bardataend">
-                <div class="bardatatitle"></div>
-                <div class="bardatadata"><span></span></div>
             </div>
             <div class="col-md-1"></div>
         </div>
