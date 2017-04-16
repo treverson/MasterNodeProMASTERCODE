@@ -34,11 +34,11 @@
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">24hr Block Count</div>
-                <div class="bardatadata"><span style="color:teal">{!! $block24hour !!}</span></div>
+                <div class="bardatadata"><span style="color:#FF8B41">{!! $block24hour !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Avg. Block Time</div>
-                <div class="bardatadata"><span style="teal">{!! number_format($avgblocktime,'1','.','') !!}</span></div>
+                <div class="bardatadata"><span style="color:#008080">{!! number_format($avgblocktime,'1','.','') !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Masternode Block Reward</div>
@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Days Until Reward Drop</div>
-                <div class="bardatadata"><span style="color:teal">{!! $daytilldrop !!}</span></div>
+                <div class="bardatadata"><span style="color:#008080">{!! $daytilldrop !!}</span></div>
             </div>
             <div class="col-md-2 bardataend">
                 <div class="bardatatitle">Next MN Block Reward</div>
