@@ -135,7 +135,6 @@ class MasterNodeList
 		$totalNodes              = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-1 minute')))->get();
 		$ret['totalMasterNodes'] = $totalNodes[0]['total'];
 		$ret['price_usd']        = $totalNodes[0]['price'];
-		$ret['MasternodeWorth']  = $totalNodes[0]['price'] * 20000;
 		$ret['block24hour']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
 		$block                   = Blocks::orderBy('blockid', 'desc')->first();
 		$reward                  = $this->reward($block['blockid']);
@@ -150,6 +149,7 @@ class MasterNodeList
 		$ret['daytilldrop']      = $this->secondstodays($sectilldrop);
 		$ret['mnreward']         = $reward['reward'] / 2;
 		$ret['blockstoday']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
+		$ret['MasternodeWorth']  = $totalNodes[0]['price'] * 20000;
 		return $ret;
 	}
 
