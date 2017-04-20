@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
-                                <div class="col-md-10">hrs Between Rewards</div>
+                                <div class="col-md-10">hours</div>
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
