@@ -3,12 +3,12 @@
         <div class="col-md-1"></div>
         <div class="col-md-10" style="display: inline-block;">
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">Avg. Blocks Awarded</div>
-                <div class="bardatadata">{!! number_format($avgblocks,'2','.',',') !!}</div>
+                <div class="bardatatitle">Avg. Daily Awards</div>
+                <div class="bardatadata"><span style="color:#1D82AD">{!! number_format($avgblocks,'2','.',',') !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">Avg. Reward Freqency</div>
-                <div class="bardatadata">{!! number_format($avgrewardfreq,'2','.',',') !!} <span style="font-size:70%;color:teal">hrs</span></div>
+                <div class="bardatatitle">Avg. Award Freqency</div>
+                <div class="bardatadata"><span style="color:#008080">{!! number_format($avgrewardfreq,'2','.',',') !!} <span style="font-size:69%;">hrs</span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Avg. Daily Income</div>
@@ -43,15 +43,15 @@
                 <div class="bardatadata"><span style="color:#008080">{!! number_format($avgblocktime,'1','.','') !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">Masternode Block Reward</div>
+                <div class="bardatatitle">Masternode Block Award</div>
                 <div class="bardatadata"><span style="color:#1D82AD">{!! $blockreward / 2 !!}</span></div>
             </div>
             <div class="col-md-2 bardata">
-                <div class="bardatatitle">Days Until Reward Drop</div>
+                <div class="bardatatitle">Days to Award Drop</div>
                 <div class="bardatadata"><span style="color:#008080">{!! $daytilldrop !!}</span></div>
             </div>
             <div class="col-md-2 bardataend">
-                <div class="bardatatitle">Next MN Block Reward</div>
+                <div class="bardatatitle">Next MN Block Award</div>
                 <div class="bardatadata"><span style="color:#1D82AD">{!! $nextbreward / 2 !!}</span></div>
             </div>
             <div class="col-md-1"></div>
