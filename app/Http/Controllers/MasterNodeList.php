@@ -135,7 +135,6 @@ class MasterNodeList
 		$totalNodes              = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-1 minute')))->get();
 		$ret['totalMasterNodes'] = $totalNodes[0]['total'];
 		$ret['price_usd']        = $totalNodes[0]['price'];
-		$ret['MasternodeWorth']  = $totalNodes[0]['price'] * 20000;
 		$ret['block24hour']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
 		$block                   = Blocks::orderBy('blockid', 'desc')->first();
 		$reward                  = $this->reward($block['blockid']);
@@ -150,6 +149,7 @@ class MasterNodeList
 		$ret['daytilldrop']      = $this->secondstodays($sectilldrop);
 		$ret['mnreward']         = $reward['reward'] / 2;
 		$ret['blockstoday']      = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
+		$ret['MasternodeWorth']  = $totalNodes[0]['price'] * 20000;
 		return $ret;
 	}
 
@@ -192,26 +192,27 @@ class MasterNodeList
 			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
 			$bd++;
 		}
-		$rewardb24total        = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
-		$ret['avgblocks']      = $ret['block24hour'] / $ret['totalnodes'][0]['total'];
-		$ret['iondaily']       = ($ret['block24hour'] / $ret['totalnodes'][0]['total']) * ($reward['reward'] / 2);
-		$ret['price_usd']      = $ret['totalnodes'][0]['price'];
-		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
-		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
-		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
-		$ret['mnl']            = $list;
-		$ret['avgblocktime']   = 86400 / $ret['block24hour'];
-		$ret['blockreward']    = $reward['reward'];
-		$ret['nextbreward']    = $reward['nextreward'];
-		$blockleft             = $reward['height'] - $block['blockid'];
-		$sectilldrop           = $blockleft * $ret['avgblocktime'];
-		$ret['daytilldrop']    = "N/A";
-		$ret['blockstoday']    = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
-		$ret['dailyaverage']   = $tnjp['dailyaverage'];
-		$ret['weeklyaverage']  = $tnjp['weeklyaverage'];
-		$ret['monthlyaverage'] = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']  = 24 / $ret['avgblocks'];
-		$tnl                   = $totalNodes->toArray();
+		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
+		$ret['avgblocks']       = $ret['block24hour'] / $ret['totalnodes'][0]['total'];
+		$ret['iondaily']        = ($ret['block24hour'] / $ret['totalnodes'][0]['total']) * ($reward['reward'] / 2);
+		$ret['price_usd']       = $ret['totalnodes'][0]['price'];
+		$ret['incomedaily']     = $ret['iondaily'] * $ret['price_usd'];
+		$ret['incomeweekly']    = $ret['incomedaily'] * 7;
+		$ret['incomemonth']     = $ret['incomedaily'] * 30.42;
+		$ret['mnl']             = $list;
+		$ret['avgblocktime']    = 86400 / $ret['block24hour'];
+		$ret['blockreward']     = $reward['reward'];
+		$ret['nextbreward']     = $reward['nextreward'];
+		$ret['MasternodeWorth'] = $ret['price_usd'] * 20000;
+		$blockleft              = $reward['height'] - $block['blockid'];
+		$sectilldrop            = $blockleft * $ret['avgblocktime'];
+		$ret['daytilldrop']     = "N/A";
+		$ret['blockstoday']     = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
+		$ret['dailyaverage']    = $tnjp['dailyaverage'];
+		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
+		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
+		$ret['avgrewardfreq']   = 24 / $ret['avgblocks'];
+		$tnl                    = $totalNodes->toArray();
 		krsort($tnl);
 		$tnlc = collect($tnl);
 		if (count($tnlc) > 7200) {
