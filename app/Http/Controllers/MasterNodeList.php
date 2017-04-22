@@ -138,7 +138,7 @@ class MasterNodeList
 		$totalNodes                     = $totalNodes[0];
 		$ret['totalMasterNodes']        = $totalNodes['total'];
 		$ret['currentUSDPrice']         = $totalNodes['price'];
-		$ret['income']                  = $this->incomeDaily($totalNodes['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
+		$ret['income']                  = $this->income($totalNodes['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
 		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
 		$ret['daysTillRewardDrop']      = $this->ionRewardDropDays($block['blockid'], $ret['averageBlockTime']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
@@ -147,7 +147,7 @@ class MasterNodeList
 		return $ret;
 	}
 
-	public function incomeDaily($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
+	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
 	{
 		$reward          = $this->reward($lastBlock);
 		$blocksTotal     = number_format(($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 2), '8', '.', '');
@@ -249,7 +249,7 @@ class MasterNodeList
 		$ret['avgblocks']       = $ret['block24hour'] / $firstNode['total'];
 		$ret['iondaily']        = ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 2);
 		$ret['price_usd']       = $firstNode['price'];
-		$ret['income']          = $this->incomeDaily($ret['price_usd'],$ret['block24hour'],$firstNode['total'],$block['blockid']);
+		$ret['income']          = $this->income($ret['price_usd'],$ret['block24hour'],$firstNode['total'],$block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
 		$ret['avgblocktime']    = 86400 / $ret['block24hour'];
 		$ret['blockreward']     = $reward['reward'];
