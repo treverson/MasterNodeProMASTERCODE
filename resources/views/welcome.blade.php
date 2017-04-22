@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right orange">{!! $blockstoday !!}</div>
+                                <div class="col-md-2 text-right orange" style="padding-left:11px">{!! $blockstoday !!}</div>
                                 <div class="col-md-10">Blocks Today</div>
                             </div>
                             <div class="col-md-12">
@@ -44,7 +44,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-2 text-right purple">{!! $daytilldrop !!}</div>
-                                <div class="col-md-10">Days to Award Drop</div>
+                                <div class="col-md-10">Days to Drop</div>
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-2 text-right babyBlue">{!! $nextbreward / 2 !!}</div>
@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
-                                <div class="col-md-10">Avg Blocks Awarded</div>
+                                <div class="col-md-10">Avg Block Awards</div>
                             </div>
                         </div>
                         <div class="col-md-6 pull-left">
