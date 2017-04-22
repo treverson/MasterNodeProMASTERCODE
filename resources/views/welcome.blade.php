@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right orange">{!! $blockstoday !!}</div>
+                                <div class="col-md-2 text-right orange" style="padding-left:11px">{!! $blockstoday !!}</div>
                                 <div class="col-md-10">Blocks Today</div>
                             </div>
                             <div class="col-md-12">

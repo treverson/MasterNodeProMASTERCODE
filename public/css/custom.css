@@ -84,6 +84,8 @@ footer {
 
 .blockdetails > div {
     margin-top: 5px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .blockdetails > div > span {
