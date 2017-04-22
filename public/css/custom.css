@@ -5,6 +5,7 @@
     padding-top: 30px;
     position: relative;
 }
+
 body {
     color: #FFFFFF;
     background-color: #041019;
@@ -38,15 +39,18 @@ footer {
 .mybar > div {
     float: left;
 }
+
 .bardata {
     margin-top: 25px;
-    padding-right:20px;
+    padding-right: 20px;
     border-right: 1px solid #ffffff;
 }
+
 .bardataend {
     margin-top: 25px;
-    padding-right:20px;
+    padding-right: 20px;
 }
+
 .bardatatitle {
     color: #FFFFFF;
     font-size: 10pt;
@@ -58,10 +62,6 @@ footer {
     color: #FFFFFF;
     font-size: 21pt;
     font-weight: 800;
-}
-
-.bardatadata > span {
-    color: #78FEAB;
 }
 
 .bar {
@@ -102,12 +102,14 @@ footer {
 .modal {
     color: #000000;
 }
+
 .sidebarOpen {
     position: absolute;
     top: 25px;
     left: 25px;
-    z-index:1;
+    z-index: 1;
 }
+
 /* The side navigation menu */
 .sidenav {
     height: 100%; /* 100% Full-height */
@@ -134,7 +136,7 @@ footer {
 }
 
 /* When you mouse over the navigation links, change their color */
-.sidenav a:hover, .offcanvas a:focus{
+.sidenav a:hover, .offcanvas a:focus {
     color: #818181;
 }
 
@@ -147,14 +149,46 @@ footer {
     margin-left: 50px;
 }
 
-table.display tbody tr:hover td{
-    background-color:#818181 !important;
+table.display tbody tr:hover td {
+    background-color: #818181 !important;
     color: #000000 !important;
 }
 
+.orange {
+    color: #FF8B41;
+}
+
+.blue {
+    color: #1D82AD
+}
+
+.green {
+    color: #78FEAB;
+}
+
+.darkGreen {
+    color: #008080
+}
+
+.purple {
+    color: #6E20F3;
+}
+
+.babyBlue {
+    color: #4EBDE4;
+}
+
+.white {
+
+}
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
 }

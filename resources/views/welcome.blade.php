@@ -31,31 +31,31 @@
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockstoday !!}</div>
+                                <div class="col-md-2 text-right orange">{!! $blockstoday !!}</div>
                                 <div class="col-md-10">Blocks Today</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocktime,'1','.','') !!}</div>
+                                <div class="col-md-2 text-right purple">{!! number_format($avgblocktime,'1','.','') !!}</div>
                                 <div class="col-md-10">Avg Block Time</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockreward / 2 !!}</div>
+                                <div class="col-md-2 text-right babyBlue">{!! $blockreward / 2 !!}</div>
                                 <div class="col-md-10">Block Award</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $daytilldrop !!}</div>
+                                <div class="col-md-2 text-right purple">{!! $daytilldrop !!}</div>
                                 <div class="col-md-10">Days to Award Drop</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $nextbreward / 2 !!}</div>
+                                <div class="col-md-2 text-right babyBlue">{!! $nextbreward / 2 !!}</div>
                                 <div class="col-md-10">Next Block Award</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
+                                <div class="col-md-2 text-right purple">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
                                 <div class="col-md-10">Reward Freq</div>
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocks,'2','.',',') !!}</div>
+                                <div class="col-md-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
                                 <div class="col-md-10">Avg Blocks Awarded</div>
                             </div>
                         </div>
