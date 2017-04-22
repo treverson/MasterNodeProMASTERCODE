@@ -4,8 +4,7 @@
 @include('layout.sidebar')
 <div class="container-fluid">
     @include('layout.logo')
-    @include('layout.statsbar')
-    @include('layout.statsbar2')
+    @include('layout.statsbarAdv')
     @include('layout.footer')
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     </div>
