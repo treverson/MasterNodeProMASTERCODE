@@ -52,6 +52,15 @@ class MasterNodeList
 	public function moreList()
 	{
 		$ret = $this->Core();
+		$ret['search'] = null;
+		if (isset($_GET['search'])) {
+			$ret['search'] = $_GET['search'];
+			$mnl = Mnl::where('addr', $ret['search'])->first();
+			if (count($mnl) > 0) {
+				$mnl->total = Blocks::where('addr',$ret['search'])->sum('amt');
+			}
+			$mnl->save();
+		}
 		return view('nodeList', $ret);
 	}
 
