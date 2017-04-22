@@ -161,9 +161,11 @@ class coincontrol extends Controller
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
+									$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
 									$block->addr    = $addValue;
 									$block->amt     = $vout['value'];
 								}
+								$mnl->save();
 							}
 						}
 					}
@@ -200,9 +202,11 @@ class coincontrol extends Controller
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();
 									if (count($mnl) > 0) {
+										$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
 										$block->addr    = $addValue;
 										$block->amt     = $vout['value'];
 									}
+									$mnl->save();
 								}
 							}
 						}
