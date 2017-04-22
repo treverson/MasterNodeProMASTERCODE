@@ -8,10 +8,8 @@
         <div class="col-md-1"></div>
         <div class="col-md-10" style="text-align: center;">
             <div class="col-md-6">
-                <div class="col-md-12">
-                    <div class="col-md-12" class="pull-right">
-                        <canvas id="lineChart"></canvas>
-                    </div>
+                <div class="col-md-12" class="pull-right">
+                    <canvas id="lineChart"></canvas>
                 </div>
             </div>
             <div class="col-md-6">
@@ -30,34 +28,26 @@
                     <div class="Labels col-md-12">BLOCK DETAILS</div>
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockstoday !!}</div>
-                                <div class="col-md-10">Blocks Today</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocktime,'1','.','') !!}</div>
-                                <div class="col-md-10">Avg Block Time</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockreward / 2 !!}</div>
-                                <div class="col-md-10">Block Award</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $daytilldrop !!}</div>
-                                <div class="col-md-10">Days to Award Drop</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! $nextbreward / 2 !!}</div>
-                                <div class="col-md-10">Next Block Award</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
-                                <div class="col-md-10">Reward Freq</div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocks,'2','.',',') !!}</div>
-                                <div class="col-md-10">Avg Blocks Awarded</div>
-                            </div>
+                            <div class="col-md-2 text-right" style="color:#FF8B41">{!! $blockstoday !!}</div>
+                            <div class="col-md-10">Blocks Today</div>
+
+                            <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgblocktime,'1','.','') !!}</div>
+                            <div class="col-md-10">Avg Block Time</div>
+
+                            <div class="col-md-2 text-right" style="color:#1D82AD">{!! $blockreward / 2 !!}</div>
+                            <div class="col-md-10">Block Award</div>
+
+                            <div class="col-md-2 text-right" style="color:#1D82AD">{!! $daytilldrop !!}</div>
+                            <div class="col-md-10">Days to Award Drop</div>
+
+                            <div class="col-md-2 text-right" style="color:#1D82AD">{!! $nextbreward / 2 !!}</div>
+                            <div class="col-md-10">Next Block Award</div>
+
+                            <div class="col-md-2 text-right" style="color:#1D82AD">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
+                            <div class="col-md-10">Reward Freq</div>
+
+                            <div class="col-md-2 text-right" style="color:#FF8B41">{!! number_format($avgblocks,'2','.',',') !!}</div>
+                            <div class="col-md-10">Avg Block Awards</div>
                         </div>
                         <div class="col-md-6 pull-left">
                             <canvas id="barChart"></canvas><br>
