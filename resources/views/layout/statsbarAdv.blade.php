@@ -85,11 +85,7 @@
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Avg. Award Freqency</div>
-<<<<<<< HEAD
-                <div class="bardatadata"><span style="color:#008080">{!! number_format($avgrewardfreq,'2','.',',') !!}</span> <span style="font-size:69%;">hrs</span></div>
-=======
-                <div class="bardatadata"><span class="darkGreen">{!! number_format($avgrewardfreq,'2','.',',') !!} <span style="font-size:69%;">hrs</span></div>
->>>>>>> JSponaugle/master
+                <div class="bardatadata"><span class="darkGreen">{!! number_format($avgrewardfreq,'2','.',',') !!} <span style="font-size:69%;">hrs</span></span></div>
             </div>
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Avg. Daily Income</div>

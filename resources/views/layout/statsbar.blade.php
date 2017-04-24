@@ -2,6 +2,18 @@
     <div class="col-md-12" style="text-align: center;">
         <div class="col-md-1"></div>
         <div class="col-md-10" style="display: inline-block;">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <div class="bardatatitle">ION Price</div>
+                <div class="bardatadata">$<span class="green">{!! number_format($price_usd,'2','.',',') !!}</span></div>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="col-md-12" style="text-align: center;">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="display: inline-block;">
             <div class="col-md-2 bardata">
                 <div class="bardatatitle">Total Masternodes</div>
                 <div class="bardatadata"><span class="orange">{!! $firstNode['total'] !!}</span></div>
@@ -23,8 +35,8 @@
                 <div class="bardatadata">$<span class="green">{!! number_format($income['monthly'],'2','.',',') !!}</span></div>
             </div>
             <div class="col-md-2 bardataend">
-                <div class="bardatatitle">ION Price</div>
-                <div class="bardatadata">$<span class="green">{!! number_format($price_usd,'2','.',',') !!}</span></div>
+                <div class="bardatatitle">Yearly Income</div>
+                <div class="bardatadata">$<span class="green">{!! number_format($income['yearly'],'2','.',',') !!}</span></div>
             </div>
         </div>
         <div class="col-md-1"></div>

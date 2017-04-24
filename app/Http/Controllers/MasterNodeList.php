@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use App\Mnl;
 use DateTime;
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Storage;
 
 class MasterNodeList
 {
@@ -233,10 +234,13 @@ class MasterNodeList
 		return $data;
 	}
 
-	public function Core()
-	{
-		$agent = new Agent();
+	public function Core() {
+		$json = Storage::get('results.json');
+		return json_decode($json,true);
+	}
 
+	public function jsonCore()
+	{
 		$totalNodes         = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
 		$firstNode          = $totalNodes[0];
 		$ret['firstNode']   = $firstNode;
@@ -280,7 +284,12 @@ class MasterNodeList
 			$ret['totalnodeslist'] = $tnlc->nth(60);
 		}
 		$ret['daytilldrop'] = $this->ionRewardDropDays($block['blockid'], $ret['block24hour']);
-		return $ret;
+		$ret['lastUpdated'] = date('F j, Y, g:i a T');
+		Storage::put('results.json', json_encode($ret));
+//		$fp = fopen('/var/www/public/json/results.json', 'w');
+//		fwrite($fp, json_encode($ret));
+//		fclose($fp);
+//		return $ret;
 	}
 
 	public function masternodelist()
@@ -374,6 +383,7 @@ class MasterNodeList
 		$totalNodes->data      = json_encode($ret);
 		$totalNodes->total     = $total;
 		$totalNodes->save();
+		$this->jsonCore();
 	}
 
 	public function blockprocess()

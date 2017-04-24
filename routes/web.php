@@ -30,3 +30,6 @@ Route::any('/{coin}/blocknumber/{number}', function($coin,$number) {
 	$process = $cc->blocknumber($number);
 	echo $process;
 });
+
+Route::get('/checknode/{ip}/{port}', array('uses' => 'NodeCheck@index'));
+Route::get('/datapull', array('uses' => 'MasterNodeList@datapull'));
