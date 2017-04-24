@@ -164,8 +164,8 @@ class coincontrol extends Controller
 									$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
 									$block->addr    = $addValue;
 									$block->amt     = $vout['value'];
+									$mnl->save();
 								}
-								$mnl->save();
 							}
 						}
 					}
@@ -205,8 +205,8 @@ class coincontrol extends Controller
 										$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
 										$block->addr    = $addValue;
 										$block->amt     = $vout['value'];
+										$mnl->save();
 									}
-									$mnl->save();
 								}
 							}
 						}
