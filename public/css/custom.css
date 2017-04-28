@@ -183,6 +183,31 @@ table.display tbody tr:hover td {
 .white {
 
 }
+/* pi */
+
+.pibardata {
+    margin-top: 2px;
+    padding-right: 20px;
+    border-right: 1px solid #ffffff;
+}
+
+.pibardataend {
+    margin-top: 2px;
+    padding-right: 20px;
+}
+
+.pibardatatitle {
+    color: #FFFFFF;
+    font-size: 15vm;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.pibardatadata {
+    color: #FFFFFF;
+    font-size: 20vm;
+    font-weight: 800;
+}
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
