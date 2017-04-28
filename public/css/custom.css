@@ -93,6 +93,11 @@ footer {
     font-weight: 900;
 }
 
+.blockdetails > .row > div {
+    padding-left: 0px;
+    padding-right: 10px;
+}
+
 .mybar2 > .bardata > .bardatatitle {
 
 }
@@ -182,6 +187,11 @@ table.display tbody tr:hover td {
 
 .white {
 
+}
+
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

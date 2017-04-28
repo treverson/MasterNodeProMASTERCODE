@@ -29,37 +29,37 @@
                 <div class="col-md-5" style="text-align: center;">
                     <div class="Labels col-md-12">BLOCK DETAILS</div>
                     <div class="col-md-12">
-                        <div class="col-md-6 pull-left blockdetails" style="text-align: left;">
-                            <div class="col-md-12">
-                                <div class="col-md-2 text-right orange" style="padding-left:11px">{!! $blockstoday !!}</div>
-                                <div class="col-md-10">Blocks Today</div>
+                        <div class="col-md-6 pull-left blockdetails">
+                            <div class="row">
+                                <div class="col-md-2 text-right orange">{!! $blockstoday !!}</div>
+                                <div class="col-md-10 text-left">Blocks Today</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right purple">{!! number_format($avgblocktime,'1','.','') !!}</div>
-                                <div class="col-md-10">Avg Block Time</div>
+                                <div class="col-md-10 text-left">Avg Block Time</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right babyBlue">{!! $blockreward / 2 !!}</div>
-                                <div class="col-md-10">Block Award</div>
+                                <div class="col-md-10 text-left">Block Award</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right purple">{!! $daytilldrop !!}</div>
-                                <div class="col-md-10">Days to Drop</div>
+                                <div class="col-md-10 text-left">Days to Drop</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right babyBlue">{!! $nextbreward / 2 !!}</div>
-                                <div class="col-md-10">Next Block Award</div>
+                                <div class="col-md-10 text-left">Next Block Award</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right purple">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
-                                <div class="col-md-10">Reward Freq</div>
+                                <div class="col-md-10 text-left">Reward Freq</div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="row">
                                 <div class="col-md-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
-                                <div class="col-md-10">Avg Block Awards</div>
+                                <div class="col-md-10 text-left">Avg Block Awards</div>
                             </div>
                         </div>
-                        <div class="col-md-6 pull-left">
+                        <div class="col-md-6 pull-left no-padding">
                             <canvas id="barChart"></canvas><br>
                             Block Hit Percentage Per Day last 6 Days
                         </div>
