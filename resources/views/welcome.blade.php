@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-md-6 pull-left no-padding">
                             <canvas id="barChart"></canvas><br>
-                            Block Hit Percentage Per Day last 6 Days
+                            Blocks Vs. Spec Last 6 Days
                         </div>
                     </div>
                 </div>
