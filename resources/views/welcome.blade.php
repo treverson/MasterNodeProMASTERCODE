@@ -26,7 +26,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-10" style="text-align: center;">
             <div class="mybar col-md-12">
-                <div class="col-md-5" style="text-align: center;">
+                <div class="col-md-5" style="text-align: center; width:47.5%;">
                     <div class="Labels col-md-12">BLOCK DETAILS</div>
                     <div class="col-md-12">
                         <div class="col-md-6 pull-left blockdetails">
@@ -61,21 +61,21 @@
                         </div>
                         <div class="col-md-6 pull-left no-padding">
                             <canvas id="barChart"></canvas><br>
-                            Blocks Vs. Spec Last 6 Days
+                            Blocks vs. Spec last 6 days
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2" style="text-align: center;">
+                <div class="col-md-2" style="text-align: center; width: 5%">
                     <div class="vr2" style="display: inline-block;">&nbsp;</div>
                 </div>
-                <div class="col-md-5" style="text-align: center;">
+                <div class="col-md-5" style="text-align: center; width: 47.5%">
                     <div class="Labels col-md-12">NODES BY COUNTRY</div>
                     <div class="col-md-12">
 						<?php $i = 1; ?>
                         @foreach ($country as $key => $value)
                             @if ($i <= 4)
                                 <div class="col-md-3">
-                                    <div style="height: 100px; width: 100px;">
+                                    <div style="height: 100px; width: 100px; margin: auto;">
                                         <canvas id="do{!! $i !!}Chart" width="400" height="400"></canvas>
                                         <br>
                                         {!! $value['country_name'] !!}
