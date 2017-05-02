@@ -52,13 +52,13 @@ class MasterNodeList
 
 	public function moreList()
 	{
-		$ret = $this->Core();
+		$ret           = $this->Core();
 		$ret['search'] = null;
 		if (isset($_GET['search'])) {
 			$ret['search'] = $_GET['search'];
-			$mnl = Mnl::where('addr', $ret['search'])->first();
+			$mnl           = Mnl::where('addr', $ret['search'])->first();
 			if (count($mnl) > 0) {
-				$mnl->total = Blocks::where('addr',$ret['search'])->sum('amt');
+				$mnl->total = Blocks::where('addr', $ret['search'])->sum('amt');
 			}
 			$mnl->save();
 		}
@@ -142,20 +142,39 @@ class MasterNodeList
 
 	public function DataPack()
 	{
-		$ret['blocksLastDay']           = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
+		$json                           = Storage::get('results.json');
+		$dataCore                       = json_decode($json, true);
+		$ret['blocksLastDay']           = $dataCore['block24hour'];
 		$block                          = Blocks::orderBy('blockid', 'desc')->first();
-		$totalNodes                     = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-1 minute')))->get();
-		$totalNodes                     = $totalNodes[0];
-		$ret['averageBlockAwards']      = (float)number_format(($ret['blocksLastDay'] / $totalNodes['total']),'2','.','');
-		$ret['totalMasterNodes']        = $totalNodes['total'];
-		$ret['currentUSDPrice']         = (float)number_format($totalNodes['price'],'2','.','');
-		$ret['income']                  = $this->income($totalNodes['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
+		$ret['averageBlockAwards']      = (float)number_format($dataCore['avgblocks'], '2', '.', '');
+		$ret['totalMasterNodes']        = $dataCore['firstNode']['total'];
+		$ret['currentUSDPrice']         = (float)number_format($dataCore['firstNode']['price'], '2', '.', '');
+		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
 		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
 		$ret['daysTillRewardDrop']      = $this->ionRewardDropDays($block['blockid'], $ret['blocksLastDay']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
 		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
-		$ret['masterNodeWorth']         = $this->masterNodeWorth($totalNodes['price']);
-		return $ret;
+		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
+		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
+	}
+
+	public function DataPackAdv()
+	{
+		$json                           = Storage::get('results.json');
+		$dataCore                       = json_decode($json, true);
+		$ret['blocksLastDay']           = $dataCore['block24hour'];
+		$block                          = Blocks::orderBy('blockid', 'desc')->first();
+		$ret['averageBlockAwards']      = (float)number_format($dataCore['avgblocks'], '2', '.', '');
+		$ret['totalMasterNodes']        = $dataCore['firstNode']['total'];
+		$ret['currentUSDPrice']         = (float)number_format($dataCore['firstNode']['price'], '2', '.', '');
+		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
+		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
+		$ret['daysTillRewardDrop']      = $this->ionRewardDropDays($block['blockid'], $ret['blocksLastDay']);
+		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
+		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
+		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
+		$ret['core']                    = $dataCore;
+		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
 	}
 
 	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
@@ -234,9 +253,10 @@ class MasterNodeList
 		return $data;
 	}
 
-	public function Core() {
+	public function Core()
+	{
 		$json = Storage::get('results.json');
-		return json_decode($json,true);
+		return json_decode($json, true);
 	}
 
 	public function jsonCore()
@@ -250,6 +270,7 @@ class MasterNodeList
 		$ret['country']     = $masterNodeList['sortlist'];
 		$block              = Blocks::orderBy('blockid', 'desc')->first();
 		$reward             = $this->reward($block['blockid']);
+		$ret['block']       = $block;
 		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
 		$bd                 = 0;
 		$bspec              = 1350;
@@ -285,11 +306,47 @@ class MasterNodeList
 		}
 		$ret['daytilldrop'] = $this->ionRewardDropDays($block['blockid'], $ret['block24hour']);
 		$ret['lastUpdated'] = date('F j, Y, g:i a T');
-		Storage::put('results.json', json_encode($ret));
+		Storage::put('results.json', json_encode($ret, JSON_PRETTY_PRINT));
 //		$fp = fopen('/var/www/public/json/results.json', 'w');
 //		fwrite($fp, json_encode($ret));
 //		fclose($fp);
 //		return $ret;
+	}
+
+	public function rpinode()
+	{
+		$rawData = file_get_contents("php://input");
+		$data    = json_decode($rawData, true);
+		$dir     = $data['secret'];
+		$dir2    = sha1(md5($data['secret']));
+		Storage::put('rpinodes/' . $dir . '/' . $dir2 . '.json', $rawData);
+		echo $rawData;
+	}
+
+	public function myrpinode($mynode)
+	{
+		$json  = [];
+		$files = Storage::files('rpinodes/' . sha1($mynode));
+		if (count($files) > 0) {
+			foreach ($files as $file) {
+				$content = Storage::get($file);
+				$json[]  = json_decode($content, true);
+			}
+		}
+		$ret          = $this->Core();
+		$ret['nodes'] = $json;
+		return view('myrpinode', $ret);
+	}
+
+	public function sectohms($ss)
+	{
+		$s = $ss % 60;
+		$m = floor(($ss % 3600) / 60);
+		$h = floor(($ss % 86400) / 3600);
+		$d = floor(($ss % 2592000) / 86400);
+		$M = floor($ss / 2592000);
+
+		return "$d D, $h H, $m M";
 	}
 
 	public function masternodelist()
