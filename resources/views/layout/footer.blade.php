@@ -8,3 +8,4 @@
         <div class="col-md-3 col-xs-12">Donate: iTfy1adP24n2M4YZmbRyeghgVBz7tybhYv</div>
     </div>
 </footer>
+<div style="padding-bottom: 75px;"></div>
