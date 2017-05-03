@@ -5,7 +5,9 @@
     padding-top: 30px;
     position: relative;
 }
-
+#lineChart {
+    height: 300px;
+}
 body {
     color: #FFFFFF;
     background-color: #041019;
