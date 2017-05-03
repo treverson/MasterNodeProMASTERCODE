@@ -43,13 +43,7 @@ footer {
 
 .bardata {
     margin-top: 25px;
-    padding-right: 20px;
-    border-right: 1px solid #ffffff;
-}
-
-.bardataend {
-    margin-top: 25px;
-    padding-right: 20px;
+    padding-right: 0px;
 }
 
 .bardatatitle {
@@ -228,14 +222,16 @@ table.display tbody tr:hover td {
   padding-left: 0;
   padding-right: 0;
 }
-
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
+@media screen and (max-height: 750px) {
+
     .sidenav {
         padding-top: 15px;
     }
-
     .sidenav a {
         font-size: 18px;
+    }
+    footer {
+        height: 35px !important;
     }
 }
