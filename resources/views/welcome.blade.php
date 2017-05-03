@@ -70,12 +70,12 @@
                 </div>
                 <div class="col-md-5" style="text-align: center; width: 47.5%">
                     <div class="Labels col-md-12">NODES BY COUNTRY</div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
 						<?php $i = 1; ?>
                         @foreach ($country as $key => $value)
                             @if ($i <= 4)
-                                <div class="col-md-3">
-                                    <div style="height: 100px; width: 100px; margin: auto;">
+                                <div class="col-md-3" style="padding-left: 2%; padding-right: 2%;">
+                                    <div>
                                         <canvas id="do{!! $i !!}Chart" width="400" height="400"></canvas>
                                         <br>
                                         {!! $value['country_name'] !!}
