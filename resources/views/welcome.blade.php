@@ -5,91 +5,98 @@
     @include('layout.logo')
     @include('layout.statsbar')
     <div class="row middle">
-        <div class="col-md-1"></div>
-        <div class="col-md-10" style="text-align: center;">
-            <div class="col-md-6">
-                <div class="col-md-12">
-                    <div class="col-md-12" class="pull-right">
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                </div>
+        <div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" class="pull-right">
+                <canvas id="lineChart"></canvas>
             </div>
-            <div class="col-md-6">
-                <div class="col-md-12" class="pull-left">
-                    <div id="map"></div>
-                </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" class="pull-left">
+                <div id="map"></div>
             </div>
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
     </div>
     <div class="row" style="margin-top: 50px;">
-        <div class="col-md-1"></div>
-        <div class="col-md-10" style="text-align: center;">
-            <div class="mybar col-md-12">
-                <div class="col-md-5" style="text-align: center; width:47.5%;">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="text-align: center;">
+            <div class="mybar row">
+                <div class="col-md-5 col-sm-12 col-xs-12" style="text-align: center;">
                     <div class="Labels col-md-12">BLOCK DETAILS</div>
                     <div class="col-md-12">
-                        <div class="col-md-6 pull-left blockdetails">
-                            <div class="row">
-                                <div class="col-md-2 text-right orange">{!! $blockstoday !!}</div>
-                                <div class="col-md-10 text-left">Blocks Today</div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12 pull-left blockdetails">
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right orange">{!! $blockstoday !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Blocks Today</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($avgblocktime,'1','.','') !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Avg Block Time</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $blockreward / 2 !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Block Award</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! $daytilldrop !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Days to Drop</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $nextbreward / 2 !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Next Block Award</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Reward Freq</div>
+                                </div>
+                                <div class="row">
+                                    <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Avg Block Awards</div>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right purple">{!! number_format($avgblocktime,'1','.','') !!}</div>
-                                <div class="col-md-10 text-left">Avg Block Time</div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 pull-left no-padding">
+                                <canvas id="barChart"></canvas>
+                                <br>
+                                Blocks vs. Spec last 6 days
                             </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right babyBlue">{!! $blockreward / 2 !!}</div>
-                                <div class="col-md-10 text-left">Block Award</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right purple">{!! $daytilldrop !!}</div>
-                                <div class="col-md-10 text-left">Days to Drop</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right babyBlue">{!! $nextbreward / 2 !!}</div>
-                                <div class="col-md-10 text-left">Next Block Award</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right purple">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
-                                <div class="col-md-10 text-left">Reward Freq</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
-                                <div class="col-md-10 text-left">Avg Block Awards</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 pull-left no-padding">
-                            <canvas id="barChart"></canvas><br>
-                            Blocks vs. Spec last 6 days
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2" style="text-align: center; width: 5%">
+                <div class="col-md-2 hidden-sm hidden-xs" style="text-align: center;">
                     <div class="vr2" style="display: inline-block;">&nbsp;</div>
                 </div>
-                <div class="col-md-5" style="text-align: center; width: 47.5%">
+                <div class="col-md-5 col-sm-12 col-xs-12" style="text-align: center;">
                     <div class="Labels col-md-12">NODES BY COUNTRY</div>
                     <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
-						<?php $i = 1; ?>
-                        @foreach ($country as $key => $value)
-                            @if ($i <= 4)
-                                <div class="col-md-3" style="padding-left: 2%; padding-right: 2%;">
-                                    <div>
-                                        <canvas id="do{!! $i !!}Chart" width="400" height="400"></canvas>
-                                        <br>
-                                        {!! $value['country_name'] !!}
+                        <div class="row">
+							<?php $i = 1; ?>
+                            @foreach ($country as $key => $value)
+                                @if ($i <= 4)
+                                    <div class="col-md-3 col-sm-6 col-xs-6" style="padding-left: 2%; padding-right: 2%;">
+                                        <div>
+                                            <canvas id="do{!! $i !!}Chart" width="400" height="400"></canvas>
+                                            <br>
+                                            {!! $value['country_name'] !!}
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
-							<?php $i++; ?>
-                        @endforeach
+                                @endif
+								<?php $i++; ?>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
     </div>
+    <div style="padding-bottom: 75px;"></div>
     @include('layout.footer')
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     </div>
@@ -97,13 +104,6 @@
 @include('mlgData',['type' => '30day'])
 @include('layout.doughnutchart')
 @include('layout.barchart')
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            "order": [[4, "desc"]]
-        });
-    });
-</script>
 @include('layout.map')
 @include('layout.analytics')
 </body>
