@@ -11,4 +11,3 @@
         <div class="bardatadata">$<span class="green">{!! number_format($price_usd,'2','.',',') !!}</span></div>
     </div>
 </div>
-</div>
