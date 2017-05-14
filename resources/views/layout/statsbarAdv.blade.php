@@ -63,8 +63,8 @@
                         <div class="bardatadata"><span class="blue">{!! $blockreward / 2 !!}</span></div>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-6 bardata">
-                        <div class="bardatatitle">Days to Award Drop</div>
-                        <div class="bardatadata"><span class="darkGreen">{!! $daytilldrop !!}</span></div>
+                        <div class="bardatatitle">{!! $daytilldrop['name'] !!} to Award Drop</div>
+                        <div class="bardatadata"><span class="darkGreen">{!! $daytilldrop['num'] !!}</span></div>
                     </div>
                     <div class="col-sm-3 col-xs-3  hidden-lg hidden-md">
                     </div>
