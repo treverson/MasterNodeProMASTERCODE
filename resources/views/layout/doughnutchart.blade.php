@@ -276,5 +276,5 @@
             }
         }
     });
-
+    window.dispatchEvent(new Event('resize'));
 </script>

@@ -15,8 +15,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'throttle:2'], function () {
 	Route::get('/datapack', array('uses' => 'MasterNodeList@DataPack'));
 	Route::get('/datapack/advanced', array('uses' => 'MasterNodeList@DataPackAdv'));
 });
-
-
 Route::get('/', array('as' => 'index', 'uses' => 'MasterNodeList@masternodelist'));
 Route::get('/advanced/list', array('as' => 'advlist', 'uses' => 'MasterNodeList@moreList'));
 Route::get('/advanced/stats', array('as' => 'advstats', 'uses' => 'MasterNodeList@moreStats'));

@@ -18,19 +18,19 @@ class MasterNodeList
 			$ret['height']     = 125146;
 			$ret['reward']     = 23;
 			$ret['nextreward'] = 17;
-		} elseif ($height <= 568622) {
+		} elseif ($height >= 568622) {
 			$ret['height']     = 568622;
 			$ret['reward']     = 17;
 			$ret['nextreward'] = 11.5;
-		} elseif ($height <= 1012098) {
+		} elseif ($height >= 1012098) {
 			$ret['height']     = 1012098;
 			$ret['reward']     = 11.5;
 			$ret['nextreward'] = 5.75;
-		} elseif ($height <= 1455574) {
+		} elseif ($height >= 1455574) {
 			$ret['height']     = 1455574;
 			$ret['reward']     = 5.75;
 			$ret['nextreward'] = 1.85;
-		} elseif ($height <= 3675950) {
+		} elseif ($height >= 3675950) {
 			$ret['height']     = 3675950;
 			$ret['reward']     = 1.85;
 			$ret['nextreward'] = 0.2;
@@ -155,6 +155,8 @@ class MasterNodeList
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
 		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
+		$ret['height']                  = $block['blockid'];
+		$ret['reward']                  = $this->reward($block['blockid']);
 		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
 	}
 
@@ -202,7 +204,7 @@ class MasterNodeList
 		$reward       = $this->reward($lastBlock);
 		$blockleft    = $reward['height'] - $lastBlock;
 		$sectilldrop  = $blockleft * $avgBlockTime;
-		$total        = (float)$this->secondstodays($sectilldrop);
+		$total        = $this->calculate_time_span($sectilldrop);
 		return $total;
 	}
 
@@ -264,7 +266,7 @@ class MasterNodeList
 		$totalNodes         = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
 		$firstNode          = $totalNodes[0];
 		$ret['firstNode']   = $firstNode;
-		$ret['totalNodes']  = $totalNodes;
+		$ret1['totalNodes'] = $totalNodes;
 		$tnjp               = json_decode($firstNode['data'], true);
 		$masterNodeList     = $this->masterNodeListData();
 		$ret['country']     = $masterNodeList['sortlist'];
@@ -307,10 +309,7 @@ class MasterNodeList
 		$ret['daytilldrop'] = $this->ionRewardDropDays($block['blockid'], $ret['block24hour']);
 		$ret['lastUpdated'] = date('F j, Y, g:i a T');
 		Storage::put('results.json', json_encode($ret, JSON_PRETTY_PRINT));
-//		$fp = fopen('/var/www/public/json/results.json', 'w');
-//		fwrite($fp, json_encode($ret));
-//		fclose($fp);
-//		return $ret;
+		Storage::put('mnl.json', json_encode($ret1, JSON_PRETTY_PRINT));
 	}
 
 	public function rpinode()
@@ -361,6 +360,33 @@ class MasterNodeList
 		$dt1     = new DateTime("@0");
 		$dt2     = new DateTime("@$seconds");
 		return $dt1->diff($dt2)->format('%a');
+	}
+
+	function calculate_time_span($seconds)
+	{
+//		$seconds  = strtotime(date('Y-m-d H:i:s')) - strtotime($date);
+		$months = floor($seconds / (3600 * 24 * 30));
+		$day    = floor($seconds / (3600 * 24));
+		$hours  = floor($seconds / 3600);
+		$mins   = floor(($seconds - ($hours * 3600)) / 60);
+		$secs   = floor($seconds % 60);
+		if ($seconds < 60) {
+			$ret['num']  = $secs;
+			$ret['name'] = 'sec';
+		} else if ($seconds < 60 * 60) {
+			$ret['num']  = $mins;
+			$ret['name'] = 'min';
+		} else if ($seconds < 24 * 60 * 60) {
+			$ret['num']  = $hours;
+			$ret['name'] = 'hours';
+		} else if ($seconds < 24 * 60 * 60) {
+			$ret['num']  = $day;
+			$ret['name'] = 'days';
+		} else {
+			$ret['num']  = $months;
+			$ret['name'] = 'months';
+		}
+		return $ret;
 	}
 
 	public function lastblock()

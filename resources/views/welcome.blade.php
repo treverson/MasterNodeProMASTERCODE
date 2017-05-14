@@ -42,8 +42,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! $daytilldrop !!}</div>
-                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">Days to Drop</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! $daytilldrop['num'] !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">{!! $daytilldrop['name'] !!} to Drop</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
