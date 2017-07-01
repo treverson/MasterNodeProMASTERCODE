@@ -1,6 +1,6 @@
 <?php
 require_once 'coins.php';
-$wallet = new jsonRPCClient('http://' . $chc['user'] . ':' . $chc['pass'] . '@'.$chc['ip'].':' . $chc['port']);
+$wallet = new jsonRPCClient('http://' . $chc['user'] . ':' . $chc['pass'] . '@'.$chc['ip'].':' . $chc['port'].'/');
 if (isset($wallet)) {
 	$process = $wallet->getblockbynumber((int)$_REQUEST['block']);
 	foreach ($process['tx'] as $key => $value) {
