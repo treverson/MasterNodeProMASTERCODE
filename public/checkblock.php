@@ -4,7 +4,7 @@ $wallet = new jsonRPCClient('http://' . $chc['user'] . ':' . $chc['pass'] . '@'.
 if (isset($wallet)) {
 	try {
 		$blockhash = $wallet->getblockhash((int)$_REQUEST['block']);
-		$process = $wallet->getblock($blockhash['result']);
+		$process = $wallet->getblock($blockhash->result);
 //		foreach ($process['tx'] as $key => $value) {
 //			$tranX = $wallet->gettransaction($value);
 //			if (isset($tranX['vout'])) {
