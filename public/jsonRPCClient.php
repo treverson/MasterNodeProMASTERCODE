@@ -158,7 +158,6 @@ class jsonRPCClient {
 			$response = $fp;
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 			$response = json_decode($response,true);
-			echo $response;
 		} else {
 			echo $this->debug;
 			throw new Exception('Unable to connect to '.$this->url);
