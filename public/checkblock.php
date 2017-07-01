@@ -3,7 +3,8 @@ require_once 'coins.php';
 $wallet = new jsonRPCClient('http://' . $chc['user'] . ':' . $chc['pass'] . '@'.$chc['ip'].':' . $chc['port'].'/',true);
 if (isset($wallet)) {
 	try {
-		$process = $wallet->getblockhash((int)$_REQUEST['block']);
+		$blockhash = $wallet->getblockhash((int)$_REQUEST['block']);
+		$process = $wallet->getblock($blockhash['result']);
 //		foreach ($process['tx'] as $key => $value) {
 //			$tranX = $wallet->gettransaction($value);
 //			if (isset($tranX['vout'])) {
