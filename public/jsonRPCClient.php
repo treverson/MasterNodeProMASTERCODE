@@ -142,7 +142,7 @@ class jsonRPCClient {
 			CURLOPT_TIMEOUT => 30,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => json_encode($request),
+			CURLOPT_POSTFIELDS => $request,
 			CURLOPT_HTTPHEADER => array(
 				"cache-control: no-cache",
 				"content-type: application/json"
