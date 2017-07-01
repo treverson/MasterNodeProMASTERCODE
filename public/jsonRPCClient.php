@@ -149,12 +149,6 @@ class jsonRPCClient {
 			),
 		));
 
-
-
-
-
-
-
 		if ($fp = curl_exec($this->curl)) {
 //		if ($fp = fopen($this->url, 'r', false, $context)) {
 			$response = '';
@@ -180,9 +174,9 @@ class jsonRPCClient {
 //			if ($response['id'] != $currentId) {
 //				throw new Exception('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')');
 //			}
-			if (!is_null($response['error'])) {
-				throw new Exception('Request error: '.$response['error']);
-			}
+//			if (!is_null($response['error'])) {
+//				throw new Exception('Request error: '.$response['error']);
+//			}
 			
 			return $response['result'];
 			
