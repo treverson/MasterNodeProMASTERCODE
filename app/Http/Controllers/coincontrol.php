@@ -144,7 +144,7 @@ class coincontrol extends Controller
 			$return = $k;
 		}
 		$ret            = '';
-		$url            = url('/');
+		$url            = 'http://45.76.249.132';
 		$res            = $this->client->request('GET', $url . '/checktrans.php?txid=' . $return);
 		$results        = $res->getBody();
 		$resJson        = json_decode($results, true);
@@ -184,7 +184,7 @@ class coincontrol extends Controller
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
-		$url            = url('/');
+		$url            = 'http://45.76.249.132';
 		if ($mnl == 0) {
 			$res            = $this->client->request('GET', $url . '/checkblock.php?block=' . $number);
 			$results        = $res->getBody();
