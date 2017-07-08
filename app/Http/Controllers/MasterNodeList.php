@@ -229,7 +229,7 @@ class MasterNodeList
 
 	public function masterNodeListData()
 	{
-		$list = $nclist = [];
+		$list = $nclist = $sortlist = [];
 		$mnl  = Mnl::orderBy('id', 'desc')->get();
 		foreach ($mnl as $eachmnl) {
 			$data['status'] = $eachmnl['status'];
@@ -249,7 +249,7 @@ class MasterNodeList
 			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / count($list)) * 100), '0', '.', '');
 			$sortlist[$nclist[$key]['count']]['countb']       = 100 - $sortlist[$nclist[$key]['count']]['count'];
 		}
-		!is_null($sortlist) ? krsort($sortlist) : $sortlist;
+		(count($sortlist) > 0) ? krsort($sortlist) : $sortlist;
 		$data['sortlist'] = $sortlist;
 		$data['list']     = $list;
 		return $data;
