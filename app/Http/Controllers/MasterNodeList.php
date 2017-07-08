@@ -421,8 +421,13 @@ class MasterNodeList
 				$data['status'] = $split[0];
 				$data['addr']   = $split[2];
 				$splita         = explode(":", ltrim(rtrim($key)));
-				$data['ip']     = $splita[0];
-				$data['port']   = $splita[1];
+				if (count($splita) > 2) {
+					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".$splita[5].":".str_replace("]","",$splita[6]);
+					$data['port'] = $splita[7];
+				} else {
+					$data['ip']   = $splita[0];
+					$data['port'] = $splita[1];
+				}
 				$mnl            = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
 					$freegeoip    = $client->request(
