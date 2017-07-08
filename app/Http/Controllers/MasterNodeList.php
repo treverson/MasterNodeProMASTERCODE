@@ -450,7 +450,7 @@ class MasterNodeList
 		$ret['price_usd']      = $cmc[0]['price_usd'];
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
-		$ret['avgblocks']      = (count($array) > 0) ? $ret['block24hour'] / $total : 0;
+		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
 		$ret['iondaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
 		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
@@ -458,9 +458,9 @@ class MasterNodeList
 		$oneweektotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 week')))->sum('amt');
 		$onemonthtotal         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 month')))->sum('amt');
 		$oneyeartotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 year')))->sum('amt');
-		$ret['dailyaverage']   = (($oneweektotal / 7) / $total) * $ret['price_usd'];
-		$ret['weeklyaverage']  = (($onemonthtotal / 7) / $total) * $ret['price_usd'];
-		$ret['monthlyaverage'] = (($oneyeartotal / 12) / $total) * $ret['price_usd'];
+		$ret['dailyaverage']   = ($total > 0) ? (($oneweektotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
 		$totalNodes->price     = $cmc[0]['price_usd'];
 		$totalNodes->data      = json_encode($ret);
