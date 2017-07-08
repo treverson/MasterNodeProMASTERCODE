@@ -422,6 +422,7 @@ class MasterNodeList
 				$data['addr']   = $split[2];
 				$splita         = explode(":", ltrim(rtrim($key)));
 				if (count($splita) > 2) {
+					echo json_encode($splita);
 					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".$splita[5].":".str_replace("]","",$splita[6]);
 					$data['port'] = $splita[7];
 				} else {
