@@ -417,7 +417,7 @@ class MasterNodeList
 		Mnl::where('status', 'ENABLED')->update(['status' => 'OFFLINE']);
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
-				$split          = explode(" ", trim($value));
+				$split          = explode(" ", ltrim(rtrim($value)));
 				$data['status'] = $split[0];
 				$data['addr']   = $split[2];
 				$splita         = explode(":", $split[3]);
