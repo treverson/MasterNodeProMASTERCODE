@@ -462,7 +462,7 @@ class MasterNodeList
 		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
 		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
-		$totalNodes->price     = $cmc[0]['price_usd'];
+		$totalNodes->price     = $ret['price_usd'];
 		$totalNodes->data      = json_encode($ret);
 		$totalNodes->total     = $total;
 		$totalNodes->save();
