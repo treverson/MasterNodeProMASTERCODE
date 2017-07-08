@@ -418,6 +418,7 @@ class MasterNodeList
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$split          = explode(" ", ltrim(rtrim($value)));
+				echo json_encode($split);
 				$data['status'] = $split[0];
 				$data['addr']   = $split[2];
 				$splita         = explode(":", $split[3]);
