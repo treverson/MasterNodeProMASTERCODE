@@ -194,7 +194,7 @@ class MasterNodeList
 
 	public function averageBlockTime($blocksLastDay)
 	{
-		$total = (float)number_format((86400 / $blocksLastDay), '1', '.', '');
+		$total = (float)number_format(($blocksLastDay > 0) ? (86400 / $blocksLastDay) : 0, '1', '.', '');
 		return $total;
 	}
 
