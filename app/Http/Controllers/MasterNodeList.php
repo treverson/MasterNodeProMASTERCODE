@@ -423,7 +423,7 @@ class MasterNodeList
 				$splita         = explode(":", ltrim(rtrim($key)));
 				if (count($splita) > 2) {
 					echo json_encode($splita);
-					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".str_replace("]","",$splita[]);
+					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".str_replace("]","",$splita[5]);
 					$data['port'] = $splita[6];
 				} else {
 					$data['ip']   = $splita[0];
