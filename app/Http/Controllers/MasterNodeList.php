@@ -221,7 +221,7 @@ class MasterNodeList
 
 	public function masterNodeWorth($usdPrice)
 	{
-		$total = $usdPrice * 20000;
+		$total = $usdPrice * env('MASTERNODE_COINS_REQUIRED');
 		return $total;
 	}
 
@@ -295,7 +295,7 @@ class MasterNodeList
 		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
 		$ret['blockreward']     = $reward['reward'];
 		$ret['nextbreward']     = $reward['nextreward'];
-		$ret['MasternodeWorth'] = $ret['price_usd'] * env('MASTERNODE_COINS_REQUIRED');
+		$ret['MasternodeWorth'] = $this->masterNodeWorth($ret['price_usd']);
 		$ret['daytilldrop']     = "N/A";
 		$ret['blockstoday']     = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
 		$ret['dailyaverage']    = $tnjp['dailyaverage'];
