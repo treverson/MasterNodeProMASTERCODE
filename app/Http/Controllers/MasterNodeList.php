@@ -301,7 +301,7 @@ class MasterNodeList
 		$ret['dailyaverage']    = $tnjp['dailyaverage'];
 		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
 		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ?  24 / $ret['avgblocks'] : 0;
+		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ? 24 / $ret['avgblocks'] : 0;
 		$tnl                    = $totalNodes->toArray();
 		krsort($tnl);
 		$tnlc = collect($tnl);
@@ -404,12 +404,12 @@ class MasterNodeList
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=chc'
+			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=chc'
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
 		$resCMC     = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/'.env('COINMARKETCAPID').'/'
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
 		);
 		$contentCMC = $resCMC->getBody();
 		$cmc        = json_decode($contentCMC, true);
@@ -422,32 +422,33 @@ class MasterNodeList
 				$data['addr']   = $split[2];
 				$splita         = explode(":", ltrim(rtrim($key)));
 				if (count($splita) > 2) {
-					echo ltrim(rtrim($key));
 					$data['iptype'] = 'ipv6';
-					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".str_replace("]","",$splita[5]);
-					$data['port'] = $splita[6];
+					$data['ip']     = str_replace("[", "", $splita[0]) . ":" . $splita[1] . ":" . $splita[2] . ":" . $splita[3] . ":" . $splita[4] . ":" . str_replace("]", "", $splita[5]);
+					$data['port']   = $splita[6];
 				} else {
 					$data['iptype'] = 'ipv4';
-					$data['ip']   = $splita[0];
-					$data['port'] = $splita[1];
+					$data['ip']     = $splita[0];
+					$data['port']   = $splita[1];
 				}
-				$mnl            = Mnl::where('addr', $data['addr'])->first();
+				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-//					if ($data['iptype'] === 'ipv4') {
+					$geoipcontent = '';
+					try {
 						$freegeoip    = $client->request(
 							'GET', 'http://freegeoip.net/json/' . $data['ip']
 						);
 						$geoipcontent = $freegeoip->getBody();
-//					} else {
-//						$geoipcontent = '';
-//					}
-					$mnl          = new Mnl();
-					$mnl->status  = 'NEW';
-					$mnl->addr    = $data['addr'];
-					$mnl->ip      = $data['ip'];
-					$mnl->port    = $data['port'];
-					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
-					$mnl->data    = $geoipcontent;
+					}
+					catch (exception $e) {
+
+					}
+					$mnl         = new Mnl();
+					$mnl->status = 'NEW';
+					$mnl->addr   = $data['addr'];
+					$mnl->ip     = $data['ip'];
+					$mnl->port   = $data['port'];
+					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->data   = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
