@@ -1,16 +1,23 @@
 <?php
 require_once 'coins.php';
-$wallet = new jsonRPCClient('http://' . $ion['user'] . ':' . $ion['pass'] . '@127.0.0.1:' . $ion['port']);
+$wallet = new jsonRPCClient('http://' . $chc['user'] . ':' . $chc['pass'] . '@' . $chc['ip'] . ':' . $chc['port'] . '/');
 if (isset($wallet)) {
-	$process = $wallet->getblockbynumber((int)$_REQUEST['block']);
-	foreach ($process['tx'] as $key => $value) {
-		$tranX = $wallet->gettransaction($value);
-		if (isset($tranX['vout'])) {
-			$process['trans'][$key]['tx']   = $value;
-			foreach ($tranX['vout'] as $voutKey => $vout) {
-				$process['trans'][$key]['vout'][$voutKey] = $vout;
+	try {
+		$blockhash = $wallet->getblockhash((int)$_REQUEST['block']);
+		$process   = $wallet->getblock($blockhash);
+		foreach ($process['tx'] as $key => $value) {
+			$transactionhash = $wallet->getrawtransaction($value);
+			$tranX = $wallet->decoderawtransaction($transactionhash);
+			if (isset($tranX['vout'])) {
+				$process['trans'][$key]['tx'] = $value;
+				foreach ($tranX['vout'] as $voutKey => $vout) {
+					$process['trans'][$key]['vout'][$voutKey] = $vout;
+				}
 			}
 		}
+		echo json_encode($process, JSON_PRETTY_PRINT);
 	}
-	echo json_encode($process, JSON_PRETTY_PRINT);
+	catch (exception $e) {
+		echo $e;
+	}
 }

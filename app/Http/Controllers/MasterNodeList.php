@@ -182,7 +182,7 @@ class MasterNodeList
 	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
 	{
 		$reward          = $this->reward($lastBlock);
-		$blocksTotal     = number_format(($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 2), '8', '.', '');
+		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 2) : 0, '8', '.', '');
 		$basedaily       = $blocksTotal * $usdPrice;
 		$total           = number_format($basedaily, '2', '.', ',');
 		$data['daily']   = (float)$total;
@@ -194,7 +194,7 @@ class MasterNodeList
 
 	public function averageBlockTime($blocksLastDay)
 	{
-		$total = (float)number_format((86400 / $blocksLastDay), '1', '.', '');
+		$total = (float)number_format(($blocksLastDay > 0) ? (86400 / $blocksLastDay) : 0, '1', '.', '');
 		return $total;
 	}
 
@@ -229,7 +229,7 @@ class MasterNodeList
 
 	public function masterNodeListData()
 	{
-		$list = $nclist = [];
+		$list = $nclist = $sortlist = [];
 		$mnl  = Mnl::orderBy('id', 'desc')->get();
 		foreach ($mnl as $eachmnl) {
 			$data['status'] = $eachmnl['status'];
@@ -249,7 +249,7 @@ class MasterNodeList
 			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / count($list)) * 100), '0', '.', '');
 			$sortlist[$nclist[$key]['count']]['countb']       = 100 - $sortlist[$nclist[$key]['count']]['count'];
 		}
-		krsort($sortlist);
+		(count($sortlist) > 0) ? krsort($sortlist) : $sortlist;
 		$data['sortlist'] = $sortlist;
 		$data['list']     = $list;
 		return $data;
@@ -283,12 +283,12 @@ class MasterNodeList
 			$bd++;
 		}
 		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
-		$ret['avgblocks']       = $ret['block24hour'] / $firstNode['total'];
-		$ret['iondaily']        = ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 2);
+		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
+		$ret['iondaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 2) : 0;
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
-		$ret['avgblocktime']    = 86400 / $ret['block24hour'];
+		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
 		$ret['blockreward']     = $reward['reward'];
 		$ret['nextbreward']     = $reward['nextreward'];
 		$ret['MasternodeWorth'] = $ret['price_usd'] * 20000;
@@ -297,7 +297,7 @@ class MasterNodeList
 		$ret['dailyaverage']    = $tnjp['dailyaverage'];
 		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
 		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']   = 24 / $ret['avgblocks'];
+		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ?  24 / $ret['avgblocks'] : 0;
 		$tnl                    = $totalNodes->toArray();
 		krsort($tnl);
 		$tnlc = collect($tnl);
@@ -400,12 +400,12 @@ class MasterNodeList
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://45.32.223.231/masternodelist.php?type=ion'
+			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=chc'
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
 		$resCMC     = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/ion/'
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/'.env('COINMARKETCAPID').'/'
 		);
 		$contentCMC = $resCMC->getBody();
 		$cmc        = json_decode($contentCMC, true);
@@ -450,19 +450,19 @@ class MasterNodeList
 		$ret['price_usd']      = $cmc[0]['price_usd'];
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
-		$ret['avgblocks']      = $ret['block24hour'] / $total;
-		$ret['iondaily']       = $rewardb24total / count($list);
+		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
+		$ret['iondaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
 		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
 		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
 		$oneweektotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 week')))->sum('amt');
 		$onemonthtotal         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 month')))->sum('amt');
 		$oneyeartotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 year')))->sum('amt');
-		$ret['dailyaverage']   = (($oneweektotal / 7) / $total) * $ret['price_usd'];
-		$ret['weeklyaverage']  = (($onemonthtotal / 7) / $total) * $ret['price_usd'];
-		$ret['monthlyaverage'] = (($oneyeartotal / 12) / $total) * $ret['price_usd'];
+		$ret['dailyaverage']   = ($total > 0) ? (($oneweektotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
-		$totalNodes->price     = $cmc[0]['price_usd'];
+		$totalNodes->price     = $ret['price_usd'];
 		$totalNodes->data      = json_encode($ret);
 		$totalNodes->total     = $total;
 		$totalNodes->save();

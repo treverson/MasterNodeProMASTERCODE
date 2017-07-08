@@ -143,10 +143,11 @@ class coincontrol extends Controller
 		foreach ($_REQUEST as $k => $value) {
 			$return = $k;
 		}
-		$ret     = '';
-		$res     = $this->client->request('GET', 'http://45.32.223.231/checktrans.php?txid=' . $return);
-		$results = $res->getBody();
-		$resJson = json_decode($results, true);
+		$ret            = '';
+		$url            = 'http://45.76.249.132';
+		$res            = $this->client->request('GET', $url . '/checktrans.php?txid=' . $return);
+		$results        = $res->getBody();
+		$resJson        = json_decode($results, true);
 		$block          = new Blocks();
 		$block->block   = $resJson['hash'];
 		$block->blockid = $resJson['height'];
@@ -161,9 +162,9 @@ class coincontrol extends Controller
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
-									$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
-									$block->addr    = $addValue;
-									$block->amt     = $vout['value'];
+									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
+									$block->addr = $addValue;
+									$block->amt  = $vout['value'];
 									$mnl->save();
 								}
 							}
@@ -183,10 +184,11 @@ class coincontrol extends Controller
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
+		$url            = 'http://45.76.249.132';
 		if ($mnl == 0) {
-			$res     = $this->client->request('GET', 'http://45.32.223.231/checkblock.php?block=' . $number);
-			$results = $res->getBody();
-			$resJson = json_decode($results, true);
+			$res            = $this->client->request('GET', $url . '/checkblock.php?block=' . $number);
+			$results        = $res->getBody();
+			$resJson        = json_decode($results, true);
 			$block          = new Blocks();
 			$block->block   = $resJson['hash'];
 			$block->blockid = $resJson['height'];
@@ -202,9 +204,9 @@ class coincontrol extends Controller
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();
 									if (count($mnl) > 0) {
-										$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
-										$block->addr    = $addValue;
-										$block->amt     = $vout['value'];
+										$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
+										$block->addr = $addValue;
+										$block->amt  = $vout['value'];
 										$mnl->save();
 									}
 								}
