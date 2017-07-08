@@ -400,12 +400,12 @@ class MasterNodeList
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://45.32.223.231/masternodelist.php?type=ion'
+			'GET', 'http://45.32.223.231/masternodelist.php?type=chc'
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
 		$resCMC     = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/ion/'
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/chaincoin/'
 		);
 		$contentCMC = $resCMC->getBody();
 		$cmc        = json_decode($contentCMC, true);
