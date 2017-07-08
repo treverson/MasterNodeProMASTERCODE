@@ -249,7 +249,7 @@ class MasterNodeList
 			$sortlist[$nclist[$key]['count']]['count']        = number_format((($nclist[$key]['count'] / count($list)) * 100), '0', '.', '');
 			$sortlist[$nclist[$key]['count']]['countb']       = 100 - $sortlist[$nclist[$key]['count']]['count'];
 		}
-		krsort($sortlist);
+		!is_null($sortlist) ? krsort($sortlist) : $sortlist;
 		$data['sortlist'] = $sortlist;
 		$data['list']     = $list;
 		return $data;
