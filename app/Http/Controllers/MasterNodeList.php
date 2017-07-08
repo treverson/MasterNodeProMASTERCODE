@@ -202,7 +202,7 @@ class MasterNodeList
 		return $total;
 	}
 
-	public function ionRewardDropDays($lastBlock, $blocksLastDay)
+	public function RewardDropDays($lastBlock, $blocksLastDay)
 	{
 		$avgBlockTime = $this->averageBlockTime($blocksLastDay);
 		$reward       = $this->reward($lastBlock);
@@ -286,7 +286,7 @@ class MasterNodeList
 			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
 			$bd++;
 		}
-		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
+//		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
 		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
 		$ret['price_usd']       = $firstNode['price'];
@@ -310,7 +310,7 @@ class MasterNodeList
 		} else {
 			$ret['totalnodeslist'] = $tnlc->nth(60);
 		}
-		$ret['daytilldrop'] = $this->ionRewardDropDays($block['blockid'], $ret['block24hour']);
+		$ret['daytilldrop'] = $this->RewardDropDays($block['blockid'], $ret['block24hour']);
 		$ret['lastUpdated'] = date('F j, Y, g:i a T');
 		Storage::put('results.json', json_encode($ret, JSON_PRETTY_PRINT));
 		Storage::put('mnl.json', json_encode($ret1, JSON_PRETTY_PRINT));
