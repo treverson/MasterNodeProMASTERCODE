@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-6 bardata">
                         <div class="bardatatitle">Masternode Block Award</div>
-                        <div class="bardatadata"><span class="blue">{!! $blockreward / 2 !!}</span></div>
+                        <div class="bardatadata"><span class="blue">{!! $blockreward / 4 !!}</span></div>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-6 bardata">
                         <div class="bardatatitle">{!! $daytilldrop['name'] !!} to Award Drop</div>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-6 bardata">
                         <div class="bardatatitle">Next MN Block Award</div>
-                        <div class="bardatadata"><span class="blue">{!! $nextbreward / 2 !!}</span></div>
+                        <div class="bardatadata"><span class="blue">{!! $nextbreward / 4 !!}</span></div>
                     </div>
                     <div class="col-sm-3 col-xs-3  hidden-lg hidden-md">
                     </div>
