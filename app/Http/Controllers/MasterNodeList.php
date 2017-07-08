@@ -433,14 +433,14 @@ class MasterNodeList
 				}
 				$mnl            = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					if ($data['iptype'] === 'ipv4') {
+//					if ($data['iptype'] === 'ipv4') {
 						$freegeoip    = $client->request(
 							'GET', 'http://freegeoip.net/json/' . $data['ip']
 						);
 						$geoipcontent = $freegeoip->getBody();
-					} else {
-						$geoipcontent = '';
-					}
+//					} else {
+//						$geoipcontent = '';
+//					}
 					$mnl          = new Mnl();
 					$mnl->status  = 'NEW';
 					$mnl->addr    = $data['addr'];
