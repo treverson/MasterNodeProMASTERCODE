@@ -418,10 +418,9 @@ class MasterNodeList
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$split          = explode(" ", ltrim(rtrim($value)));
-				echo json_encode($split);
 				$data['status'] = $split[0];
 				$data['addr']   = $split[2];
-				$splita         = explode(":", $split[3]);
+				$splita         = explode(":", ltrim(rtrim($key)));
 				$data['ip']     = $splita[0];
 				$data['port']   = $splita[1];
 				$mnl            = Mnl::where('addr', $data['addr'])->first();
