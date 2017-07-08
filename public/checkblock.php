@@ -6,7 +6,8 @@ if (isset($wallet)) {
 		$blockhash = $wallet->getblockhash((int)$_REQUEST['block']);
 		$process   = $wallet->getblock($blockhash);
 		foreach ($process['tx'] as $key => $value) {
-			$tranX = $wallet->gettransaction($value);
+			$transactionhash = $wallet->getrawtransaction($value);
+			$tranX = $wallet->decoderawtransaction($transactionhash);
 			if (isset($tranX['vout'])) {
 				$process['trans'][$key]['tx'] = $value;
 				foreach ($tranX['vout'] as $voutKey => $vout) {
