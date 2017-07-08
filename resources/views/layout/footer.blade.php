@@ -5,6 +5,6 @@
         </div>
         <div class="col-md-3 dateupdated hidden-xs hidden-sm">Data Updated: {!! $lastUpdated !!}</div>
         <div class="col-md-3 col-xs-12">Create a Masternode: <a href="http://www.chaincoin.org/how-to-set-up-masternodes/" target="_blank">chaincoin.org</a></div>
-        <div class="col-md-3 col-xs-12">Donate: CGb9pMCU6iQ3rzo3ojx38PFswU5xFZJDZw</div>
+        <div class="col-md-3 col-xs-12">Donate: CVZXfffMPTPFnUBAeVVWGHFhzEwmK6JrKs</div>
     </div>
 </footer>
