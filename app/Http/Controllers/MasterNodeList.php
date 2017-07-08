@@ -423,18 +423,24 @@ class MasterNodeList
 				$splita         = explode(":", ltrim(rtrim($key)));
 				if (count($splita) > 2) {
 					echo json_encode($splita);
+					$data['iptype'] = 'ipv6';
 					$data['ip']   = str_replace("[","",$splita[0]).":".$splita[1].":".$splita[2].":".$splita[3].":".$splita[4].":".str_replace("]","",$splita[5]);
 					$data['port'] = $splita[6];
 				} else {
+					$data['iptype'] = 'ipv4';
 					$data['ip']   = $splita[0];
 					$data['port'] = $splita[1];
 				}
 				$mnl            = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					$freegeoip    = $client->request(
-						'GET', 'http://freegeoip.net/json/' . $data['ip']
-					);
-					$geoipcontent = $freegeoip->getBody();
+					if ($data['iptype'] === 'ipv4') {
+						$freegeoip    = $client->request(
+							'GET', 'http://freegeoip.net/json/' . $data['ip']
+						);
+						$geoipcontent = $freegeoip->getBody();
+					} else {
+						$geoipcontent = '';
+					}
 					$mnl          = new Mnl();
 					$mnl->status  = 'NEW';
 					$mnl->addr    = $data['addr'];
