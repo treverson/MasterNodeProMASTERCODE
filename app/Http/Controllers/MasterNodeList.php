@@ -12,31 +12,35 @@ use Illuminate\Support\Facades\Storage;
 
 class MasterNodeList
 {
-	private function reward($height)
+	public function reward($height)
 	{
-		if ($height <= 125146) {
-			$ret['height']     = 125146;
-			$ret['reward']     = 23;
-			$ret['nextreward'] = 17;
-		} elseif ($height >= 568622) {
+		if ($height >= 700799) {
+			$ret['height']     = 700799;
+			$ret['reward']     = 16;
+			$ret['nextreward'] = 8;
+		} elseif ($height >= 1401599) {
 			$ret['height']     = 568622;
-			$ret['reward']     = 17;
-			$ret['nextreward'] = 11.5;
-		} elseif ($height >= 1012098) {
+			$ret['reward']     = 8;
+			$ret['nextreward'] = 4;
+		} elseif ($height >= 2102399) {
 			$ret['height']     = 1012098;
-			$ret['reward']     = 11.5;
-			$ret['nextreward'] = 5.75;
-		} elseif ($height >= 1455574) {
+			$ret['reward']     = 4;
+			$ret['nextreward'] = 2;
+		} elseif ($height >= 2803199) {
 			$ret['height']     = 1455574;
-			$ret['reward']     = 5.75;
-			$ret['nextreward'] = 1.85;
-		} elseif ($height >= 3675950) {
+			$ret['reward']     = 2;
+			$ret['nextreward'] = 1;
+		} elseif ($height >= 3503999) {
 			$ret['height']     = 3675950;
-			$ret['reward']     = 1.85;
-			$ret['nextreward'] = 0.2;
+			$ret['reward']     = 1;
+			$ret['nextreward'] = .5;
+		} elseif ($height >= 4204799) {
+			$ret['height']     = 3675950;
+			$ret['reward']     = .5;
+			$ret['nextreward'] = .25;
 		} else {
 			$ret['height']     = 20000000;
-			$ret['reward']     = 0.2;
+			$ret['reward']     = 0;
 			$ret['nextreward'] = "N/A";
 		}
 		return $ret;
@@ -182,7 +186,7 @@ class MasterNodeList
 	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
 	{
 		$reward          = $this->reward($lastBlock);
-		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 2) : 0, '8', '.', '');
+		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 4) : 0, '8', '.', '');
 		$basedaily       = $blocksTotal * $usdPrice;
 		$total           = number_format($basedaily, '2', '.', ',');
 		$data['daily']   = (float)$total;
@@ -211,7 +215,7 @@ class MasterNodeList
 	public function masterNodeCurrentReward($lastBlock)
 	{
 		$reward = $this->reward($lastBlock);
-		$total  = $reward['reward'] / 2;
+		$total  = $reward['reward'] / 4;
 		return $total;
 	}
 
@@ -284,7 +288,7 @@ class MasterNodeList
 		}
 		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['iondaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 2) : 0;
+		$ret['iondaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 4) : 0;
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
