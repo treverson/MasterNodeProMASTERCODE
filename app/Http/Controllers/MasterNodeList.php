@@ -439,7 +439,7 @@ class MasterNodeList
 						);
 						$geoipcontent = $freegeoip->getBody();
 					}
-					catch (exception $e) {
+					catch (\Exception $e) {
 
 					}
 					$mnl         = new Mnl();
