@@ -16,7 +16,7 @@
                     <th>City</th>
                     <th>Region</th>
                     <th>Country</th>
-                    <th>ION Generated</th>
+                    <th>{!! strtoupper(env('COIN')) !!} Generated</th>
                 </tr>
                 </thead>
                 @foreach($mnl as $key => $value)
