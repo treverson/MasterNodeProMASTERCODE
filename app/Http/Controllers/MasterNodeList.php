@@ -288,7 +288,7 @@ class MasterNodeList
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
-		$ret['avgblocktime']    = 86400 / $ret['block24hour'];
+		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
 		$ret['blockreward']     = $reward['reward'];
 		$ret['nextbreward']     = $reward['nextreward'];
 		$ret['MasternodeWorth'] = $ret['price_usd'] * 20000;
@@ -297,7 +297,7 @@ class MasterNodeList
 		$ret['dailyaverage']    = $tnjp['dailyaverage'];
 		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
 		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']   = 24 / $ret['avgblocks'];
+		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ?  24 / $ret['avgblocks'] : 0;
 		$tnl                    = $totalNodes->toArray();
 		krsort($tnl);
 		$tnlc = collect($tnl);
