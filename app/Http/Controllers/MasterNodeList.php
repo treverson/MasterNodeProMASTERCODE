@@ -155,7 +155,7 @@ class MasterNodeList
 		$ret['currentUSDPrice']         = (float)number_format($dataCore['firstNode']['price'], '2', '.', '');
 		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
 		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
-		$ret['daysTillRewardDrop']      = $this->ionRewardDropDays($block['blockid'], $ret['blocksLastDay']);
+		$ret['daysTillRewardDrop']      = $this->RewardDropDays($block['blockid'], $ret['blocksLastDay']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
 		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
