@@ -140,23 +140,25 @@ class coincontrol extends Controller
 
 	public function block($type)
 	{
+		$coin = new coin();
 		foreach ($_REQUEST as $k => $value) {
 			$return = $k;
 		}
 		$ret     = '';
-		$res     = $this->client->request('GET', 'http://45.32.223.231/checktrans.php?txid=' . $return);
+		$res     = $this->client->request('GET', 'http://'.env('WALLET_IP').'/checktrans.php?txid=' . $return);
 		$results = $res->getBody();
 		$resJson = json_decode($results, true);
 		$block          = new Blocks();
 		$block->block   = $resJson['hash'];
 		$block->blockid = $resJson['height'];
+		$coindata = $coin->walletdata($resJson['height']);
 		$block->addr    = "n/a";
 		$block->amt     = 0;
 		$block->data    = json_encode($resJson);
 		foreach ($resJson['trans'] as $value) {
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
-					if ($vout['value'] >= 8.5 and $vout['value'] < 8.505) {
+					if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
 						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
@@ -178,18 +180,20 @@ class coincontrol extends Controller
 
 	public function blocknumber($number)
 	{
+		$coin = new coin();
 		foreach ($_REQUEST as $k => $value) {
 			$return = $k;
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
 		if ($mnl == 0) {
-			$res     = $this->client->request('GET', 'http://45.32.223.231/checkblock.php?block=' . $number);
+			$res     = $this->client->request('GET', 'http://'.env('WALLET_IP').'/checkblock.php?block=' . $number);
 			$results = $res->getBody();
 			$resJson = json_decode($results, true);
 			$block          = new Blocks();
 			$block->block   = $resJson['hash'];
 			$block->blockid = $resJson['height'];
+			$coindata = $coin->walletdata($resJson['height']);
 			$block->addr    = "n/a";
 			$block->amt     = 0;
 			$block->data    = json_encode($resJson);
@@ -197,7 +201,7 @@ class coincontrol extends Controller
 			foreach ($resJson['trans'] as $value) {
 				if (isset($value['vout'])) {
 					foreach ($value['vout'] as $voutKey => $vout) {
-						if ($vout['value'] >= 8.5 and $vout['value'] < 8.505) {
+						if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
 							if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();
