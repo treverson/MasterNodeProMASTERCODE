@@ -163,9 +163,9 @@ class coincontrol extends Controller
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
-									$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
-									$block->addr    = $addValue;
-									$block->amt     = $vout['value'];
+									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
+									$block->addr = $addValue;
+									$block->amt  = $vout['value'];
 									$mnl->save();
 								}
 							}
@@ -186,6 +186,7 @@ class coincontrol extends Controller
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
+		$url            = 'http://45.76.249.132';
 		if ($mnl == 0) {
 			$res     = $this->client->request('GET', 'http://'.env('WALLET_IP').'/checkblock.php?block=' . $number);
 			$results = $res->getBody();
@@ -206,9 +207,9 @@ class coincontrol extends Controller
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();
 									if (count($mnl) > 0) {
-										$mnl->total = Blocks::where('addr',$addValue)->sum('amt');
-										$block->addr    = $addValue;
-										$block->amt     = $vout['value'];
+										$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
+										$block->addr = $addValue;
+										$block->amt  = $vout['value'];
 										$mnl->save();
 									}
 								}

@@ -9,8 +9,8 @@
                         <div class="bardatadata"><span class="orange">{!! $firstNode['total'] !!}</span></div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 bardata">
-                        <div class="bardatatitle">Daily ION Earned</div>
-                        <div class="bardatadata"><span class="blue">{!! number_format($iondaily,'2','.','') !!}</span></div>
+                        <div class="bardatatitle">Daily {!! strtoupper(env('COIN')) !!} Earned</div>
+                        <div class="bardatadata"><span class="blue">{!! number_format($coindaily,'2','.','') !!}</span></div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 bardata">
                         <div class="bardatatitle">Daily Income</div>
