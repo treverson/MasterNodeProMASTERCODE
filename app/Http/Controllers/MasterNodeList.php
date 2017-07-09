@@ -363,7 +363,7 @@ class MasterNodeList extends coin
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://45.32.223.231/masternodelist.php?type=' . env('COIN')
+			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=' . env('COIN')
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
