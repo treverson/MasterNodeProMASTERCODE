@@ -11,7 +11,7 @@
                 <thead>
                 <tr>
                     <th>Status</th>
-                    <th>ION Address</th>
+                    <th>{!! strtoupper(env('COIN')) !!} Address</th>
                     <th>Tag</th>
                     <th>City</th>
                     <th>Region</th>
