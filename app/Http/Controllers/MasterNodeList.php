@@ -158,7 +158,7 @@ class MasterNodeList
 		$ret['daysTillRewardDrop']      = $this->RewardDropDays($block['blockid'], $ret['blocksLastDay']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
 		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
-		$ret['masterNodeCoinsRequired'] = env('MASTERNODE_COINS_REQUIRED');
+		$ret['masterNodeCoinsRequired'] = (float)env('MASTERNODE_COINS_REQUIRED');
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
 		$ret['height']                  = $block['blockid'];
 		$ret['reward']                  = $this->reward($block['blockid']);
