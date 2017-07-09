@@ -153,7 +153,7 @@ class MasterNodeList extends coin
 	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
 	{
 		$reward          = $this->reward($lastBlock);
-		$blocksTotal     = number_format(($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))), '8', '.', '');
+		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0, '8', '.', '');
 		$basedaily       = $blocksTotal * $usdPrice;
 		$total           = number_format($basedaily, '2', '.', ',');
 		$data['daily']   = (float)$total;
