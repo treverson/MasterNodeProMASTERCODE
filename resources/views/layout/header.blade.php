@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ChainCoin MasterNodes</title>
+    <title>{!! strtoupper(env('COIN')) !!} MasterNodes</title>
     <link rel="shortcut icon" href="https://pivx.org/wp-content/uploads/2017/02/48x48.png" />
     <!-- Fonts -->
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
