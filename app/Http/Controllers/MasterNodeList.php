@@ -203,7 +203,7 @@ class MasterNodeList
 		return $total;
 	}
 
-	public function RewardDropDays($lastBlock, $blocksLastDay)
+	public function rewardDropDays($lastBlock, $blocksLastDay)
 	{
 		$avgBlockTime = $this->averageBlockTime($blocksLastDay);
 		$reward       = $this->reward($lastBlock);
@@ -287,7 +287,6 @@ class MasterNodeList
 			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
 			$bd++;
 		}
-//		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
 		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
 		$ret['price_usd']       = $firstNode['price'];
@@ -359,14 +358,6 @@ class MasterNodeList
 		return view('welcome', $ret);
 	}
 
-	private function secondstodays($seconds)
-	{
-		$seconds = number_format($seconds, '0', '.', '');
-		$dt1     = new DateTime("@0");
-		$dt2     = new DateTime("@$seconds");
-		return $dt1->diff($dt2)->format('%a');
-	}
-
 	function calculate_time_span($seconds)
 	{
 //		$seconds  = strtotime(date('Y-m-d H:i:s')) - strtotime($date);
@@ -405,7 +396,7 @@ class MasterNodeList
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=chc'
+			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type='.env('COIN')
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
