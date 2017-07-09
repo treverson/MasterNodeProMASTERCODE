@@ -394,17 +394,19 @@ class MasterNodeList extends coin
 					$mnl->addr   = $data['addr'];
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
-					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
-					$mnl->data   = $geoipcontent;
+					$mnl->total  = 0;
+//					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->data = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
 						$mnl->status = 'NEW';
 					}
-					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->total = 0;
+//					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$geoipcontent = $mnl->data;
 				}
-				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
+//				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
 				$data['ipData'] = json_decode($geoipcontent, true);
 				$list[]         = $data;
 				$mnl->save();
