@@ -363,7 +363,7 @@ class MasterNodeList extends coin
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://45.32.223.231/masternodelist.php?type=' . env('COIN')
+			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=' . env('COIN')
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
@@ -415,7 +415,7 @@ class MasterNodeList extends coin
 		$ret['price_usd']      = $cmc[0]['price_usd'];
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
-		$ret['avgblocks']      = $ret['block24hour'] / $total;
+		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
 		$ret['iondaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
 		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
