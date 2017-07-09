@@ -12,31 +12,35 @@ use Illuminate\Support\Facades\Storage;
 
 class MasterNodeList
 {
-	private function reward($height)
+	public function reward($height)
 	{
-		if ($height <= 125146) {
-			$ret['height']     = 125146;
-			$ret['reward']     = 23;
-			$ret['nextreward'] = 17;
-		} elseif ($height >= 568622) {
-			$ret['height']     = 568622;
-			$ret['reward']     = 17;
-			$ret['nextreward'] = 11.5;
-		} elseif ($height >= 1012098) {
-			$ret['height']     = 1012098;
-			$ret['reward']     = 11.5;
-			$ret['nextreward'] = 5.75;
-		} elseif ($height >= 1455574) {
-			$ret['height']     = 1455574;
-			$ret['reward']     = 5.75;
-			$ret['nextreward'] = 1.85;
-		} elseif ($height >= 3675950) {
-			$ret['height']     = 3675950;
-			$ret['reward']     = 1.85;
-			$ret['nextreward'] = 0.2;
+		if ($height <= 700799) {
+			$ret['height']     = 700799;
+			$ret['reward']     = 16;
+			$ret['nextreward'] = 8;
+		} elseif ($height <= 1401599) {
+			$ret['height']     = 1401599;
+			$ret['reward']     = 8;
+			$ret['nextreward'] = 4;
+		} elseif ($height <= 2102399) {
+			$ret['height']     = 2102399;
+			$ret['reward']     = 4;
+			$ret['nextreward'] = 2;
+		} elseif ($height <= 2803199) {
+			$ret['height']     = 2803199;
+			$ret['reward']     = 2;
+			$ret['nextreward'] = 1;
+		} elseif ($height <= 3503999) {
+			$ret['height']     = 3503999;
+			$ret['reward']     = 1;
+			$ret['nextreward'] = .5;
+		} elseif ($height <= 4204799) {
+			$ret['height']     = 4204799;
+			$ret['reward']     = .5;
+			$ret['nextreward'] = .25;
 		} else {
 			$ret['height']     = 20000000;
-			$ret['reward']     = 0.2;
+			$ret['reward']     = 0;
 			$ret['nextreward'] = "N/A";
 		}
 		return $ret;
@@ -151,9 +155,10 @@ class MasterNodeList
 		$ret['currentUSDPrice']         = (float)number_format($dataCore['firstNode']['price'], '2', '.', '');
 		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
 		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
-		$ret['daysTillRewardDrop']      = $this->ionRewardDropDays($block['blockid'], $ret['blocksLastDay']);
+		$ret['daysTillRewardDrop']      = $this->RewardDropDays($block['blockid'], $ret['blocksLastDay']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
 		$ret['blocksSinceStartOfDay']   = $this->blocksToday();
+		$ret['masterNodeCoinsRequired'] = (float)env('MASTERNODE_COINS_REQUIRED');
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
 		$ret['height']                  = $block['blockid'];
 		$ret['reward']                  = $this->reward($block['blockid']);
@@ -182,7 +187,7 @@ class MasterNodeList
 	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
 	{
 		$reward          = $this->reward($lastBlock);
-		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / 2) : 0, '8', '.', '');
+		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0, '8', '.', '');
 		$basedaily       = $blocksTotal * $usdPrice;
 		$total           = number_format($basedaily, '2', '.', ',');
 		$data['daily']   = (float)$total;
@@ -198,7 +203,7 @@ class MasterNodeList
 		return $total;
 	}
 
-	public function ionRewardDropDays($lastBlock, $blocksLastDay)
+	public function RewardDropDays($lastBlock, $blocksLastDay)
 	{
 		$avgBlockTime = $this->averageBlockTime($blocksLastDay);
 		$reward       = $this->reward($lastBlock);
@@ -211,13 +216,13 @@ class MasterNodeList
 	public function masterNodeCurrentReward($lastBlock)
 	{
 		$reward = $this->reward($lastBlock);
-		$total  = $reward['reward'] / 2;
+		$total  = $reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'));
 		return $total;
 	}
 
 	public function masterNodeWorth($usdPrice)
 	{
-		$total = $usdPrice * 20000;
+		$total = $usdPrice * env('MASTERNODE_COINS_REQUIRED');
 		return $total;
 	}
 
@@ -275,29 +280,29 @@ class MasterNodeList
 		$ret['block']       = $block;
 		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
 		$bd                 = 0;
-		$bspec              = 1350;
+		$bspec              = (86400 / env('BLOCK_TIME_SECONDS'));
 		while ($bd <= 6) {
 			$bds                                 = $bd - 1;
 			$count                               = Blocks::where('created_at', '>', date("Y-m-d 00:00:00", strtotime('-' . $bd . ' days')))->where('created_at', '<', date("Y-m-d 00:00:00", strtotime('-' . $bds . ' days')))->count();
 			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
 			$bd++;
 		}
-		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
+//		$rewardb24total         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->sum('amt');
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['iondaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / 2) : 0;
+		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
 		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
 		$ret['blockreward']     = $reward['reward'];
 		$ret['nextbreward']     = $reward['nextreward'];
-		$ret['MasternodeWorth'] = $ret['price_usd'] * 20000;
+		$ret['MasternodeWorth'] = $this->masterNodeWorth($ret['price_usd']);
 		$ret['daytilldrop']     = "N/A";
 		$ret['blockstoday']     = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
 		$ret['dailyaverage']    = $tnjp['dailyaverage'];
 		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
 		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ?  24 / $ret['avgblocks'] : 0;
+		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ? 24 / $ret['avgblocks'] : 0;
 		$tnl                    = $totalNodes->toArray();
 		krsort($tnl);
 		$tnlc = collect($tnl);
@@ -306,7 +311,7 @@ class MasterNodeList
 		} else {
 			$ret['totalnodeslist'] = $tnlc->nth(60);
 		}
-		$ret['daytilldrop'] = $this->ionRewardDropDays($block['blockid'], $ret['block24hour']);
+		$ret['daytilldrop'] = $this->RewardDropDays($block['blockid'], $ret['block24hour']);
 		$ret['lastUpdated'] = date('F j, Y, g:i a T');
 		Storage::put('results.json', json_encode($ret, JSON_PRETTY_PRINT));
 		Storage::put('mnl.json', json_encode($ret1, JSON_PRETTY_PRINT));
@@ -400,12 +405,12 @@ class MasterNodeList
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=chc'
+			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=chc'
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
 		$resCMC     = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/'.env('COINMARKETCAPID').'/'
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
 		);
 		$contentCMC = $resCMC->getBody();
 		$cmc        = json_decode($contentCMC, true);
@@ -413,25 +418,38 @@ class MasterNodeList
 		Mnl::where('status', 'ENABLED')->update(['status' => 'OFFLINE']);
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
-				$split          = explode(" ", trim($value));
+				$split          = explode(" ", ltrim(rtrim($value)));
 				$data['status'] = $split[0];
 				$data['addr']   = $split[2];
-				$splita         = explode(":", $split[3]);
-				$data['ip']     = $splita[0];
-				$data['port']   = $splita[1];
-				$mnl            = Mnl::where('addr', $data['addr'])->first();
+				$splita         = explode(":", ltrim(rtrim($key)));
+				if (count($splita) > 2) {
+					$data['iptype'] = 'ipv6';
+					$data['ip']     = str_replace("[", "", $splita[0]) . ":" . $splita[1] . ":" . $splita[2] . ":" . $splita[3] . ":" . $splita[4] . ":" . str_replace("]", "", $splita[5]);
+					$data['port']   = $splita[6];
+				} else {
+					$data['iptype'] = 'ipv4';
+					$data['ip']     = $splita[0];
+					$data['port']   = $splita[1];
+				}
+				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					$freegeoip    = $client->request(
-						'GET', 'http://freegeoip.net/json/' . $data['ip']
-					);
-					$geoipcontent = $freegeoip->getBody();
-					$mnl          = new Mnl();
-					$mnl->status  = 'NEW';
-					$mnl->addr    = $data['addr'];
-					$mnl->ip      = $data['ip'];
-					$mnl->port    = $data['port'];
-					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
-					$mnl->data    = $geoipcontent;
+					$geoipcontent = '';
+					try {
+						$freegeoip    = $client->request(
+							'GET', 'http://freegeoip.net/json/' . $data['ip']
+						);
+						$geoipcontent = $freegeoip->getBody();
+					}
+					catch (\Exception $e) {
+
+					}
+					$mnl         = new Mnl();
+					$mnl->status = 'NEW';
+					$mnl->addr   = $data['addr'];
+					$mnl->ip     = $data['ip'];
+					$mnl->port   = $data['port'];
+					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->data   = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {

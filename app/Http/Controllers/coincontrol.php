@@ -157,7 +157,7 @@ class coincontrol extends Controller
 		foreach ($resJson['trans'] as $value) {
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
-					if ($vout['value'] >= 11.5 and $vout['value'] < 12) {
+					if ($vout['value'] === 2) {
 						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
@@ -199,7 +199,7 @@ class coincontrol extends Controller
 			foreach ($resJson['trans'] as $value) {
 				if (isset($value['vout'])) {
 					foreach ($value['vout'] as $voutKey => $vout) {
-						if ($vout['value'] >= 11.5 and $vout['value'] < 12) {
+						if ($vout['value'] === 2) {
 							if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();
