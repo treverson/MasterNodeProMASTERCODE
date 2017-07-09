@@ -377,9 +377,10 @@ class MasterNodeList extends coin
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$data = $this->mnldata($key, $value);
-				$mnl  = Mnl::where('addr', $data['addr'])->first();
+//				echo json_encode($data);
+				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					$geoipcontent = '';
+					$geoipcontent = '{}';
 					try {
 						$freegeoip    = $client->request(
 							'GET', 'http://freegeoip.net/json/' . $data['ip']
@@ -394,17 +395,19 @@ class MasterNodeList extends coin
 					$mnl->addr   = $data['addr'];
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
-					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
-					$mnl->data   = $geoipcontent;
+					$mnl->total  = 0;
+//					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->data = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
 						$mnl->status = 'NEW';
 					}
-					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->total = 0;
+//					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$geoipcontent = $mnl->data;
 				}
-				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
+//				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
 				$data['ipData'] = json_decode($geoipcontent, true);
 				$list[]         = $data;
 				$mnl->save();
@@ -417,15 +420,15 @@ class MasterNodeList extends coin
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
 		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
 		$ret['coindaily']      = (count($list) > 0) ? $rewardb24total / count($list) : 0;
-		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
+		$ret['incomedaily']    = $ret['coindaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
 		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
-//		$oneweektotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 week')))->sum('amt');
-//		$onemonthtotal         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 month')))->sum('amt');
-//		$oneyeartotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 year')))->sum('amt');
-//		$ret['dailyaverage']   = ($total > 0) ? (($oneweektotal / 7) / $total) * $ret['price_usd'] : 0;
-//		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
-//		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
+		$oneweektotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 week')))->sum('amt');
+		$onemonthtotal         = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 month')))->sum('amt');
+		$oneyeartotal          = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 year')))->sum('amt');
+		$ret['dailyaverage']   = ($total > 0) ? (($oneweektotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
+		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
 		$totalNodes->price     = $ret['price_usd'];
 		$totalNodes->data      = json_encode($ret);
