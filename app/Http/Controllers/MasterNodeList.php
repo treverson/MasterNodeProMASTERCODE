@@ -234,50 +234,50 @@ class MasterNodeList extends coin
 
 	public function jsonCore()
 	{
-		$totalNodes         = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
-		$firstNode          = $totalNodes[0];
-		$ret['firstNode']   = $firstNode;
-		$ret1['totalNodes'] = $totalNodes;
-		$tnjp               = json_decode($firstNode['data'], true);
-		$masterNodeList     = $this->masterNodeListData();
-		$ret['country']     = $masterNodeList['sortlist'];
-		$block              = Blocks::orderBy('blockid', 'desc')->first();
-		$reward             = $this->reward($block['blockid']);
-		$ret['reward']      = $reward;
-		$ret['block']       = $block;
-		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
-		$bd                 = 0;
-		$bspec              = (86400 / env('BLOCK_TIME_SECONDS'));
-		while ($bd <= 6) {
-			$bds                                 = $bd - 1;
-			$count                               = Blocks::where('created_at', '>', date("Y-m-d 00:00:00", strtotime('-' . $bd . ' days')))->where('created_at', '<', date("Y-m-d 00:00:00", strtotime('-' . $bds . ' days')))->count();
-			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
-			$bd++;
-		}
-		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['coindaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
-		$ret['price_usd']       = $firstNode['price'];
-		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
-		$ret['mnl']             = $masterNodeList['list'];
-		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
-		$ret['blockreward']     = $reward['reward'];
-		$ret['nextbreward']     = $reward['nextreward'];
-		$ret['MasternodeWorth'] = $this->masterNodeWorth($ret['price_usd']);
-		$ret['daytilldrop']     = "N/A";
-		$ret['blockstoday']     = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
-		$ret['dailyaverage']    = $tnjp['dailyaverage'];
-		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
-		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
-		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ? 24 / $ret['avgblocks'] : 0;
-		$tnl                    = $totalNodes->toArray();
-		krsort($tnl);
-		$tnlc = collect($tnl);
-		if (count($tnlc) > 7200) {
-			$ret['totalnodeslist'] = $tnlc->nth(1440);
-		} else {
-			$ret['totalnodeslist'] = $tnlc->nth(60);
-		}
-		$ret['daytilldrop'] = $this->rewardDropDays($block['blockid'], $ret['block24hour']);
+//		$totalNodes         = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime('-30 days')))->get();
+//		$firstNode          = $totalNodes[0];
+//		$ret['firstNode']   = $firstNode;
+//		$ret1['totalNodes'] = $totalNodes;
+//		$tnjp               = json_decode($firstNode['data'], true);
+//		$masterNodeList     = $this->masterNodeListData();
+//		$ret['country']     = $masterNodeList['sortlist'];
+//		$block              = Blocks::orderBy('blockid', 'desc')->first();
+//		$reward             = $this->reward($block['blockid']);
+//		$ret['reward']      = $reward;
+//		$ret['block']       = $block;
+//		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
+//		$bd                 = 0;
+//		$bspec              = (86400 / env('BLOCK_TIME_SECONDS'));
+//		while ($bd <= 6) {
+//			$bds                                 = $bd - 1;
+//			$count                               = Blocks::where('created_at', '>', date("Y-m-d 00:00:00", strtotime('-' . $bd . ' days')))->where('created_at', '<', date("Y-m-d 00:00:00", strtotime('-' . $bds . ' days')))->count();
+//			$ret['blockdetails'][$bd]['percent'] = number_format((($count / $bspec) * 100), '0', '.', '');
+//			$bd++;
+//		}
+//		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
+//		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
+//		$ret['price_usd']       = $firstNode['price'];
+//		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
+//		$ret['mnl']             = $masterNodeList['list'];
+//		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
+//		$ret['blockreward']     = $reward['reward'];
+//		$ret['nextbreward']     = $reward['nextreward'];
+//		$ret['MasternodeWorth'] = $this->masterNodeWorth($ret['price_usd']);
+//		$ret['daytilldrop']     = "N/A";
+//		$ret['blockstoday']     = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime("midnight")))->count();
+//		$ret['dailyaverage']    = $tnjp['dailyaverage'];
+//		$ret['weeklyaverage']   = $tnjp['weeklyaverage'];
+//		$ret['monthlyaverage']  = $tnjp['monthlyaverage'];
+//		$ret['avgrewardfreq']   = ($ret['avgblocks'] > 0) ? 24 / $ret['avgblocks'] : 0;
+//		$tnl                    = $totalNodes->toArray();
+//		krsort($tnl);
+//		$tnlc = collect($tnl);
+//		if (count($tnlc) > 7200) {
+//			$ret['totalnodeslist'] = $tnlc->nth(1440);
+//		} else {
+//			$ret['totalnodeslist'] = $tnlc->nth(60);
+//		}
+//		$ret['daytilldrop'] = $this->rewardDropDays($block['blockid'], $ret['block24hour']);
 		$ret['lastUpdated'] = date('F j, Y, g:i a T');
 		Storage::put('results.json', json_encode($ret, JSON_PRETTY_PRINT));
 		Storage::put('mnl.json', json_encode($ret1, JSON_PRETTY_PRINT));
@@ -363,7 +363,7 @@ class MasterNodeList extends coin
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=' . env('COIN')
+			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
@@ -427,7 +427,7 @@ class MasterNodeList extends coin
 		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
 		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
-		$totalNodes->price     =  $ret['price_usd'];
+		$totalNodes->price     = $ret['price_usd'];
 		$totalNodes->data      = json_encode($ret);
 		$totalNodes->total     = $total;
 		$totalNodes->save();
