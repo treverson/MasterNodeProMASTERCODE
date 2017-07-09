@@ -255,7 +255,7 @@ class MasterNodeList extends coin
 			$bd++;
 		}
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['iondaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
+		$ret['coindaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
@@ -416,7 +416,7 @@ class MasterNodeList extends coin
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
 		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
-		$ret['iondaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
+		$ret['coindaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
 		$ret['incomedaily']    = $ret['iondaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
 		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
