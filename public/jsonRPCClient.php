@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * @author sergio <jsonrpcphp@inservibile.org>
  */
 class jsonRPCClient {
-	
+	private $curl;
 	/**
 	 * Debug state
 	 *
@@ -63,6 +63,8 @@ class jsonRPCClient {
 	 */
 	public function __construct($url,$debug = false) {
 		// server URL
+		$this->curl = curl_init();
+
 		$this->url = $url;
 		// proxy
 		empty($proxy) ? $this->proxy = '' : $this->proxy = $proxy;
@@ -130,21 +132,41 @@ class jsonRPCClient {
 							'content' => $request
 							));
 		$context  = stream_context_create($opts);
-		if ($fp = fopen($this->url, 'r', false, $context)) {
+
+
+		curl_setopt_array($this->curl, array(
+			CURLOPT_URL => $this->url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => $request,
+			CURLOPT_HTTPHEADER => array(
+				"cache-control: no-cache",
+				"content-type: application/json"
+			),
+		));
+
+		if ($fp = curl_exec($this->curl)) {
+//		if ($fp = fopen($this->url, 'r', false, $context)) {
 			$response = '';
-			while($row = fgets($fp)) {
-				$response.= trim($row)."\n";
-			}
+//			while($row = fgets($fp)) {
+//				$response.= trim($row)."\n";
+//			}
+			$response = $fp;
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 			$response = json_decode($response,true);
 		} else {
+			echo $this->debug;
 			throw new Exception('Unable to connect to '.$this->url);
 		}
 		
 		// debug output
-//		if ($this->debug) {
-//			echo nl2br($debug);
-//		}
+		if ($this->debug) {
+			echo nl2br($this->debug);
+		}
 		
 		// final checks and return
 		if (!$this->notification) {
