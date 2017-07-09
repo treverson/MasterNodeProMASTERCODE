@@ -8,6 +8,12 @@ use App\Mnl;
 
 class coin extends Controller
 {
+	public function walletdata($blockHeight) {
+		$reward = $this->reward($blockHeight);
+		$data['min'] = $reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'));
+		$data['max'] = $reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK')) . '05';
+		return $data;
+	}
 	public function mnldata($key,$value) {
 		$split          = explode(" ", trim($value));
 		$data['status'] = $split[0];
