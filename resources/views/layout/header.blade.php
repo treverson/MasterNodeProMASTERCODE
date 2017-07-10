@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ChainCoin MasterNodes</title>
+    <title>{!! strtoupper(env('COIN')) !!} MasterNodes</title>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
