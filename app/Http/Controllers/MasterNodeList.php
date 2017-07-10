@@ -130,6 +130,7 @@ class MasterNodeList extends coin
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
 		$ret['height']                  = $block['blockid'];
 		$ret['reward']                  = $this->reward($block['blockid']);
+		$ret['lastUpdated']             = date('F j, Y, g:i a T');
 		$return['ret']                  = $ret;
 		$return['dataCore']             = $dataCore;
 		return $return;
