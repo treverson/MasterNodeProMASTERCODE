@@ -130,6 +130,7 @@ class MasterNodeList extends coin
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
 		$ret['height']                  = $block['blockid'];
 		$ret['reward']                  = $this->reward($block['blockid']);
+		$ret['lastUpdated']             = date('F j, Y, g:i a T');
 		$return['ret']                  = $ret;
 		$return['dataCore']             = $dataCore;
 		return $return;
@@ -212,7 +213,9 @@ class MasterNodeList extends coin
 			$list[]         = $data;
 		}
 		foreach ($list as $value) {
-			$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			if (isset($value['ipData']['country_code'])) {
+				$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			}
 		}
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);

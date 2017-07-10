@@ -32,8 +32,10 @@
 
     var beaches = [
             @foreach($mnl as $key => $value)
-        ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "active") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
-        @endforeach
+                @if (isset($value['ipData']['latitude']))
+                    ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "active") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
+                @endif
+            @endforeach
     ];
 
     function setMarkers(map) {
