@@ -130,6 +130,7 @@ class MasterNodeList extends coin
 		$ret['masterNodeWorth']         = $this->masterNodeWorth($dataCore['firstNode']['price']);
 		$ret['height']                  = $block['blockid'];
 		$ret['reward']                  = $this->reward($block['blockid']);
+		$ret['lastUpdated']             = date('F j, Y, g:i a T');
 		$return['ret']                  = $ret;
 		$return['dataCore']             = $dataCore;
 		return $return;
@@ -255,7 +256,7 @@ class MasterNodeList extends coin
 			$bd++;
 		}
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['coindaily']        = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
+		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
 		$ret['price_usd']       = $firstNode['price'];
 		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
@@ -363,7 +364,7 @@ class MasterNodeList extends coin
 	{
 		$client     = new Client();
 		$res        = $client->request(
-			'GET', 'http://'.env('LOCAL_IP').'/masternodelist.php?type=' . env('COIN')
+			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
 		);
 		$content    = $res->getBody();
 		$array      = json_decode($content, true);
@@ -418,7 +419,7 @@ class MasterNodeList extends coin
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
 		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
-		$ret['coindaily']       = (count($list) > 0) ? $rewardb24total / count($list) : 0;
+		$ret['coindaily']      = (count($list) > 0) ? $rewardb24total / count($list) : 0;
 		$ret['incomedaily']    = $ret['coindaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
 		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
@@ -429,7 +430,7 @@ class MasterNodeList extends coin
 		$ret['weeklyaverage']  = ($total > 0) ? (($onemonthtotal / 7) / $total) * $ret['price_usd'] : 0;
 		$ret['monthlyaverage'] = ($total > 0) ? (($oneyeartotal / 12) / $total) * $ret['price_usd'] : 0;
 		$totalNodes            = new Totalnodes();
-		$totalNodes->price     =  $ret['price_usd'];
+		$totalNodes->price     = $ret['price_usd'];
 		$totalNodes->data      = json_encode($ret);
 		$totalNodes->total     = $total;
 		$totalNodes->save();
