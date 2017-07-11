@@ -24,9 +24,9 @@
                         <td>{!! $value['status'] !!}</td>
                         <td>{!! $value['addr'] !!}</td>
                         <td><kbd>Not Tagged</kbd></td>
-                        <td>{!! $value['ipData']['city'] !!}</td>
-                        <td>{!! substr($value['ipData']['region_name'], 0, 15) !!}</td>
-                        <td>{!! $value['ipData']['country_name'] !!}</td>
+                        <td>@if(isset($value['ipData']) && isset($value['ipData']['city'])) {!! $value['ipData']['city'] !!} @endif</td>
+                        <td>@if(isset($value['ipData']) && isset($value['ipData']['region_name'])) {!! substr($value['ipData']['region_name'], 0, 15) !!} @endif</td>
+                        <td>@if(isset($value['ipData']) && isset($value['ipData']['country_name'])) {!! $value['ipData']['country_name'] !!} @endif</td>
                         <td>{!! $value['total'] !!}</td>
                     </tr>
                 @endforeach
