@@ -158,7 +158,8 @@ class coincontrol extends Controller
 		foreach ($resJson['trans'] as $value) {
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
-					if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
+//					if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
+					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
 						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
@@ -201,7 +202,8 @@ class coincontrol extends Controller
 			foreach ($resJson['trans'] as $value) {
 				if (isset($value['vout'])) {
 					foreach ($value['vout'] as $voutKey => $vout) {
-						if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
+//					if ($vout['value'] >= (float)$coindata['min'] and $vout['value'] < (float)$coindata['max']) {
+						if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
 							if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 									$mnl = Mnl::where('addr', $addValue)->first();

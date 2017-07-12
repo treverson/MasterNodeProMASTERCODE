@@ -424,7 +424,6 @@ class MasterNodeList extends coin
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$data = $this->mnldata($key, $value);
-//				echo json_encode($data);
 				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
 					$geoipcontent = '{}';
@@ -443,7 +442,6 @@ class MasterNodeList extends coin
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
 					$mnl->total  = 0;
-//					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$mnl->data = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
@@ -451,10 +449,8 @@ class MasterNodeList extends coin
 						$mnl->status = 'NEW';
 					}
 					$mnl->total = 0;
-//					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$geoipcontent = $mnl->data;
 				}
-//				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
 				$data['ipData'] = json_decode($geoipcontent, true);
 				$list[]         = $data;
 				$mnl->save();

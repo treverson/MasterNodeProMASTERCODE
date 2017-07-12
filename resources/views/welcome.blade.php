@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $blockreward / 4 !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $blockreward / (100 / env('MASTERNODE_PERCENT_OF_BLOCK')) !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Block Award</div>
                                 </div>
                                 <div class="row">
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $nextbreward / 4 !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $nextbreward / (100 / env('MASTERNODE_PERCENT_OF_BLOCK')) !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Next Block Award</div>
                                 </div>
                                 <div class="row">
