@@ -227,10 +227,54 @@ class MasterNodeList extends coin
 		return $data;
 	}
 
+	public function cmcPrice()
+	{
+		$client     = new Client();
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CORE       = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=GBP'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$GBP        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=AUD'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$AUD        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CAD'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CAD        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CNY'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CNY        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=RUB'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$RUB        = json_decode($contentCMC, true);
+
+		$Data              = $CORE[0];
+		$Data['price_gbp'] = $GBP[0]['price_gbp'];
+		$Data['price_aud'] = $AUD[0]['price_aud'];
+		$Data['price_cad'] = $CAD[0]['price_cad'];
+		$Data['price_cny'] = $CNY[0]['price_cny'];
+		$Data['price_rub'] = $RUB[0]['price_rub'];
+		Storage::put('priceList.json', json_encode($Data, JSON_PRETTY_PRINT));
+	}
+
 	public function Core()
 	{
-		$json = Storage::get('results.json');
-		return json_decode($json, true);
+		$json                  = json_decode(Storage::get('results.json'), true);
+		$json['priceListCore'] = json_decode(Storage::get('priceList.json'), true);
+		return $json;
 	}
 
 	public function jsonCore()
