@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
 	{
 		$schedule->call('App\Http\Controllers\MasterNodeList@datapull')
 				 ->everyMinute();
+		$schedule->call('App\Http\Controllers\MasterNodeList@cmcPrice')
+				 ->everyMinute();
 	}
 
 	/**
