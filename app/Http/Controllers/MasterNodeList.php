@@ -213,7 +213,9 @@ class MasterNodeList extends coin
 			$list[]         = $data;
 		}
 		foreach ($list as $value) {
-			$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			if (isset($value['ipData']['country_code'])) {
+				$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			}
 		}
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);
@@ -422,9 +424,10 @@ class MasterNodeList extends coin
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$data = $this->mnldata($key, $value);
-				$mnl  = Mnl::where('addr', $data['addr'])->first();
+//				echo json_encode($data);
+				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					$geoipcontent = '';
+					$geoipcontent = '{}';
 					try {
 						$freegeoip    = $client->request(
 							'GET', 'http://freegeoip.net/json/' . $data['ip']
