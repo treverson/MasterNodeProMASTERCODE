@@ -213,7 +213,9 @@ class MasterNodeList extends coin
 			$list[]         = $data;
 		}
 		foreach ($list as $value) {
-			$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			if (isset($value['ipData']['country_code'])) {
+				$nclist[$value['ipData']['country_code']]['data'][] = $value;
+			}
 		}
 		foreach ($nclist as $key => $value) {
 			$nclist[$key]['count']                            = count($value['data']);
@@ -227,10 +229,54 @@ class MasterNodeList extends coin
 		return $data;
 	}
 
+	public function cmcPrice()
+	{
+		$client     = new Client();
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CORE       = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=GBP'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$GBP        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=AUD'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$AUD        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CAD'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CAD        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CNY'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$CNY        = json_decode($contentCMC, true);
+		$resCMCCORE = $client->request(
+			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=RUB'
+		);
+		$contentCMC = $resCMCCORE->getBody();
+		$RUB        = json_decode($contentCMC, true);
+
+		$Data              = $CORE[0];
+		$Data['price_gbp'] = $GBP[0]['price_gbp'];
+		$Data['price_aud'] = $AUD[0]['price_aud'];
+		$Data['price_cad'] = $CAD[0]['price_cad'];
+		$Data['price_cny'] = $CNY[0]['price_cny'];
+		$Data['price_rub'] = $RUB[0]['price_rub'];
+		Storage::put('priceList.json', json_encode($Data, JSON_PRETTY_PRINT));
+	}
+
 	public function Core()
 	{
-		$json = Storage::get('results.json');
-		return json_decode($json, true);
+		$json                  = json_decode(Storage::get('results.json'), true);
+		$json['priceListCore'] = json_decode(Storage::get('priceList.json'), true);
+		return $json;
 	}
 
 	public function jsonCore()
@@ -378,9 +424,9 @@ class MasterNodeList extends coin
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$data = $this->mnldata($key, $value);
-				$mnl  = Mnl::where('addr', $data['addr'])->first();
+				$mnl = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
-					$geoipcontent = '';
+					$geoipcontent = '{}';
 					try {
 						$freegeoip    = $client->request(
 							'GET', 'http://freegeoip.net/json/' . $data['ip']
@@ -396,17 +442,15 @@ class MasterNodeList extends coin
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
 					$mnl->total  = 0;
-//					$mnl->total  = Blocks::where('addr', $mnl->addr)->sum('amt');
 					$mnl->data = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
 						$mnl->status = 'NEW';
 					}
-//					$mnl->total   = Blocks::where('addr', $mnl->addr)->sum('amt');
+					$mnl->total = 0;
 					$geoipcontent = $mnl->data;
 				}
-//				$data['total']  = Blocks::where('addr', $data['addr'])->sum('amt');
 				$data['ipData'] = json_decode($geoipcontent, true);
 				$list[]         = $data;
 				$mnl->save();

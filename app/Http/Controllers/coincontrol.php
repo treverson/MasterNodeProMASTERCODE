@@ -187,7 +187,6 @@ class coincontrol extends Controller
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
-		$url            = 'http://45.76.249.132';
 		if ($mnl == 0) {
 			$res     = $this->client->request('GET', 'http://'.env('LOCAL_IP').'/checkblock.php?block=' . $number);
 			$results = $res->getBody();
