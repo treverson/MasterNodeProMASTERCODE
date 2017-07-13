@@ -177,6 +177,10 @@ class MasterNodeList extends coin
 		$blockleft    = $reward['height'] - $lastBlock;
 		$sectilldrop  = $blockleft * $avgBlockTime;
 		$total        = $this->calculate_time_span($sectilldrop);
+		if ($total['num'] < 0) {
+			$total['num'] = 'N/A';
+			$total['name'] = 'TIME';
+		}
 		return $total;
 	}
 
