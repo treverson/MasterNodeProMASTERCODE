@@ -3,15 +3,11 @@
     </div>
     <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
     </div>
-    <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
-    </div>
-    <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         <div style="display: inline-block;">
             <div class="bardatatitle">{!! strtoupper(env('COIN')) !!} Locked in MasterNodes</div>
-            <div class="bardatadata"><span class="green">{!! number_format($firstNode['total'] * env('MASTERNODE_COINS_REQUIRED'),'0','',',') !!}</span></div>
+            <div class="bardatadata"><span class="green">{!! number_format($firstNode['total'] * env('MASTERNODE_COINS_REQUIRED'),'0','',',') !!} ({!! number_format(((($firstNode['total'] * env('MASTERNODE_COINS_REQUIRED')) / $coinInfo['moneysupply'] ) * 100),'2','.',',') !!}%)</span></div>
         </div>
-    </div>
-    <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
         <div style="display: inline-block;">
