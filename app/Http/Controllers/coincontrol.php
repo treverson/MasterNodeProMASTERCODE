@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blocks;
 use Validator, Input, Redirect, View, Auth;
 use App\Mnl;
+use Illuminate\Support\Facades\Storage;
 
 class coincontrol extends Controller
 {
@@ -144,14 +145,14 @@ class coincontrol extends Controller
 		foreach ($_REQUEST as $k => $value) {
 			$return = $k;
 		}
-		$ret     = '';
-		$res     = $this->client->request('GET', 'http://'.env('LOCAL_IP').'/checktrans.php?txid=' . $return);
-		$results = $res->getBody();
-		$resJson = json_decode($results, true);
+		$ret            = '';
+		$res            = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/checktrans.php?txid=' . $return);
+		$results        = $res->getBody();
+		$resJson        = json_decode($results, true);
 		$block          = new Blocks();
 		$block->block   = $resJson['hash'];
 		$block->blockid = $resJson['height'];
-		$coindata = $coin->walletdata($resJson['height']);
+		$coindata       = $coin->walletdata($resJson['height']);
 		$block->addr    = "n/a";
 		$block->amt     = 0;
 		$block->data    = json_encode($resJson);
@@ -174,6 +175,9 @@ class coincontrol extends Controller
 				}
 			}
 		}
+		$res          = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
+		$results      = $res->getBody();
+		Storage::put('coinInfo.json', $results);
 		$block->save();
 		return $ret;
 	}
@@ -187,13 +191,13 @@ class coincontrol extends Controller
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
 		if ($mnl == 0) {
-			$res     = $this->client->request('GET', 'http://'.env('LOCAL_IP').'/checkblock.php?block=' . $number);
-			$results = $res->getBody();
-			$resJson = json_decode($results, true);
+			$res            = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/checkblock.php?block=' . $number);
+			$results        = $res->getBody();
+			$resJson        = json_decode($results, true);
 			$block          = new Blocks();
 			$block->block   = $resJson['hash'];
 			$block->blockid = $resJson['height'];
-			$coindata = $coin->walletdata($resJson['height']);
+			$coindata       = $coin->walletdata($resJson['height']);
 			$block->addr    = "n/a";
 			$block->amt     = 0;
 			$block->data    = json_encode($resJson);
@@ -218,6 +222,9 @@ class coincontrol extends Controller
 				}
 			}
 			$block->created_at = date("Y-m-d H:m:s", $resJson['time']);
+			$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
+			$results           = $res->getBody();
+			Storage::put('coinInfo.json', $results);
 			$block->save();
 		} else {
 			echo $number . " : Got it All ready\r\n";
