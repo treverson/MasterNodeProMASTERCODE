@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blocks;
 use Validator, Input, Redirect, View, Auth;
 use App\Mnl;
+use Illuminate\Support\Facades\Storage;
 
 class coincontrol extends Controller
 {
@@ -176,7 +177,7 @@ class coincontrol extends Controller
 		}
 		$res          = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
 		$results      = $res->getBody();
-		$block->price = $results;
+		Storage::put('coinInfo.json', $results);
 		$block->save();
 		return $ret;
 	}
@@ -223,7 +224,7 @@ class coincontrol extends Controller
 			$block->created_at = date("Y-m-d H:m:s", $resJson['time']);
 			$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
 			$results           = $res->getBody();
-			$block->price      = $results;
+			Storage::put('coinInfo.json', $results);
 			$block->save();
 		} else {
 			echo $number . " : Got it All ready\r\n";
