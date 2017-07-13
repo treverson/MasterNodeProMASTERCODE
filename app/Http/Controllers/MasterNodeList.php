@@ -274,6 +274,7 @@ class MasterNodeList extends coin
 		$Data['price_cny'] = $CNY[0]['price_cny'];
 		$Data['price_rub'] = $RUB[0]['price_rub'];
 		Storage::put('priceList.json', json_encode($Data, JSON_PRETTY_PRINT));
+		return "<pre>".json_encode($Data, JSON_PRETTY_PRINT)."</pre>";
 	}
 
 	public function Core()
@@ -413,6 +414,7 @@ class MasterNodeList extends coin
 
 	public function datapull()
 	{
+		$this->cmcPrice();
 		$client     = new Client();
 		$res        = $client->request(
 			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
