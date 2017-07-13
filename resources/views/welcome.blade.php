@@ -83,7 +83,8 @@
                                         <div>
                                             <canvas id="do{!! $i !!}Chart" width="400" height="400"></canvas>
                                             <br>
-                                            {!! $value['country_name'] !!}
+                                            @if($value['country_name'] !== null) {!! $value['country_name'] !!} @endif
+                                            @if($value['country_name'] === '') TOR @endif
                                         </div>
                                     </div>
                                 @endif
