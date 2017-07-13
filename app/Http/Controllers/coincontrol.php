@@ -175,8 +175,8 @@ class coincontrol extends Controller
 				}
 			}
 		}
-		$res          = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
-		$results      = $res->getBody();
+		$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
+		$results = $res->getBody();
 		Storage::put('coinInfo.json', $results);
 		$block->save();
 		return $ret;
@@ -222,7 +222,7 @@ class coincontrol extends Controller
 				}
 			}
 			$block->created_at = date("Y-m-d H:m:s", $resJson['time']);
-			$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/getinfo.php');
+			$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
 			$results           = $res->getBody();
 			Storage::put('coinInfo.json', $results);
 			$block->save();
