@@ -276,6 +276,7 @@ class MasterNodeList extends coin
 	{
 		$json                  = json_decode(Storage::get('results.json'), true);
 		$json['priceListCore'] = json_decode(Storage::get('priceList.json'), true);
+		$json['coinInfo']      = json_decode(Storage::get('coinInfo.json'), true);
 		return $json;
 	}
 
@@ -424,7 +425,7 @@ class MasterNodeList extends coin
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
 				$data = $this->mnldata($key, $value);
-				$mnl = Mnl::where('addr', $data['addr'])->first();
+				$mnl  = Mnl::where('addr', $data['addr'])->first();
 				if (count($mnl) == 0) {
 					$geoipcontent = '{}';
 					try {
@@ -442,13 +443,13 @@ class MasterNodeList extends coin
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
 					$mnl->total  = 0;
-					$mnl->data = $geoipcontent;
+					$mnl->data   = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
 						$mnl->status = 'NEW';
 					}
-					$mnl->total = 0;
+					$mnl->total   = 0;
 					$geoipcontent = $mnl->data;
 				}
 				$data['ipData'] = json_decode($geoipcontent, true);
