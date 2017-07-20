@@ -414,6 +414,7 @@ class MasterNodeList extends coin
 
 	public function datapull()
 	{
+		$this->cmcPrice();
 		$client  = new Client();
 		$res     = $client->request(
 			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
