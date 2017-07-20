@@ -178,7 +178,7 @@ class MasterNodeList extends coin
 		$sectilldrop  = $blockleft * $avgBlockTime;
 		$total        = $this->calculate_time_span($sectilldrop);
 		if ($total['num'] < 0) {
-			$total['num'] = 'N/A';
+			$total['num']  = 'N/A';
 			$total['name'] = 'TIME';
 		}
 		return $total;
@@ -413,18 +413,14 @@ class MasterNodeList extends coin
 
 	public function datapull()
 	{
-		$client     = new Client();
-		$res        = $client->request(
+		$client  = new Client();
+		$res     = $client->request(
 			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
 		);
-		$content    = $res->getBody();
-		$array      = json_decode($content, true);
-		$resCMC     = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
-		);
-		$contentCMC = $resCMC->getBody();
-		$cmc        = json_decode($contentCMC, true);
-		$data       = $list = [];
+		$content = $res->getBody();
+		$array   = json_decode($content, true);
+		$cmc[0]  = json_decode(Storage::get('priceList.json'), true);
+		$data    = $list = [];
 		Mnl::where('status', 'ENABLED')->update(['status' => 'OFFLINE']);
 		if (count($array) > 0) {
 			foreach ($array as $key => $value) {
