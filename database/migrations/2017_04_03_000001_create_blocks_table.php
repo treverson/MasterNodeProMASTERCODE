@@ -16,7 +16,7 @@ class CreateBlocksTable extends Migration
         Schema::create('blocks', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('addr');
-            $table->float('amt',250,11);
+            $table->float('amt',250,11)->default(0);
 			$table->string('block');
 			$table->integer('blockid');
             $table->timestamps();
