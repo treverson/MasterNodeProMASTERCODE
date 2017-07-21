@@ -14,7 +14,7 @@ class AddFieldaToMnlTable extends Migration {
 	{
 		Schema::table('masternodelist', function(Blueprint $table)
 		{
-			$table->float('total',250,11);
+			$table->float('total',250,11)->default(0);
 		});
 	}
 

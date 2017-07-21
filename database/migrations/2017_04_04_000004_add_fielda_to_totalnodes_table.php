@@ -15,7 +15,7 @@ class AddFieldaToTotalnodesTable extends Migration {
 		Schema::table('totalnodes', function(Blueprint $table)
 		{
 			$table->text('data')->nullable();
-			$table->float('price',250,11);
+			$table->float('price',250,11)->default(0);
 		});
 	}
 
