@@ -114,8 +114,17 @@ class MasterNodeList extends coin
 
 	private function BaseDataPack()
 	{
-		$json                           = Storage::get('results.json');
-		$dataCore                       = json_decode($json, true);
+		$json     = Storage::get('results.json');
+		$coinInfo = json_decode(Storage::get('coinInfo.json'), true);
+		$dataCore = json_decode($json, true);
+		$coinSupply = 0;
+		if (isset($coinInfo['moneysupply'])) {
+			$coinSupply = $coinInfo['moneysupply'];
+		}
+		if (isset($coinInfo['total_amount'])) {
+			$coinSupply = $coinInfo['total_amount'];
+		}
+		$ret['coin_supply']             = $coinSupply;
 		$ret['blocksLastDay']           = $dataCore['block24hour'];
 		$block                          = Blocks::orderBy('blockid', 'desc')->first();
 		$ret['averageBlockAwards']      = (float)number_format($dataCore['avgblocks'], '2', '.', '');
@@ -242,7 +251,7 @@ class MasterNodeList extends coin
 		$contentCMC = $resCMCCORE->getBody();
 		$CORE       = json_decode($contentCMC, true);
 		Storage::put('priceList.json', json_encode($CORE, JSON_PRETTY_PRINT));
-		return "<pre>".json_encode($CORE, JSON_PRETTY_PRINT)."</pre>";
+		return "<pre>" . json_encode($CORE, JSON_PRETTY_PRINT) . "</pre>";
 	}
 
 	public function Core()
