@@ -237,44 +237,12 @@ class MasterNodeList extends coin
 	{
 		$client     = new Client();
 		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/'
+			'GET', 'https://masternodes.pro/getPrice/' . env('COIN') . '/'
 		);
 		$contentCMC = $resCMCCORE->getBody();
 		$CORE       = json_decode($contentCMC, true);
-		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=GBP'
-		);
-		$contentCMC = $resCMCCORE->getBody();
-		$GBP        = json_decode($contentCMC, true);
-		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=AUD'
-		);
-		$contentCMC = $resCMCCORE->getBody();
-		$AUD        = json_decode($contentCMC, true);
-		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CAD'
-		);
-		$contentCMC = $resCMCCORE->getBody();
-		$CAD        = json_decode($contentCMC, true);
-		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=CNY'
-		);
-		$contentCMC = $resCMCCORE->getBody();
-		$CNY        = json_decode($contentCMC, true);
-		$resCMCCORE = $client->request(
-			'GET', 'https://api.coinmarketcap.com/v1/ticker/' . env('COINMARKETCAPID') . '/?convert=RUB'
-		);
-		$contentCMC = $resCMCCORE->getBody();
-		$RUB        = json_decode($contentCMC, true);
-
-		$Data              = $CORE[0];
-		$Data['price_gbp'] = $GBP[0]['price_gbp'];
-		$Data['price_aud'] = $AUD[0]['price_aud'];
-		$Data['price_cad'] = $CAD[0]['price_cad'];
-		$Data['price_cny'] = $CNY[0]['price_cny'];
-		$Data['price_rub'] = $RUB[0]['price_rub'];
-		Storage::put('priceList.json', json_encode($Data, JSON_PRETTY_PRINT));
-		return "<pre>".json_encode($Data, JSON_PRETTY_PRINT)."</pre>";
+		Storage::put('priceList.json', json_encode($CORE, JSON_PRETTY_PRINT));
+		return "<pre>".json_encode($CORE, JSON_PRETTY_PRINT)."</pre>";
 	}
 
 	public function Core()
@@ -414,6 +382,7 @@ class MasterNodeList extends coin
 
 	public function datapull()
 	{
+		$this->cmcPrice();
 		$client  = new Client();
 		$res     = $client->request(
 			'GET', 'http://' . env('LOCAL_IP') . '/masternodelist.php?type=' . env('COIN')
