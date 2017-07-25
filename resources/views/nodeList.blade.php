@@ -10,7 +10,7 @@
             <table id="myTable" class="display table table-hover">
                 <thead>
                 <tr>
-                    <th>Status</th>
+                     <th>Status</th>
                     <th>{!! strtoupper(env('COIN')) !!} Address</th>
                     <th>Tag</th>
                     <th>City</th>

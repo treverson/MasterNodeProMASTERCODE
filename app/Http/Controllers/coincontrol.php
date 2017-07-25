@@ -164,9 +164,9 @@ class coincontrol extends Controller
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
-									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
 									$block->addr = $addValue;
 									$block->amt  = $vout['value'];
+									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
 									$mnl->save();
 								}
 							}
@@ -175,7 +175,7 @@ class coincontrol extends Controller
 				}
 			}
 		}
-		$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
+		$res     = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
 		$results = $res->getBody();
 		Storage::put('coinInfo.json', $results);
 		$block->save();
@@ -190,44 +190,47 @@ class coincontrol extends Controller
 		}
 		$ret = '';
 		$mnl = Blocks::where('blockid', $number)->count();
-		if ($mnl == 0) {
-			$res            = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/checkblock.php?block=' . $number);
-			$results        = $res->getBody();
-			$resJson        = json_decode($results, true);
-			$block          = new Blocks();
-			$block->block   = $resJson['hash'];
-			$block->blockid = $resJson['height'];
-			$coindata       = $coin->walletdata($resJson['height']);
-			$block->addr    = "n/a";
-			$block->amt     = 0;
-			$block->data    = json_encode($resJson);
-			echo $resJson['height'] . " : " . date("Y-m-d H:m:s", $resJson['time']) . "\r\n";
-			foreach ($resJson['trans'] as $value) {
-				if (isset($value['vout'])) {
-					foreach ($value['vout'] as $voutKey => $vout) {
-						if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
-							if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses']) and $vout['value'] < 10) {
-								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
-									$mnl = Mnl::where('addr', $addValue)->first();
-									if (count($mnl) > 0) {
-										$mnl->total  = Blocks::where('addr', $addValue)->sum('amt');
-										$block->addr = $addValue;
-										$block->amt  = $vout['value'];
-										$mnl->save();
-									}
+//		if ($mnl == 0) {
+		$res     = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/checkblock.php?block=' . $number);
+		$results = $res->getBody();
+		$resJson = json_decode($results, true);
+		$block   = Blocks::where('blockid', $resJson['height'])->first();
+		if (count($block) === 0) {
+			$block = new Blocks();
+		}
+		$block->block   = $resJson['hash'];
+		$block->blockid = $resJson['height'];
+		$coindata       = $coin->walletdata($resJson['height']);
+		$block->addr    = "n/a";
+		$block->amt     = 0;
+		$block->data    = json_encode($resJson);
+		echo $resJson['height'] . " : " . date("Y-m-d H:m:s", $resJson['time']) . "\r\n";
+		foreach ($resJson['trans'] as $value) {
+			if (isset($value['vout'])) {
+				foreach ($value['vout'] as $voutKey => $vout) {
+					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
+						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses']) and $vout['value'] < 10) {
+							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
+								$mnl = Mnl::where('addr', $addValue)->first();
+								if (count($mnl) > 0) {
+									$block->addr = $addValue;
+									$block->amt  = $vout['value'];
+									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
+									$mnl->save();
 								}
 							}
 						}
 					}
 				}
 			}
-			$block->created_at = date("Y-m-d H:m:s", $resJson['time']);
-			$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
-			$results           = $res->getBody();
-			Storage::put('coinInfo.json', $results);
-			$block->save();
-		} else {
-			echo $number . " : Got it All ready\r\n";
 		}
+		$block->created_at = date("Y-m-d H:m:s", $resJson['time']);
+		$res               = $this->client->request('GET', 'http://' . env('LOCAL_IP') . '/' . strtolower(env('SUPPLY_CALL')) . '.php');
+		$results           = $res->getBody();
+		Storage::put('coinInfo.json', $results);
+		$block->save();
+//		} else {
+//			echo $number . " : Got it All ready\r\n";
+//		}
 	}
 }

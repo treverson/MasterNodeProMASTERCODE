@@ -421,14 +421,12 @@ class MasterNodeList extends coin
 					$mnl->addr   = $data['addr'];
 					$mnl->ip     = $data['ip'];
 					$mnl->port   = $data['port'];
-					$mnl->total  = 0;
 					$mnl->data   = $geoipcontent;
 				} else {
 					$mnl->status = 'ACTIVE';
 					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
 						$mnl->status = 'NEW';
 					}
-					$mnl->total   = 0;
 					$geoipcontent = $mnl->data;
 				}
 				$data['ipData'] = json_decode($geoipcontent, true);
