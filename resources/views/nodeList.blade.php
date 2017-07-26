@@ -10,7 +10,7 @@
             <table id="myTable" class="display table table-hover">
                 <thead>
                 <tr>
-                    <th>Status</th>
+                     <th>Status</th>
                     <th>{!! strtoupper(env('COIN')) !!} Address</th>
                     <th>Tag</th>
                     <th>City</th>
@@ -23,7 +23,7 @@
                     <tr onclick="clickMe({!! $key !!})">
                         <td>{!! $value['status'] !!}</td>
                         <td>{!! $value['addr'] !!}</td>
-                        <td><kbd>Not Tagged</kbd></td>
+                        <td><kbd @if(isset($value['ipData']) && isset($value['ipData']['tag'])) class="label-info" @endif>@if(isset($value['ipData']) && isset($value['ipData']['tag'])) {!! $value['ipData']['tag'] !!} @else Not Tagged @endif</kbd></td>
                         <td>@if(isset($value['ipData']) && isset($value['ipData']['city'])) {!! $value['ipData']['city'] !!} @endif</td>
                         <td>@if(isset($value['ipData']) && isset($value['ipData']['region_name'])) {!! substr($value['ipData']['region_name'], 0, 15) !!} @endif</td>
                         <td>@if(isset($value['ipData']) && isset($value['ipData']['country_name'])) {!! $value['ipData']['country_name'] !!} @endif</td>
