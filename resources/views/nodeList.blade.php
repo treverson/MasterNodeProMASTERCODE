@@ -6,6 +6,19 @@
     @include('layout.statsbar')
     <div class="row middle">
         <div class="col-md-1"></div>
+        <div class="col-md-10" style="text-align: center; overflow:hidden;">
+            <div class="panel panel-info">
+                <!-- Default panel contents -->
+                <div class="panel-heading">How To Tag Your Master</div>
+                <div class="panel-heading">
+                    Step 1: Go to <a href="https://my.masternodes.pro" target="_blank">My.MasterNodes.Pro</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row middle">
+        <div class="col-md-1"></div>
         <div class="col-md-10" style="overflow:hidden;">
             <table id="myTable" class="display table table-hover">
                 <thead>
