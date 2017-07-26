@@ -400,41 +400,8 @@ class MasterNodeList extends coin
 		$array   = json_decode($content, true);
 		$cmc[0]  = json_decode(Storage::get('priceList.json'), true);
 		$data    = $list = [];
-		Mnl::where('status', 'ENABLED')->update(['status' => 'OFFLINE']);
-		if (count($array) > 0) {
-			foreach ($array as $key => $value) {
-				$data = $this->mnldata($key, $value);
-				$mnl  = Mnl::where('addr', $data['addr'])->first();
-				if (count($mnl) == 0) {
-					$geoipcontent = '{}';
-					try {
-						$freegeoip    = $client->request(
-							'GET', 'http://freegeoip.net/json/' . $data['ip']
-						);
-						$geoipcontent = $freegeoip->getBody();
-					}
-					catch (\Exception $e) {
-
-					}
-					$mnl         = new Mnl();
-					$mnl->status = 'NEW';
-					$mnl->addr   = $data['addr'];
-					$mnl->ip     = $data['ip'];
-					$mnl->port   = $data['port'];
-					$mnl->data   = $geoipcontent;
-				} else {
-					$mnl->status = 'ACTIVE';
-					if (strtotime($mnl->created_at) >= strtotime('-30 min')) {
-						$mnl->status = 'NEW';
-					}
-					$geoipcontent = $mnl->data;
-				}
-				$data['ipData'] = json_decode($geoipcontent, true);
-				$list[]         = $data;
-				$mnl->save();
-			}
-		}
-		$total                 = count($array);
+        $coin = new coin();
+        $total = $coin->MNLParse($array);
 		$ret['cmc']            = $cmc;
 		$ret['price_usd']      = $cmc[0]['price_usd'];
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
