@@ -10,3 +10,5 @@ Homestead.yaml
 .env
 /app/Http/Controllers/coin.php
 /public/coins.php
+/public/tagWallet.php
+/routes/api.php
