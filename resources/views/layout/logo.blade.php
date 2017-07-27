@@ -14,7 +14,7 @@
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
         <div style="display: inline-block;">
-            <a href="/"><img src="/img/logo.png" class="logo"></a><br>
+            <a href="/"><img src="/img/logo.png" class="img-responsive logo"></a><br>
             <a href="https://masternodes.pro" target="_blank">MasterNodes.pro</a>
         </div>
     </div>
