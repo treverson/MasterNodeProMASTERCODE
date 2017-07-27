@@ -33,7 +33,7 @@
     var beaches = [
             @foreach($mnl as $key => $value)
                 @if (isset($value['ipData']['latitude']))
-                    ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "active") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
+                    ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
                 @endif
             @endforeach
     ];
@@ -57,7 +57,7 @@
         };
         for (var i = 0; i < beaches.length; i++) {
             var beach = beaches[i];
-            if (beach[4] == "ACTIVE") {
+            if (beach[4] === "ENABLED") {
                 var marker = new google.maps.Marker({
                     position: {lat: beach[1], lng: beach[2]},
                     map: map,
@@ -66,7 +66,7 @@
                     zIndex: beach[3]
                 });
             }
-            if (beach[4] == "NEW") {
+            if (beach[4] === "NEW") {
                 var marker = new google.maps.Marker({
                     position: {lat: beach[1], lng: beach[2]},
                     map: map,
@@ -75,7 +75,7 @@
                     zIndex: beach[3]
                 });
             }
-            if (beach[4] == "OFFLINE") {
+            if (beach[4] === "OFFLINE") {
                 var marker = new google.maps.Marker({
                     position: {lat: beach[1], lng: beach[2]},
                     map: map,
