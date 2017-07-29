@@ -407,7 +407,7 @@ class MasterNodeList extends coin
 		$ret['block24hour']    = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->count();
 		$rewardb24total        = Blocks::where('created_at', '>=', date("Y-m-d H:m:s", strtotime('-1 day')))->sum('amt');
 		$ret['avgblocks']      = ($total > 0) ? $ret['block24hour'] / $total : 0;
-		$ret['coindaily']      = (count($list) > 0) ? $rewardb24total / count($list) : 0;
+		$ret['coindaily']      = ($total > 0) ? $rewardb24total / $total : 0;
 		$ret['incomedaily']    = $ret['coindaily'] * $ret['price_usd'];
 		$ret['incomeweekly']   = $ret['incomedaily'] * 7;
 		$ret['incomemonth']    = $ret['incomedaily'] * 30.42;
