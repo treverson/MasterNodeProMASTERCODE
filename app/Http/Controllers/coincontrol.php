@@ -160,7 +160,7 @@ class coincontrol extends Controller
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
 					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
-						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses']) and $vout['value'] < 10) {
+						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
@@ -209,7 +209,7 @@ class coincontrol extends Controller
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
 					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
-						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses']) and $vout['value'] < 10) {
+						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
 								$mnl = Mnl::where('addr', $addValue)->first();
 								if (count($mnl) > 0) {
