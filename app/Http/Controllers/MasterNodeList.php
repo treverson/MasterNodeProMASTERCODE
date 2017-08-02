@@ -130,7 +130,7 @@ class MasterNodeList extends coin
 		$ret['averageBlockAwards']      = (float)number_format($dataCore['avgblocks'], '2', '.', '');
 		$ret['totalMasterNodes']        = $dataCore['firstNode']['total'];
 		$ret['currentUSDPrice']         = (float)number_format($dataCore['firstNode']['price'], '2', '.', '');
-		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $ret['blocksLastDay'], $ret['totalMasterNodes'], $block['blockid']);
+		$ret['income']                  = $this->income($dataCore['firstNode']['price'], $dataCore['coindaily']);
 		$ret['averageBlockTime']        = $this->averageBlockTime($ret['blocksLastDay']);
 		$ret['daysTillRewardDrop']      = $this->rewardDropDays($block['blockid'], $ret['blocksLastDay']);
 		$ret['currentMasterNodeReward'] = $this->masterNodeCurrentReward($block['blockid']);
@@ -160,11 +160,9 @@ class MasterNodeList extends coin
 		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
 	}
 
-	public function income($usdPrice, $blocksLastDay, $totalMasterNodes, $lastBlock)
+	public function income($usdPrice, $coindaily)
 	{
-		$reward          = $this->reward($lastBlock);
-		$blocksTotal     = number_format(($totalMasterNodes > 0) ? ($blocksLastDay / $totalMasterNodes) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0, '8', '.', '');
-		$basedaily       = $blocksTotal * $usdPrice;
+		$basedaily       = $coindaily * $usdPrice;
 		$total           = number_format($basedaily, '2', '.', ',');
 		$data['daily']   = (float)$total;
 		$data['weekly']  = (float)number_format(($total * 7), '2', '.', '');
@@ -275,7 +273,7 @@ class MasterNodeList extends coin
 		$reward             = $this->reward($block['blockid']);
 		$ret['reward']      = $reward;
 		$ret['block']       = $block;
-		$ret['block24hour'] = Blocks::where('created_at', '>', date("Y-m-d H:m:s", strtotime('-1 days')))->count();
+		$ret['block24hour'] = $tnjp['block24hour'];
 		$bd                 = 0;
 		$bspec              = (86400 / env('BLOCK_TIME_SECONDS'));
 		while ($bd <= 6) {
@@ -285,9 +283,9 @@ class MasterNodeList extends coin
 			$bd++;
 		}
 		$ret['avgblocks']       = ($firstNode['total'] > 0) ? $ret['block24hour'] / $firstNode['total'] : 0;
-		$ret['coindaily']       = ($firstNode['total'] > 0) ? ($ret['block24hour'] / $firstNode['total']) * ($reward['reward'] / (100 / env('MASTERNODE_PERCENT_OF_BLOCK'))) : 0;
+		$ret['coindaily']       = $tnjp['coindaily'];
 		$ret['price_usd']       = $firstNode['price'];
-		$ret['income']          = $this->income($ret['price_usd'], $ret['block24hour'], $firstNode['total'], $block['blockid']);
+		$ret['income']          = $this->income($ret['price_usd'], $ret['coindaily'], $block['blockid']);
 		$ret['mnl']             = $masterNodeList['list'];
 		$ret['avgblocktime']    = ($ret['block24hour'] > 0) ? 86400 / $ret['block24hour'] : 0;
 		$ret['blockreward']     = $reward['reward'];
