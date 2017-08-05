@@ -426,16 +426,16 @@ class MasterNodeList extends coin
 
 	public function blockprocess()
 	{
-		$i = $currentblock = 73952;
-		while ($i > 0) {
-			$i--;
-			$block = Blocks::where('blockid', $i)->count();
-			if ($block == 0) {
-				$cc      = new \App\Http\Controllers\coincontrol();
-				$process = $cc->blocknumber($i);
-				echo $process;
-				sleep(3);
-			}
-		}
+//		$i = $currentblock = 73952;
+//		while ($i > 0) {
+//			$i--;
+//			$block = Blocks::where('blockid', $i)->count();
+//			if ($block == 0) {
+//				$cc      = new \App\Http\Controllers\coincontrol();
+//				$process = $cc->blocknumber($i);
+//				echo $process;
+//				sleep(3);
+//			}
+//		}
 	}
 }
