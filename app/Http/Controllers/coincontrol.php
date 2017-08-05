@@ -162,12 +162,14 @@ class coincontrol extends Controller
 					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
 						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
 							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
-								$mnl = Mnl::where('addr', $addValue)->first();
-								if (count($mnl) > 0) {
-									$block->addr = $addValue;
-									$block->amt  = $vout['value'];
-									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
-									$mnl->save();
+								if ($coin->ValueCheck($vout['value'], $resJson['height']) === true) {
+									$mnl = Mnl::where('addr', $addValue)->first();
+									if (count($mnl) > 0) {
+										$block->addr = $addValue;
+										$block->amt  = $vout['value'];
+										$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
+										$mnl->save();
+									}
 								}
 							}
 						}
@@ -204,19 +206,23 @@ class coincontrol extends Controller
 		$block->addr    = "n/a";
 		$block->amt     = 0;
 		$block->data    = json_encode($resJson);
-		echo $resJson['height'] . " : " . date("Y-m-d H:m:s", $resJson['time']) . "\r\n";
+		echo $resJson['height'] . " : " . date("Y-m-d H:m:s", $resJson['time']) . "<br>\r\n";
 		foreach ($resJson['trans'] as $value) {
 			if (isset($value['vout'])) {
 				foreach ($value['vout'] as $voutKey => $vout) {
 					if (isset($vout['scriptPubKey']['type']) && $vout['scriptPubKey']['type'] === 'pubkeyhash') {
-						if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
-							foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
-								$mnl = Mnl::where('addr', $addValue)->first();
-								if (count($mnl) > 0) {
-									$block->addr = $addValue;
-									$block->amt  = $vout['value'];
-									$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
-									$mnl->save();
+						if ($coin->ValueCheck($vout['value'], $resJson['height']) === true) {
+							if (isset($vout['scriptPubKey']) and isset($vout['scriptPubKey']['addresses'])) {
+								foreach ($vout['scriptPubKey']['addresses'] as $addKey => $addValue) {
+									if ($coin->ValueCheck($vout['value'], $resJson['height']) === true) {
+										$mnl = Mnl::where('addr', $addValue)->first();
+										if (count($mnl) > 0) {
+											$block->addr = $addValue;
+											$block->amt  = $vout['value'];
+											$mnl->total  = Blocks::where('addr', $addValue)->sum('amt') + $vout['value'];
+											$mnl->save();
+										}
+									}
 								}
 							}
 						}
