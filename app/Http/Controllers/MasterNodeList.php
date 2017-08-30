@@ -139,12 +139,12 @@ class MasterNodeList extends Controller
 		}
 
 
-		$searchConfig['ES_coin']                 = env('COIN');
-		$config['ES_type']                       = 'basestats';
-		$search['size']                          = 1000;
-		$search['sort'][0]['height']['order']    = 'desc';
-		$search['query']['range']['time']['gte'] = strtotime($stt);
-		$mnData                                  = json_decode($es->esSEARCH($search, $searchConfig, 'full'), true);
+//		$searchConfig['ES_coin']                 = env('COIN');
+//		$config['ES_type']                       = 'basestats';
+//		$search['size']                          = 1000;
+//		$search['sort'][0]['height']['order']    = 'desc';
+//		$search['query']['range']['time']['gte'] = strtotime($stt);
+//		$mnData                                  = json_decode($es->esSEARCH($search, $searchConfig, 'full'), true);
 
 
 //		$totalNodes = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime($stt)))->get();
