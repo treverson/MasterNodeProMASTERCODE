@@ -27,37 +27,37 @@
                             <div class="col-md-6 col-sm-12 col-xs-12 pull-left blockdetails">
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right orange">{!! $blockstoday !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right orange">{!! $stats['last24Hours']['blocks'] !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Blocks Today</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($avgblocktime,'1','.','') !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($stats['last24Hours']['blockTimes'],'1','.','') !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Avg Block Time</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $blockreward / (100 / env('MASTERNODE_PERCENT_OF_BLOCK')) !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $stats['rewardData']['masterNodeReward'] !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Block Award</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! $daytilldrop['num'] !!}</div>
-                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">{!! $daytilldrop['name'] !!} to Drop</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! $stats['rewardData']['timeTillDrop']['num'] !!}</div>
+                                    <div class="col-md-10 col-sm-7 col-xs-7 text-left">{!! $stats['rewardData']['timeTillDrop']['name'] !!} to Drop</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $nextbreward / (100 / env('MASTERNODE_PERCENT_OF_BLOCK')) !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! $stats['rewardData']['nextreward'] !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Next Block Award</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($avgrewardfreq,'2','.',',') !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right purple">{!! number_format($stats['last24Hours']['rewardFreq'],'2','.',',') !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Reward Freq</div>
                                 </div>
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! number_format($avgblocks,'2','.',',') !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right babyBlue">{!! number_format($stats['last24Hours']['perNode']['rewards'],'2','.',',') !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Avg Block Awards</div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                     <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
                         <div class="row">
 							<?php $i = 1; ?>
-                            @foreach ($country as $key => $value)
+                            @foreach ($stats['masterNodeListCountry']['sortlist'] as $key => $value)
                                 @if ($i <= 4)
                                     <div class="col-md-3 col-sm-6 col-xs-6" style="padding-left: 2%; padding-right: 2%;">
                                         <div>
@@ -101,7 +101,7 @@
     <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     </div>
 </div>
-@include('mlgData',['type' => '30day'])
+{{--@include('mlgData',['type' => '30day'])--}}
 @include('layout.doughnutchart')
 @include('layout.barchart')
 @include('layout.map')

@@ -1,5 +1,4 @@
 @include('layout.header')
-</head>
 <body>
 @include('layout.sidebar')
 <div class="container-fluid">

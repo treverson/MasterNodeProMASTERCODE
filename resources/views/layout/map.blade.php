@@ -31,13 +31,13 @@
     }
 
     var beaches = [
-            @foreach($mnl as $key => $value)
-                @if (isset($value['ipData']['latitude']))
-                    ['{{$value['addr']}}',{!! $value['ipData']['latitude'] !!},{!! $value['ipData']['longitude'] !!}, @if($value['status'] == "NEW") {!! $key+200 !!} @elseif($value['status'] == "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$value['status']}}'],
+            @foreach($stats['masterNodeList'] as $key => $keyValue)
+                @if (isset($keyValue['_source']['ipData']['latitude']))
+                    ['{{$keyValue['_source']['addr']}}',{!! $keyValue['_source']['ipData']['latitude'] !!},{!! $keyValue['_source']['ipData']['longitude'] !!}, @if($keyValue['_source']['status'] == "NEW") {!! $key+200 !!} @elseif($keyValue['_source']['status'] == "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$keyValue['_source']['status']}}'],
                 @endif
             @endforeach
     ];
-
+    console.log(beaches);
     function setMarkers(map) {
         var shape = {
             coords: [1, 1, 1, 20, 18, 20, 18, 1],
@@ -75,7 +75,7 @@
                     zIndex: beach[3]
                 });
             }
-            if (beach[4] === "OFFLINE") {
+            else {
                 var marker = new google.maps.Marker({
                     position: {lat: beach[1], lng: beach[2]},
                     map: map,

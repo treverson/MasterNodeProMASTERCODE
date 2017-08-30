@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{!! strtoupper(env('COIN')) !!} MasterNodes</title>
-    <link rel="shortcut icon" href="/icon.png" />
+    <title>{!! strtoupper($stats['coinData']['coin']) !!} MasterNodes</title>
+    <link rel="shortcut icon" href="{!! $stats['coinData']['logo'] !!}" />
     <!-- Fonts -->
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
     <script>
