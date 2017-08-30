@@ -23,21 +23,9 @@ class MasterNodeList extends Controller
 		$search['sort'][0]['time']['order'] = 'desc';
 		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
 		$ret['stats']                       = $mnData[0]['_source'];
+		$ret['dataSet']                     = $this->moreLineGraphsData();
 		return view('welcome', $ret);
 	}
-
-	public function DataPack()
-	{
-		$es                                 = new elasticSearch();
-		$config['ES_coin']                  = env('COIN');
-		$config['ES_type']                  = 'basestats';
-		$search['size']                     = '1';
-		$search['sort'][0]['time']['order'] = 'desc';
-		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
-		$ret                                = $mnData[0]['_source'];
-		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
-	}
-
 
 	public function moreList()
 	{
@@ -69,67 +57,23 @@ class MasterNodeList extends Controller
 		return view('map', $ret);
 	}
 
-	public function moreLineGraphsData()
-	{
-		$type = $_GET['data'];
-		if ($type == '90day') {
-			$stt = '-90 days';
-		} elseif ($type == '30day') {
-			$stt = '-30 days';
-		} elseif ($type == '1day') {
-			$stt = '-1 day';
-		} elseif ($type == '1hour') {
-			$stt = '-1 hour';
-		} elseif ($type == 'trendline') {
-			$stt = '-30 days';
-		} elseif ($type == 'avgincome') {
-			$stt = '-30 days';
-		}
-		$totalNodes = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime($stt)))->get();
-		$tnl        = $totalNodes->toArray();
-		krsort($tnl);
-		$tnlc = collect($tnl);
-		if ($type == '90day') {
-			if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
-				$ret['totalnodeslist'] = $tnlc->nth(60);
-			}
-		} elseif ($type == '30day') {
-			if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
-				$ret['totalnodeslist'] = $tnlc->nth(60);
-			}
-		} elseif ($type == '1day') {
-			$ret['totalnodeslist'] = $tnlc->nth(60);
-		} elseif ($type == '1hour') {
-			$ret['totalnodeslist'] = $tnlc;
-		} elseif ($type == 'trendline') {
-			if (count($tnlc) > 51840) {
-				$ret['totalnodeslist'] = $tnlc->nth(8640);
-			} else if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
-				$ret['totalnodeslist'] = $tnlc->nth(60);
-			}
-		} elseif ($type == 'avgincome') {
-			if (count($tnlc) > 51840) {
-				$ret['totalnodeslist'] = $tnlc->nth(8640);
-			} else if (count($tnlc) > 14400) {
-				$ret['totalnodeslist'] = $tnlc->nth(1440);
-			} else {
-				$ret['totalnodeslist'] = $tnlc->nth(5);
-			}
-		}
-		$ret['type'] = $type;
-		return view('mlgData', $ret);
-	}
-
 	public function moreLineGraphs()
 	{
-		$ret = $this->Core();
+		$es                                 = new elasticSearch();
+		$config['ES_coin']                  = env('COIN');
+		$config['ES_type']                  = 'basestats';
+		$search['size']                     = '1';
+		$search['sort'][0]['time']['order'] = 'desc';
+		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
+		$ret['stats']                       = $mnData[0]['_source'];
+		$ret['dataSet']                     = $this->moreLineGraphsData();
 		return view('mlg', $ret);
+	}
+
+	public function moreLineGraphsDataSet()
+	{
+		$ret['dataSet'] = $this->moreLineGraphsData();
+		return view('mlgData', $ret);
 	}
 
 	public function moreStats()
@@ -155,4 +99,92 @@ class MasterNodeList extends Controller
 	}
 
 
+	// Other Content
+
+
+	public function DataPack()
+	{
+		$es                                 = new elasticSearch();
+		$config['ES_coin']                  = env('COIN');
+		$config['ES_type']                  = 'basestats';
+		$search['size']                     = '1';
+		$search['sort'][0]['time']['order'] = 'desc';
+		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
+		$ret                                = $mnData[0]['_source'];
+		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
+	}
+
+	public function moreLineGraphsData()
+	{
+		$es   = new elasticSearch();
+		$ret  = [];
+		$type = '';
+		if (isset($_GET['data'])) {
+			$type = $_GET['data'];
+		}
+		if ($type == '90day') {
+			$stt = '-90 days';
+		} elseif ($type == '30day') {
+			$stt = '-30 days';
+		} elseif ($type == '1day') {
+			$stt = '-1 day';
+		} elseif ($type == '1hour') {
+			$stt = '-1 hour';
+		} elseif ($type == 'trendline') {
+			$stt = '-30 days';
+		} elseif ($type == 'avgincome') {
+			$stt = '-30 days';
+		} else {
+			$stt = '-1 day';
+		}
+
+
+		$searchConfig['ES_coin']                 = env('COIN');
+		$config['ES_type']                       = 'basestats';
+		$search['size']                          = 1000;
+		$search['sort'][0]['height']['order']    = 'desc';
+		$search['query']['range']['time']['gte'] = strtotime($stt);
+		$mnData                                  = json_decode($es->esSEARCH($search, $searchConfig, 'full'), true);
+
+
+//		$totalNodes = Totalnodes::orderBy('id', 'desc')->where('created_at', '>', date("Y-m-d H:00:00", strtotime($stt)))->get();
+//		$tnl        = $totalNodes->toArray();
+//		krsort($tnl);
+//		$tnlc = collect($tnl);
+//		if ($type == '90day') {
+//			if (count($tnlc) > 14400) {
+//				$ret['totalnodeslist'] = $tnlc->nth(1440);
+//			} else {
+//				$ret['totalnodeslist'] = $tnlc->nth(60);
+//			}
+//		} elseif ($type == '30day') {
+//			if (count($tnlc) > 14400) {
+//				$ret['totalnodeslist'] = $tnlc->nth(1440);
+//			} else {
+//				$ret['totalnodeslist'] = $tnlc->nth(60);
+//			}
+//		} elseif ($type == '1day') {
+//			$ret['totalnodeslist'] = $tnlc->nth(60);
+//		} elseif ($type == '1hour') {
+//			$ret['totalnodeslist'] = $tnlc;
+//		} elseif ($type == 'trendline') {
+//			if (count($tnlc) > 51840) {
+//				$ret['totalnodeslist'] = $tnlc->nth(8640);
+//			} else if (count($tnlc) > 14400) {
+//				$ret['totalnodeslist'] = $tnlc->nth(1440);
+//			} else {
+//				$ret['totalnodeslist'] = $tnlc->nth(60);
+//			}
+//		} elseif ($type == 'avgincome') {
+//			if (count($tnlc) > 51840) {
+//				$ret['totalnodeslist'] = $tnlc->nth(8640);
+//			} else if (count($tnlc) > 14400) {
+//				$ret['totalnodeslist'] = $tnlc->nth(1440);
+//			} else {
+//				$ret['totalnodeslist'] = $tnlc->nth(5);
+//			}
+//		}
+//		$ret['type'] = $type;
+		return $ret;
+	}
 }
