@@ -11,12 +11,9 @@
 |
 */
 
-//Route::group(['prefix' => 'api', 'middleware' => 'throttle:2'], function () {
-//	Route::get('/datapack', array('uses' => 'MasterNodeList@DataPack'));
-//	Route::get('/datapack/advanced', array('uses' => 'MasterNodeList@DataPackAdv'));
-//	Route::get('/datapull', array('uses' => 'MasterNodeList@datapull'));
-//	Route::get('/getcoins', array('uses' => 'MasterNodeList@cmcPrice'));
-//});
+Route::group(['prefix' => 'api', 'middleware' => 'throttle:2'], function () {
+	Route::get('/datapack', array('uses' => 'MasterNodeList@DataPack'));
+});
 Route::get('/', array('as' => 'index', 'uses' => 'MasterNodeList@index'))->middleware('throttle:6');
 Route::get('/advanced/list', array('as' => 'advlist', 'uses' => 'MasterNodeList@moreList'))->middleware('throttle:6');
 Route::get('/advanced/stats', array('as' => 'advstats', 'uses' => 'MasterNodeList@moreStats'))->middleware('throttle:6');

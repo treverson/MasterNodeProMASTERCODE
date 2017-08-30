@@ -9,10 +9,9 @@ use App\Mnl;
 use DateTime;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\coin;
 use App\Http\Controllers\elasticSearch;
 
-class MasterNodeList extends coin
+class MasterNodeList extends Controller
 {
 
 	public function index()
@@ -27,6 +26,19 @@ class MasterNodeList extends coin
 		return view('welcome', $ret);
 	}
 
+	public function DataPack()
+	{
+		$es                                 = new elasticSearch();
+		$config['ES_coin']                  = env('COIN');
+		$config['ES_type']                  = 'basestats';
+		$search['size']                     = '1';
+		$search['sort'][0]['time']['order'] = 'desc';
+		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
+		$ret                                = $mnData[0]['_source'];
+		return response()->json($ret, 200, [], JSON_PRETTY_PRINT);
+	}
+
+
 	public function moreList()
 	{
 		$es                                 = new elasticSearch();
@@ -36,7 +48,7 @@ class MasterNodeList extends coin
 		$search['sort'][0]['time']['order'] = 'desc';
 		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
 		$ret['stats']                       = $mnData[0]['_source'];
-		$ret['search'] = null;
+		$ret['search']                      = null;
 		if (isset($_GET['search'])) {
 			$ret['search'] = $_GET['search'];
 			$mnl           = Mnl::where('addr', $ret['search'])->first();
@@ -138,7 +150,7 @@ class MasterNodeList extends coin
 		$config['ES_coin'] = env('COIN');
 		$config['ES_type'] = 'mn';
 		$config['ES_id']   = $_GET['addr'];
-		$data['mnl']              = json_decode($es->esGET($config), true);
+		$data['mnl']       = json_decode($es->esGET($config), true);
 		return view('nodeDetails', $data);
 	}
 
