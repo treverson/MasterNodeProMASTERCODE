@@ -29,14 +29,17 @@ class MasterNodeList extends coin
 
 	public function moreList()
 	{
-		$ret           = $this->Core();
+		$es                                 = new elasticSearch();
+		$config['ES_coin']                  = env('COIN');
+		$config['ES_type']                  = 'basestats';
+		$search['size']                     = '1';
+		$search['sort'][0]['time']['order'] = 'desc';
+		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
+		$ret['stats']                       = $mnData[0]['_source'];
 		$ret['search'] = null;
 		if (isset($_GET['search'])) {
 			$ret['search'] = $_GET['search'];
 			$mnl           = Mnl::where('addr', $ret['search'])->first();
-			if (count($mnl) > 0) {
-				$mnl->total = Blocks::where('addr', $ret['search'])->sum('amt');
-			}
 			$mnl->save();
 		}
 		return view('nodeList', $ret);
@@ -44,7 +47,13 @@ class MasterNodeList extends coin
 
 	public function moreMap()
 	{
-		$ret = $this->Core();
+		$es                                 = new elasticSearch();
+		$config['ES_coin']                  = env('COIN');
+		$config['ES_type']                  = 'basestats';
+		$search['size']                     = '1';
+		$search['sort'][0]['time']['order'] = 'desc';
+		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
+		$ret['stats']                       = $mnData[0]['_source'];
 		return view('map', $ret);
 	}
 

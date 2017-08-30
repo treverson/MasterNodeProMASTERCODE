@@ -33,7 +33,7 @@
     var beaches = [
             @foreach($stats['masterNodeList'] as $key => $keyValue)
                 @if (isset($keyValue['_source']['ipData']['latitude']))
-                    ['{{$keyValue['_source']['addr']}}',{!! $keyValue['_source']['ipData']['latitude'] !!},{!! $keyValue['_source']['ipData']['longitude'] !!}, @if($keyValue['_source']['status'] == "NEW") {!! $key+200 !!} @elseif($keyValue['_source']['status'] == "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{{$keyValue['_source']['status']}}'],
+                    ['{{$keyValue['_source']['addr']}}',{!! $keyValue['_source']['ipData']['latitude'] !!},{!! $keyValue['_source']['ipData']['longitude'] !!}, @if(strtoupper($keyValue['_source']['status']) === "NEW") {!! $key+200 !!} @elseif(strtoupper($keyValue['_source']['status']) === "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{!! strtoupper($keyValue['_source']['status']) !!}'],
                 @endif
             @endforeach
     ];
@@ -74,8 +74,7 @@
                     title: beach[0],
                     zIndex: beach[3]
                 });
-            }
-            else {
+            } else {
                 var marker = new google.maps.Marker({
                     position: {lat: beach[1], lng: beach[2]},
                     map: map,

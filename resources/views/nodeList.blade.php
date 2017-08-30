@@ -4,7 +4,7 @@
 <div class="container-fluid">
     @include('layout.logo')
     @include('layout.statsbar')
-    <div class="row middle">
+    <div class="row middle hide">
         <div class="col-md-1"></div>
         <div class="col-md-10" style="text-align: center; overflow:hidden;">
             <div class="panel panel-info">
@@ -24,23 +24,23 @@
                 <thead>
                 <tr>
                      <th>Status</th>
-                    <th>{!! strtoupper(env('COIN')) !!} Address</th>
+                    <th>{!! strtoupper($stats['coinData']['coin']) !!} Address</th>
                     <th>Tag</th>
                     <th>City</th>
                     <th>Region</th>
                     <th>Country</th>
-                    <th>{!! strtoupper(env('COIN')) !!} Generated</th>
+                    <th>{!! strtoupper($stats['coinData']['coin']) !!} Generated</th>
                 </tr>
                 </thead>
-                @foreach($mnl as $key => $value)
+                @foreach($stats['masterNodeList'] as $key => $value)
                     <tr onclick="clickMe({!! $key !!})">
-                        <td>{!! $value['status'] !!}</td>
-                        <td>{!! $value['addr'] !!}</td>
-                        <td><kbd @if(isset($value['ipData']) && isset($value['ipData']['tag'])) class="label-info" @endif>@if(isset($value['ipData']) && isset($value['ipData']['tag'])) {!! $value['ipData']['tag'] !!} @else Not Tagged @endif</kbd></td>
-                        <td>@if(isset($value['ipData']) && isset($value['ipData']['city'])) {!! $value['ipData']['city'] !!} @endif</td>
-                        <td>@if(isset($value['ipData']) && isset($value['ipData']['region_name'])) {!! substr($value['ipData']['region_name'], 0, 15) !!} @endif</td>
-                        <td>@if(isset($value['ipData']) && isset($value['ipData']['country_name'])) {!! $value['ipData']['country_name'] !!} @endif</td>
-                        <td>{!! $value['total'] !!}</td>
+                        <td>{!! $value['_source']['status'] !!}</td>
+                        <td>{!! $value['_source']['addr'] !!}</td>
+                        <td><kbd @if(isset($value['_source']['ipData']) && isset($value['_source']['ipData']['tag'])) class="label-info" @endif>@if(isset($value['_source']['ipData']) && isset($value['_source']['ipData']['tag'])) {!! $value['_source']['ipData']['tag'] !!} @else Not Tagged @endif</kbd></td>
+                        <td>@if(isset($value['_source']['ipData']) && isset($value['_source']['ipData']['city'])) {!! $value['_source']['ipData']['city'] !!} @endif</td>
+                        <td>@if(isset($value['_source']['ipData']) && isset($value['_source']['ipData']['region_name'])) {!! substr($value['_source']['ipData']['region_name'], 0, 15) !!} @endif</td>
+                        <td>@if(isset($value['_source']['ipData']) && isset($value['_source']['ipData']['country_name'])) {!! $value['_source']['ipData']['country_name'] !!} @endif</td>
+                        <td>{!! $value['_source']['total'] !!}</td>
                     </tr>
                 @endforeach
             </table>
