@@ -11,7 +11,7 @@
         m.parentNode.insertBefore(a, m)
     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', '{!! env('GOOGLEAL') !!}', 'auto');
+    ga('create', '{!! $stats['coinData']['google'] !!}', 'auto');
     ga('send', 'pageview');
 
     /* Set the width of the side navigation to 250px */
