@@ -13,7 +13,6 @@ use App\Http\Controllers\elasticSearch;
 
 class MasterNodeList extends Controller
 {
-
 	public function index()
 	{
 		$es                                    = new elasticSearch();
