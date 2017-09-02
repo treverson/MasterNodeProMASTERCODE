@@ -110,9 +110,7 @@ class MasterNodeList extends Controller
 		return view('nodeDetails', $data);
 	}
 
-
 	// Other Content
-
 
 	public function DataPack()
 	{
