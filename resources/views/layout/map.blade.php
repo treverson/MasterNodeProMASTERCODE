@@ -31,9 +31,9 @@
     }
 
     var beaches = [
-            @foreach($stats['masterNodeList'] as $key => $keyValue)
-                @if (isset($keyValue['ipData']['latitude']))
-                    ['{{$keyValue['addr']}}',{!! $keyValue['ipData']['latitude'] !!},{!! $keyValue['ipData']['longitude'] !!}, @if(strtoupper($keyValue['status']) === "NEW") {!! $key+200 !!} @elseif(strtoupper($keyValue['status']) === "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{!! strtoupper($keyValue['status']) !!}'],
+            @foreach($stats['masterNodeList']['list'] as $key => $keyValue)
+                @if (isset($keyValue['latitude']))
+                    ['{{$keyValue['addr']}}',{!! $keyValue['latitude'] !!},{!! $keyValue['longitude'] !!}, @if(strtoupper($keyValue['status']) === "NEW") {!! $key+200 !!} @elseif(strtoupper($keyValue['status']) === "ENABLED") {!! $key+100 !!} @else {!! $key !!} @endif, '{!! strtoupper($keyValue['status']) !!}'],
                 @endif
             @endforeach
     ];

@@ -27,7 +27,7 @@
                             <div class="col-md-6 col-sm-12 col-xs-12 pull-left blockdetails">
                                 <div class="row">
                                     <div class="hidden-lg hidden-md col-sm-3 col-xs-3 text-right orange"></div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right orange">{!! $stats['last24Hours']['blocks'] !!}</div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 text-right orange">{!! $stats['blocksToday'] !!}</div>
                                     <div class="col-md-10 col-sm-7 col-xs-7 text-left">Blocks Today</div>
                                 </div>
                                 <div class="row">

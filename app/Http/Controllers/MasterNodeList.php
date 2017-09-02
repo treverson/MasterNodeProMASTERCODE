@@ -16,14 +16,22 @@ class MasterNodeList extends Controller
 
 	public function index()
 	{
-		$es                                 = new elasticSearch();
-		$config['ES_coin']                  = env('COIN');
-		$config['ES_type']                  = 'basestats';
-		$search['size']                     = '1';
-		$search['sort'][0]['time']['order'] = 'desc';
-		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
-		$ret['stats']                       = $mnData[0]['_source'];
-		$ret['dataSet']                     = $this->moreLineGraphsData();
+		$es                                    = new elasticSearch();
+		$config['ES_coin']                     = env('COIN');
+		$config['ES_type']                     = 'basestats';
+		$search['size']                        = '1';
+		$search['sort'][0]['time']['order']    = 'desc';
+		$mnData                                = json_decode($es->esSEARCH($search, $config), true);
+		$ret['stats']                          = $mnData[0]['_source'];
+		$config['ES_coin']                     = env('COIN');
+		$config['ES_type']                     = 'mnl';
+		$config['ES_id']                       = '1';
+		$ret['stats']['masterNodeList']        = json_decode($es->esGET($config), true);
+		$config['ES_coin']                     = env('COIN');
+		$config['ES_type']                     = 'mnlcountry';
+		$config['ES_id']                       = '1';
+		$ret['stats']['masterNodeListCountry'] = json_decode($es->esGET($config), true);
+		$ret['dataSet']                        = $this->moreLineGraphsData();
 		return view('welcome', $ret);
 	}
 
@@ -47,13 +55,17 @@ class MasterNodeList extends Controller
 
 	public function moreMap()
 	{
-		$es                                 = new elasticSearch();
-		$config['ES_coin']                  = env('COIN');
-		$config['ES_type']                  = 'basestats';
-		$search['size']                     = '1';
-		$search['sort'][0]['time']['order'] = 'desc';
-		$mnData                             = json_decode($es->esSEARCH($search, $config), true);
-		$ret['stats']                       = $mnData[0]['_source'];
+		$es                = new elasticSearch();
+		$config['ES_coin']                     = env('COIN');
+		$config['ES_type']                     = 'basestats';
+		$search['size']                        = '1';
+		$search['sort'][0]['time']['order']    = 'desc';
+		$mnData                                = json_decode($es->esSEARCH($search, $config), true);
+		$ret['stats']                          = $mnData[0]['_source'];
+		$config['ES_coin'] = env('COIN');
+		$config['ES_type'] = 'mnl';
+		$config['ES_id']   = '1';
+		$ret['stats']['masterNodeList']      = json_decode($es->esGET($config), true);
 		return view('map', $ret);
 	}
 
